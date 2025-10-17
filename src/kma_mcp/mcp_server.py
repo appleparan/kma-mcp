@@ -16,6 +16,7 @@ from fastmcp import FastMCP
 from kma_mcp.asos_client import ASOSClient
 from kma_mcp.aws_client import AWSClient
 from kma_mcp.climate_client import ClimateClient
+from kma_mcp.dust_client import DustClient
 
 # Load environment variables from .env file
 # Look for .env in project root (parent of parent of this file)
@@ -456,6 +457,99 @@ def get_climate_annual_normals(station_id: int = 0) -> str:
             return str(data)
     except Exception as e:
         return f'Error fetching annual climate normals: {e!s}'
+
+
+# ============================================================================
+# Yellow Dust (PM10) Observation Tools
+# ============================================================================
+
+
+@mcp.tool()
+def get_dust_current_pm10(station_id: int = 0) -> str:
+    """Get current PM10 (yellow dust) observation data.
+
+    Yellow dust observations monitor PM10 particulate matter from
+    Asian dust storms and air quality conditions.
+
+    Args:
+        station_id: Weather station ID (0 for all stations, default: 0)
+
+    Returns:
+        Current PM10 observation data in JSON format
+    """
+    if not API_KEY:
+        return 'Error: KMA_API_KEY environment variable not set'
+
+    try:
+        with DustClient(API_KEY) as client:
+            # Get current time (rounded to nearest hour)
+            now = datetime.now()
+            current_hour = now.replace(minute=0, second=0, microsecond=0)
+
+            data = client.get_hourly_data(tm=current_hour, stn=station_id)
+            return str(data)
+    except Exception as e:
+        return f'Error fetching PM10 data: {e!s}'
+
+
+@mcp.tool()
+def get_dust_hourly_pm10(
+    start_time: str,
+    end_time: str,
+    station_id: int = 0,
+) -> str:
+    """Get hourly PM10 observation data for a time period.
+
+    Args:
+        start_time: Start time in 'YYYYMMDDHHmm' format (e.g., '202501011200')
+        end_time: End time in 'YYYYMMDDHHmm' format
+        station_id: Weather station ID (0 for all stations)
+
+    Returns:
+        Hourly PM10 observation data for the period in JSON format
+
+    Example:
+        get_dust_hourly_pm10('202501011200', '202501011800', 108)
+    """
+    if not API_KEY:
+        return 'Error: KMA_API_KEY environment variable not set'
+
+    try:
+        with DustClient(API_KEY) as client:
+            data = client.get_hourly_period(tm1=start_time, tm2=end_time, stn=station_id)
+            return str(data)
+    except Exception as e:
+        return f'Error fetching hourly PM10 data: {e!s}'
+
+
+@mcp.tool()
+def get_dust_daily_pm10(
+    start_date: str,
+    end_date: str,
+    station_id: int = 0,
+) -> str:
+    """Get daily PM10 observation data for a date range.
+
+    Args:
+        start_date: Start date in 'YYYYMMDD' format (e.g., '20250101')
+        end_date: End date in 'YYYYMMDD' format
+        station_id: Weather station ID (0 for all stations)
+
+    Returns:
+        Daily PM10 observation data for the period in JSON format
+
+    Example:
+        get_dust_daily_pm10('20250101', '20250131', 108)
+    """
+    if not API_KEY:
+        return 'Error: KMA_API_KEY environment variable not set'
+
+    try:
+        with DustClient(API_KEY) as client:
+            data = client.get_daily_period(tm1=start_date, tm2=end_date, stn=station_id)
+            return str(data)
+    except Exception as e:
+        return f'Error fetching daily PM10 data: {e!s}'
 
 
 if __name__ == '__main__':

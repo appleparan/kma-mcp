@@ -26,7 +26,14 @@ Long-term climate normals based on 30-year averages:
 - Temperature, precipitation, wind, humidity averages
 - Essential for climate trend analysis
 
-> **Implementation Status**: 3 APIs implemented (ASOS, AWS, Climate). See [API_STATUS.md](API_STATUS.md) for complete list of 60+ available APIs.
+### ✅ Yellow Dust Observation (황사관측)
+PM10 particulate matter monitoring for air quality assessment:
+- **Hourly and daily PM10 concentrations**
+- Asian dust storm monitoring
+- Air quality data for public health alerts
+- Critical for environmental monitoring and health protection
+
+> **Implementation Status**: 4 APIs implemented (ASOS, AWS, Climate, Yellow Dust). See [API_STATUS.md](API_STATUS.md) for complete list of 60+ available APIs.
 
 ## Quick Start
 
@@ -92,6 +99,11 @@ The MCP server provides the following tools:
 12. **get_climate_monthly_normals**: Get monthly climate normal values
 13. **get_climate_annual_normals**: Get annual climate normal values
 
+**Yellow Dust Observation (황사관측)**:
+14. **get_dust_current_pm10**: Get current PM10 (yellow dust) concentration
+15. **get_dust_hourly_pm10**: Get hourly PM10 data for a time period
+16. **get_dust_daily_pm10**: Get daily PM10 data for a date range
+
 ### Example Usage
 
 **ASOS Client**:
@@ -143,6 +155,23 @@ data = client.get_monthly_normals(start_month=1, end_month=12, stn=108)
 
 # Get annual normals
 data = client.get_annual_normals(stn=108)
+```
+
+**Yellow Dust Client**:
+```python
+from kma_mcp.dust_client import DustClient
+
+# Initialize Yellow Dust client
+client = DustClient('your_api_key')
+
+# Get current hourly PM10 data
+data = client.get_hourly_data(tm='202501011200', stn=108)
+
+# Get hourly PM10 data for a period
+data = client.get_hourly_period(tm1='202501010000', tm2='202501020000', stn=108)
+
+# Get daily PM10 averages
+data = client.get_daily_period(tm1='20250101', tm2='20250131', stn=108)
 ```
 
 ### Common Station IDs
