@@ -1,8 +1,45 @@
+## [0.2.0] - 2025-10-17
+
+### Bug Fixes
+
+- Remove all ESLint warnings ([ccdbfc4](https://github.com/appleparan/kma-mcp/commit/ccdbfc4f1e4914a24ac4bd031a567b65a2a77888))
+
+### Documentation
+
+- Change bullet points from hyphen to asterisk in index.md ([22c893c](https://github.com/appleparan/kma-mcp/commit/22c893c93f0a346d229d7335f3e19ab3d0676adc))
+
+### Features
+
+- Add TypeScript MCP server implementation ([88d8de8](https://github.com/appleparan/kma-mcp/commit/88d8de84d9b4abe36c9c23296ff1d105afd0091a))
+- Add AWS (Automated Weather Station) client ([a31fc14](https://github.com/appleparan/kma-mcp/commit/a31fc145956f9b7fc2ab6955474ac6be89ed93b6))
+- Add AWS OA, Dust, UV, and Snow clients ([bd80202](https://github.com/appleparan/kma-mcp/commit/bd802020965d6438aeb7f08bb9b17348e3ea2d86))
+- Complete Surface category clients ([0992579](https://github.com/appleparan/kma-mcp/commit/09925792bf80b0bc6576210c33d716008c37ab09))
+- Add AMOS, Earthquake, and Typhoon clients ([31afcba](https://github.com/appleparan/kma-mcp/commit/31afcba56f0c691dce18943f15462a94d343a5d3))
+- Add Integrated and Satellite clients ([1c26645](https://github.com/appleparan/kma-mcp/commit/1c26645069b6cf1724ec0de889e2f5f1a3dfb3c8))
+- Complete all remaining API clients ([e0376d5](https://github.com/appleparan/kma-mcp/commit/e0376d5f0a6445890db58cd571e6e6b65ffa2648))
+- Add ESLint and Prettier configuration ([2b7f9c9](https://github.com/appleparan/kma-mcp/commit/2b7f9c90427f31537c015394b370c7a2c807dd67))
+
+### Miscellaneous Tasks
+
+- Add TypeScript CI workflow ([31616a5](https://github.com/appleparan/kma-mcp/commit/31616a50f3a6ef87ab82cefd29acc7fa885f3940))
+
+### Refactor
+
+- Reorganize project structure to separate Python and TypeScript ([a49cf9e](https://github.com/appleparan/kma-mcp/commit/a49cf9e4d9a48d76800cffaeb4f0f191cb2335f2))
+
+### Testing
+
+- Add comprehensive tests for TypeScript clients ([82ea3f1](https://github.com/appleparan/kma-mcp/commit/82ea3f1d7df81a08b5100eb426146d7d34818a69))
+
 ## [0.1.2] - 2025-10-17
 
 ### Bug Fixes
 
 - Correct mkdocstrings configuration for Read the Docs ([dded9e8](https://github.com/appleparan/kma-mcp/commit/dded9e8a01fb472e543ca8403edee6546718961e))
+
+### Miscellaneous Tasks
+
+- Bump version to 0.1.2 ([d7c3026](https://github.com/appleparan/kma-mcp/commit/d7c3026a9ce7a920af41bce0bfb8ce3e9ad1a2bf))
 
 ## [0.1.1] - 2025-10-17
 
