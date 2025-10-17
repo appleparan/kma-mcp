@@ -7,7 +7,9 @@
 
 ## What is kma-mcp?
 
-kma-mcp is a comprehensive FastMCP server implementation that provides programmatic access to the Korea Meteorological Administration (KMA) API Hub. It enables developers and researchers to easily access real-time and historical Korean weather data through a simple, consistent Python interface.
+kma-mcp is a comprehensive MCP (Model Context Protocol) server implementation that provides programmatic access to the [Korea Meteorological Administration (KMA) API Hub](https://apihub.kma.go.kr/). It enables developers and researchers to easily access real-time and historical Korean weather data through simple, consistent Python and TypeScript interfaces.
+
+**All API implementations are based on the official [KMA API Hub](https://apihub.kma.go.kr/) specifications and documentation.** This ensures compatibility with the official KMA services and provides access to the same comprehensive meteorological data available through the KMA API Hub portal.
 
 ## Key Features
 
@@ -70,15 +72,18 @@ uv sync
 
 ### Get API Key
 
-1. Visit [KMA API Hub](https://apihub.kma.go.kr/)
-2. Create an account and request an API key
-3. Set your API key:
+1. Visit the [KMA API Hub](https://apihub.kma.go.kr/) - the official source for all Korean meteorological data
+2. Create an account and navigate to "마이페이지" (My Page)
+3. Generate an API key from the API management section
+4. Set your API key:
 
 ```bash
 export KMA_API_KEY='your_key_here'
 # Or create a .env file with:
 # KMA_API_KEY=your_key_here
 ```
+
+**Note**: The API key from KMA API Hub provides access to all weather data services. All APIs in this package correspond directly to the services available on the [KMA API Hub portal](https://apihub.kma.go.kr/api).
 
 ### Basic Usage
 
@@ -136,10 +141,19 @@ kma-mcp/
 
 ## Resources
 
+### Official KMA Resources
+* **KMA API Hub**: [https://apihub.kma.go.kr/](https://apihub.kma.go.kr/) - Official API portal and documentation
+* **KMA API Documentation**: [https://apihub.kma.go.kr/api](https://apihub.kma.go.kr/api) - Complete API specifications
+* **Note**: All APIs in this package are implemented according to official KMA API Hub specifications
+
+### This Project
 * **Documentation**: [https://appleparan.github.io/kma-mcp/](https://appleparan.github.io/kma-mcp/)
 * **GitHub**: [https://github.com/appleparan/kma-mcp](https://github.com/appleparan/kma-mcp)
-* **KMA API Hub**: [https://apihub.kma.go.kr/](https://apihub.kma.go.kr/)
-* **FastMCP**: [https://github.com/jlowin/fastmcp](https://github.com/jlowin/fastmcp)
+
+### MCP Framework
+* **Model Context Protocol**: [https://modelcontextprotocol.io/](https://modelcontextprotocol.io/)
+* **FastMCP (Python)**: [https://github.com/jlowin/fastmcp](https://github.com/jlowin/fastmcp)
+* **TypeScript SDK**: [https://github.com/modelcontextprotocol/typescript-sdk](https://github.com/modelcontextprotocol/typescript-sdk)
 
 ## License
 

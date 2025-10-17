@@ -1,6 +1,8 @@
 # TypeScript Implementation
 
-The TypeScript implementation of kma-mcp provides a type-safe MCP (Model Context Protocol) server for accessing the Korea Meteorological Administration (KMA) API.
+The TypeScript implementation of kma-mcp provides a type-safe MCP (Model Context Protocol) server for accessing the [Korea Meteorological Administration (KMA) API Hub](https://apihub.kma.go.kr/).
+
+**All API implementations are based on the official [KMA API Hub](https://apihub.kma.go.kr/) specifications.** This ensures full compatibility with the official KMA weather services and provides access to the same comprehensive meteorological data available through the KMA API Hub portal at [https://apihub.kma.go.kr/api](https://apihub.kma.go.kr/api).
 
 ## Features
 
@@ -23,11 +25,16 @@ bun add @appleparan/kma-mcp-server
 
 ## Quick Start
 
+First, obtain an API key from the [KMA API Hub](https://apihub.kma.go.kr/):
+1. Visit [https://apihub.kma.go.kr/](https://apihub.kma.go.kr/)
+2. Create an account and navigate to "마이페이지" (My Page)
+3. Generate an API key for the weather services
+
 ```typescript
 import { ASOSClient } from '@appleparan/kma-mcp-server';
 
 const client = new ASOSClient({
-  authKey: 'YOUR_API_KEY'
+  authKey: 'YOUR_KMA_API_KEY'  // API key from KMA API Hub
 });
 
 // Get hourly observation data

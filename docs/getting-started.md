@@ -1,6 +1,8 @@
 # Getting Started
 
-This guide will help you set up and start using kma-mcp to access Korean weather data.
+This guide will help you set up and start using kma-mcp to access Korean weather data from the [KMA API Hub](https://apihub.kma.go.kr/).
+
+**Note**: All APIs in this package are based on the official [KMA API Hub](https://apihub.kma.go.kr/) specifications. You'll need a KMA API Hub account and API key to use these services.
 
 ## Prerequisites
 
@@ -42,11 +44,15 @@ uv sync --group dev --group docs
 
 ### 3. Get API Key
 
-1. Visit [KMA API Hub](https://apihub.kma.go.kr/)
+Visit the official [KMA API Hub](https://apihub.kma.go.kr/) to obtain your API key:
+
+1. Go to [https://apihub.kma.go.kr/](https://apihub.kma.go.kr/)
 2. Create an account (requires Korean mobile phone verification)
-3. Navigate to "API 신청" (API Application)
-4. Request an API key for the services you need
-5. Once approved, copy your API key
+3. Navigate to "마이페이지" (My Page) after logging in
+4. Request an API key for the weather services you need
+5. Once approved, copy your API key from the API management section
+
+**Important**: The API key provides access to the official KMA weather data services. All API endpoints in this package correspond to services documented at [https://apihub.kma.go.kr/api](https://apihub.kma.go.kr/api).
 
 ### 4. Configure API Key
 
@@ -434,7 +440,8 @@ client = ASOSClient(api_key, timeout=60.0)
 
 ## Getting Help
 
-- **Documentation**: [https://appleparan.github.io/kma-mcp/](https://appleparan.github.io/kma-mcp/)
-- **Issues**: [GitHub Issues](https://github.com/appleparan/kma-mcp/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/appleparan/kma-mcp/discussions)
-- **KMA API Hub**: [https://apihub.kma.go.kr/](https://apihub.kma.go.kr/)
+- **Project Documentation**: [https://appleparan.github.io/kma-mcp/](https://appleparan.github.io/kma-mcp/)
+- **GitHub Issues**: [https://github.com/appleparan/kma-mcp/issues](https://github.com/appleparan/kma-mcp/issues)
+- **GitHub Discussions**: [https://github.com/appleparan/kma-mcp/discussions](https://github.com/appleparan/kma-mcp/discussions)
+- **KMA API Hub** (Official): [https://apihub.kma.go.kr/](https://apihub.kma.go.kr/)
+- **KMA API Documentation** (Official): [https://apihub.kma.go.kr/api](https://apihub.kma.go.kr/api)

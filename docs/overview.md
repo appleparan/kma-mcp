@@ -1,6 +1,8 @@
 # Overview
 
-kma-mcp is a Model Context Protocol (MCP) server that provides comprehensive access to the Korea Meteorological Administration (KMA) API Hub. It offers both synchronous and asynchronous Python clients for accessing real-time and historical Korean weather data.
+kma-mcp is a Model Context Protocol (MCP) server that provides comprehensive access to the [Korea Meteorological Administration (KMA) API Hub](https://apihub.kma.go.kr/). It offers both synchronous and asynchronous Python clients, as well as TypeScript clients, for accessing real-time and historical Korean weather data.
+
+**All API implementations are based on the official [KMA API Hub](https://apihub.kma.go.kr/) specifications.** This package serves as a convenient wrapper around the KMA API Hub services, providing type-safe interfaces and developer-friendly features while maintaining full compatibility with the official APIs.
 
 ## What is MCP?
 
@@ -94,7 +96,7 @@ kma-mcp/
 | **Numerical Models** | 0 | ❌ Not available | 0% |
 | **Industry-Specific** | 0 | ❌ Not available | 0% |
 
-**Note**: Numerical Models and Industry-Specific APIs have no publicly accessible endpoints in KMA API Hub.
+**Note**: Numerical Models and Industry-Specific APIs have no publicly accessible endpoints in the [KMA API Hub](https://apihub.kma.go.kr/). All implemented APIs correspond to publicly available services documented at [https://apihub.kma.go.kr/api](https://apihub.kma.go.kr/api).
 
 ## Key Features
 
@@ -263,9 +265,10 @@ Use **async clients** when:
 
 ### Rate Limiting
 
-KMA API Hub has rate limits:
+The [KMA API Hub](https://apihub.kma.go.kr/) has rate limits:
 - **Free tier**: ~1000 requests/day
 - **Premium tiers**: Higher limits available
+- Check the [KMA API Hub portal](https://apihub.kma.go.kr/) for current rate limit details
 
 Consider:
 - Caching frequently accessed data

@@ -1,6 +1,20 @@
 # kma-mcp
 
-MCP server for Korea Meteorological Administration API access
+Model Context Protocol (MCP) server for Korea Meteorological Administration API access
+
+## About
+
+This package provides Python and TypeScript implementations of MCP servers for accessing the [Korea Meteorological Administration (KMA) API Hub](https://apihub.kma.go.kr/).
+
+**All API implementations are based on the official KMA API Hub specifications and documentation available at [https://apihub.kma.go.kr/](https://apihub.kma.go.kr/).**
+
+The KMA API Hub provides comprehensive meteorological data including:
+- Real-time weather observations (ASOS, AWS)
+- Climate statistics and normals
+- Weather forecasts and warnings
+- Radar and satellite imagery
+- Typhoon tracking
+- Specialized observations (UV, dust, snow, etc.)
 
 ## Features
 
@@ -83,9 +97,10 @@ Tropical cyclone tracking and forecasting:
 ### Prerequisites
 
 1. Get an API key from [KMA API Hub](https://apihub.kma.go.kr/)
-   - Register an account on the KMA API Hub
-   - Request an API key from your account page
-   - The API key will be used as the `authKey` parameter in API requests
+   - Register an account at [https://apihub.kma.go.kr/](https://apihub.kma.go.kr/)
+   - Navigate to "마이페이지" (My Page) to generate an API key
+   - The API key will be used as the `authKey` parameter in all API requests
+   - **Note**: All APIs in this package correspond to the services available on the KMA API Hub
 
 2. Set up your environment:
 
@@ -540,6 +555,16 @@ What `release.sh` do:
     ```
 
 ## References
+
+### KMA API Documentation
+* [KMA API Hub](https://apihub.kma.go.kr/) - Official Korea Meteorological Administration API Hub
+* [KMA API Hub Documentation](https://apihub.kma.go.kr/api) - API specifications and usage guides
+* **All API implementations in this package are based on the official KMA API Hub specifications**
+
+### Development Resources
+* [Model Context Protocol](https://modelcontextprotocol.io/) - MCP specification
+* [FastMCP Documentation](https://github.com/jlowin/fastmcp) - Python MCP framework
+* [TypeScript MCP SDK](https://github.com/modelcontextprotocol/typescript-sdk) - TypeScript MCP framework
 * [Packaging Python Projects](https://packaging.python.org/tutorials/packaging-projects/)
 * [Python Packaging User Guide](https://packaging.python.org/)
 
