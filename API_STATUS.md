@@ -111,10 +111,25 @@
 
 ---
 
-### ❌ 자외선관측 - Ultraviolet Radiation Observation
-**상태**: 미구현
+### ✅ 자외선관측 - Ultraviolet Radiation Observation
+**구현 파일**: `src/kma_mcp/uv_client.py`, `src/kma_mcp/mcp_server.py`
 
-**제공 데이터**: 자외선 지수 관측 데이터
+**구현된 API**:
+- ✅ 시간별 UV 데이터 (단일 시간) - `get_hourly_data()`
+- ✅ 시간별 UV 데이터 (기간) - `get_hourly_period()`
+- ✅ 일별 UV 데이터 (단일 날짜) - `get_daily_data()`
+- ✅ 일별 UV 데이터 (기간) - `get_daily_period()`
+
+**MCP 도구**:
+- ✅ `get_uv_current_index` - 현재 UV 지수 조회
+- ✅ `get_uv_hourly_index` - 시간별 UV 지수 조회
+- ✅ `get_uv_daily_index` - 일별 UV 지수 조회
+
+**제공 데이터**: UV 자외선 지수
+
+**특징**: 공중보건 보호 및 태양 안전 지침, 건강 관련 중요 지수
+
+
 
 ---
 
@@ -226,13 +241,13 @@
 ## 구현 현황 요약
 
 ### 통계
-- **구현 완료**: 4개 API (ASOS, AWS, Climate Statistics, Yellow Dust)
+- **구현 완료**: 5개 API (ASOS, AWS, Climate Statistics, Yellow Dust, UV Radiation)
 - **부분 구현**: 0개 API
 - **미구현**: 12개 카테고리 (약 60+ 개별 API 추정)
 
 ### 구현률
-- **지상관측 카테고리**: 40% (4/10 API 구현)
-- **전체**: ~6% (추정)
+- **지상관측 카테고리**: 50% (5/10 API 구현)
+- **전체**: ~8% (추정)
 
 ---
 
@@ -245,8 +260,8 @@
 4. **지상관측 지점정보** - 관측소 상세 정보 제공
 5. **예특보** - 실시간 기상 예보 및 특보
 
+6. ~~**자외선관측**~~ - ✅ **완료** (건강 관련 중요 지수)
 ### Medium Priority (중간 우선순위)
-6. **자외선관측** - 건강 관련 중요 지수
 7. **레이더** - 실시간 강수 패턴
 8. **태풍** - 재해 대비 중요 정보
 

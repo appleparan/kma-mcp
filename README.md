@@ -33,6 +33,14 @@ PM10 particulate matter monitoring for air quality assessment:
 - Air quality data for public health alerts
 - Critical for environmental monitoring and health protection
 
+
+### ✅ UV Radiation Observation (자외선관측)
+Ultraviolet radiation monitoring for sun safety and health protection:
+- **Hourly and daily UV index measurements**
+- Public health protection guidance
+- Sun safety recommendations
+- Critical for outdoor activity planning and health alerts
+
 > **Implementation Status**: 4 APIs implemented (ASOS, AWS, Climate, Yellow Dust). See [API_STATUS.md](API_STATUS.md) for complete list of 60+ available APIs.
 
 ## Quick Start
@@ -104,6 +112,12 @@ The MCP server provides the following tools:
 15. **get_dust_hourly_pm10**: Get hourly PM10 data for a time period
 16. **get_dust_daily_pm10**: Get daily PM10 data for a date range
 
+
+**UV Radiation Observation (자외선관측)**:
+17. **get_uv_current_index**: Get current UV radiation index
+18. **get_uv_hourly_index**: Get hourly UV index data for a time period
+19. **get_uv_daily_index**: Get daily UV index data for a date range
+
 ### Example Usage
 
 **ASOS Client**:
@@ -117,8 +131,8 @@ client = ASOSClient('your_api_key')
 data = client.get_hourly_data(tm='202501011200', stn=108)
 
 # Get daily weather for a period
-data = client.get_daily_period(tm1='20250101', tm2='20250131', stn=108)
 
+data = client.get_daily_period(tm1='20250101', tm2='20250131', stn=108)
 # Get temperature data
 data = client.get_element_data(tm1='202501011200', tm2='202501011800', obs='TA', stn=108)
 ```
@@ -171,6 +185,23 @@ data = client.get_hourly_data(tm='202501011200', stn=108)
 data = client.get_hourly_period(tm1='202501010000', tm2='202501020000', stn=108)
 
 # Get daily PM10 averages
+data = client.get_daily_period(tm1='20250101', tm2='20250131', stn=108)
+```
+
+**UV Radiation Client**:
+```python
+from kma_mcp.uv_client import UVClient
+
+# Initialize UV Radiation client
+client = UVClient('your_api_key')
+
+# Get current hourly UV index
+data = client.get_hourly_data(tm='202501011200', stn=108)
+
+# Get hourly UV index for a period
+data = client.get_hourly_period(tm1='202501010000', tm2='202501020000', stn=108)
+
+# Get daily UV index averages
 data = client.get_daily_period(tm1='20250101', tm2='20250131', stn=108)
 ```
 
