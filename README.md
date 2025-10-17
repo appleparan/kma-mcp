@@ -41,7 +41,7 @@ Ultraviolet radiation monitoring for sun safety and health protection:
 - Sun safety recommendations
 - Critical for outdoor activity planning and health alerts
 
-> **Implementation Status**: 4 APIs implemented (ASOS, AWS, Climate, Yellow Dust). See [API_STATUS.md](API_STATUS.md) for complete list of 60+ available APIs.
+> **Implementation Status**: 6 APIs implemented (ASOS, AWS, Climate, Yellow Dust, UV Radiation, Snow Depth). See [API_STATUS.md](API_STATUS.md) for complete list of 60+ available APIs.
 
 ## Quick Start
 
@@ -117,6 +117,11 @@ The MCP server provides the following tools:
 17. **get_uv_current_index**: Get current UV radiation index
 18. **get_uv_hourly_index**: Get hourly UV index data for a time period
 19. **get_uv_daily_index**: Get daily UV index data for a date range
+
+**Snow Depth Observation (적설관측)**:
+20. **get_snow_current_depth**: Get current snow depth measurement
+21. **get_snow_hourly_depth**: Get hourly snow depth data for a time period
+22. **get_snow_daily_depth**: Get daily snow depth data for a date range
 
 ### Example Usage
 
@@ -202,6 +207,23 @@ data = client.get_hourly_data(tm='202501011200', stn=108)
 data = client.get_hourly_period(tm1='202501010000', tm2='202501020000', stn=108)
 
 # Get daily UV index averages
+data = client.get_daily_period(tm1='20250101', tm2='20250131', stn=108)
+```
+
+**Snow Depth Client**:
+```python
+from kma_mcp.snow_client import SnowClient
+
+# Initialize Snow Depth client
+client = SnowClient('your_api_key')
+
+# Get current hourly snow depth
+data = client.get_hourly_data(tm='202501011200', stn=108)
+
+# Get hourly snow depth for a period
+data = client.get_hourly_period(tm1='202501010000', tm2='202501020000', stn=108)
+
+# Get daily snow depth data
 data = client.get_daily_period(tm1='20250101', tm2='20250131', stn=108)
 ```
 

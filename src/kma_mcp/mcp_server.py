@@ -18,6 +18,7 @@ from kma_mcp.aws_client import AWSClient
 from kma_mcp.climate_client import ClimateClient
 from kma_mcp.dust_client import DustClient
 from kma_mcp.uv_client import UVClient
+from kma_mcp.snow_client import SnowClient
 
 # Load environment variables from .env file
 # Look for .env in project root (parent of parent of this file)
@@ -644,6 +645,100 @@ def get_uv_daily_index(
             return str(data)
     except Exception as e:
         return f'Error fetching daily UV index data: {e!s}'
+
+
+
+# ============================================================================
+# Snow Depth Observation Tools
+# ============================================================================
+
+
+@mcp.tool()
+def get_snow_current_depth(station_id: int = 0) -> str:
+    """Get current snow depth observation data.
+
+    Snow depth observations monitor snow accumulation for winter
+    weather analysis, transportation safety, and disaster prevention.
+
+    Args:
+        station_id: Weather station ID (0 for all stations, default: 0)
+
+    Returns:
+        Current snow depth observation data in JSON format
+    """
+    if not API_KEY:
+        return 'Error: KMA_API_KEY environment variable not set'
+
+    try:
+        with SnowClient(API_KEY) as client:
+            # Get current time (rounded to nearest hour)
+            now = datetime.now()
+            current_hour = now.replace(minute=0, second=0, microsecond=0)
+
+            data = client.get_hourly_data(tm=current_hour, stn=station_id)
+            return str(data)
+    except Exception as e:
+        return f'Error fetching snow depth data: {e!s}'
+
+
+@mcp.tool()
+def get_snow_hourly_depth(
+    start_time: str,
+    end_time: str,
+    station_id: int = 0,
+) -> str:
+    """Get hourly snow depth observation data for a time period.
+
+    Args:
+        start_time: Start time in 'YYYYMMDDHHmm' format (e.g., '202501011200')
+        end_time: End time in 'YYYYMMDDHHmm' format
+        station_id: Weather station ID (0 for all stations)
+
+    Returns:
+        Hourly snow depth data for the period in JSON format
+
+    Example:
+        get_snow_hourly_depth('202501011200', '202501011800', 108)
+    """
+    if not API_KEY:
+        return 'Error: KMA_API_KEY environment variable not set'
+
+    try:
+        with SnowClient(API_KEY) as client:
+            data = client.get_hourly_period(tm1=start_time, tm2=end_time, stn=station_id)
+            return str(data)
+    except Exception as e:
+        return f'Error fetching hourly snow depth data: {e!s}'
+
+
+@mcp.tool()
+def get_snow_daily_depth(
+    start_date: str,
+    end_date: str,
+    station_id: int = 0,
+) -> str:
+    """Get daily snow depth observation data for a date range.
+
+    Args:
+        start_date: Start date in 'YYYYMMDD' format (e.g., '20250101')
+        end_date: End date in 'YYYYMMDD' format
+        station_id: Weather station ID (0 for all stations)
+
+    Returns:
+        Daily snow depth data for the period in JSON format
+
+    Example:
+        get_snow_daily_depth('20250101', '20250131', 108)
+    """
+    if not API_KEY:
+        return 'Error: KMA_API_KEY environment variable not set'
+
+    try:
+        with SnowClient(API_KEY) as client:
+            data = client.get_daily_period(tm1=start_date, tm2=end_date, stn=station_id)
+            return str(data)
+    except Exception as e:
+        return f'Error fetching daily snow depth data: {e!s}'
 
 
 
