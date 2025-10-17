@@ -198,7 +198,11 @@ nav:
   - Overview: overview.md
   - Getting Started: getting-started.md
   - API Categories: api-categories.md
-  - API Reference: reference/
+  - Python:
+    - API Reference: reference/
+  - TypeScript:
+    - Overview: typescript-overview.md
+    - API Reference: reference-ts/README.md
 
 plugins:
   - search
