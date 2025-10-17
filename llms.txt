@@ -4,28 +4,50 @@
 
 ## Overview
 
-This is a FastMCP server implementation that provides access to the Korea Meteorological Administration (KMA) API Hub. It offers comprehensive weather data access including surface observations, forecasts, radar, satellite imagery, and more.
+This project provides **Python and TypeScript** implementations of MCP servers for accessing the Korea Meteorological Administration (KMA) API Hub. It offers comprehensive weather data access including surface observations, forecasts, radar, satellite imagery, and more.
 
 **Project URL**: https://github.com/appleparan/kma-mcp
-**License**: MIT (or as specified in LICENSE file)
-**Language**: Python 3.13+
-**Framework**: FastMCP (Model Context Protocol)
+**License**: Apache 2.0
+**Languages**: Python 3.13+ | TypeScript 5.7+
+**Frameworks**: FastMCP (Python) | @modelcontextprotocol/sdk (TypeScript)
 
 ## Quick Start
 
 ### Prerequisites
 1. Get API key from https://apihub.kma.go.kr/
 2. Set environment variable: `export KMA_API_KEY='your_key'` or use `.env` file
-3. Install: `uv sync`
-4. Run: `uv run python scripts/start_mcp_server.py`
 
-### Basic Usage
+### Python Implementation
+**Install & Run**:
+```bash
+uv sync
+uv run python scripts/start_mcp_server.py
+```
+
+**Basic Usage**:
 ```python
 from kma_mcp.surface.asos_client import ASOSClient
 
 # Get current weather for Seoul (station 108)
 with ASOSClient('your_api_key') as client:
     data = client.get_hourly_data(tm='202501011200', stn=108)
+```
+
+### TypeScript Implementation
+**Install & Run**:
+```bash
+cd typescript
+bun install
+bun run build:tsc  # or bun run build
+bun run src/index.ts
+```
+
+**Basic Usage**:
+```typescript
+import { ASOSClient } from './clients/asos';
+
+const client = new ASOSClient(process.env.KMA_API_KEY!);
+const data = await client.getHourlyData('202501011200', 108);
 ```
 
 ## Implementation Status
@@ -197,58 +219,94 @@ with ASOSClient('your_api_key') as client:
 
 ```
 kma-mcp/
-├── src/kma_mcp/
-│   ├── surface/          # Surface observation clients (10 APIs)
-│   │   ├── asos_client.py          # ASOS observations
-│   │   ├── aws_client.py           # AWS observations
-│   │   ├── climate_client.py       # Climate statistics
-│   │   ├── dust_client.py          # Yellow dust (PM10)
-│   │   ├── nk_client.py            # North Korea observations
-│   │   ├── snow_client.py          # Snow depth
-│   │   ├── uv_client.py            # UV radiation
-│   │   ├── aws_oa_client.py        # AWS objective analysis
-│   │   ├── season_client.py        # Seasonal observations
-│   │   └── station_client.py       # Station information
-│   ├── marine/           # Marine observation clients (1 API)
-│   │   └── buoy_client.py          # Buoy observations
-│   ├── upper_air/        # Upper-air observation clients (1 API)
-│   │   └── radiosonde_client.py    # Radiosonde observations
-│   ├── radar/            # Radar clients (1 API)
-│   │   └── radar_client.py         # Weather radar
-│   ├── satellite/        # Satellite clients (1 API)
-│   │   └── satellite_client.py     # GK2A satellite
-│   ├── earthquake/       # Earthquake clients (1 API)
-│   │   └── earthquake_client.py    # Earthquake monitoring
-│   ├── forecast/         # Forecast clients (2 APIs)
-│   │   ├── forecast_client.py      # Weather forecasts
-│   │   └── warning_client.py       # Weather warnings
-│   ├── typhoon/          # Typhoon clients (1 API)
-│   │   └── typhoon_client.py       # Typhoon information
-│   ├── global_met/       # Global meteorology clients (1 API)
-│   │   └── gts_client.py           # GTS worldwide data
-│   ├── aviation/         # Aviation meteorology clients (1 API)
-│   │   └── amos_client.py          # Airport observations
-│   ├── integrated/       # Integrated meteorology clients (1 API)
-│   │   └── integrated_client.py    # Lightning, wind profiler
-│   ├── utils/            # Utility modules
-│   │   └── weather_codes.py        # Korean weather code translations
-│   ├── mcp_server.py     # Main MCP server with all tools
-│   └── async_mcp_server.py  # Async MCP server template
-├── tests/                # Comprehensive test suite (198 tests)
+├── python/               # Python implementation
+│   ├── src/kma_mcp/
+│   │   ├── surface/          # Surface observation clients (10 APIs)
+│   │   │   ├── asos_client.py          # ASOS observations
+│   │   │   ├── aws_client.py           # AWS observations
+│   │   │   ├── climate_client.py       # Climate statistics
+│   │   │   ├── dust_client.py          # Yellow dust (PM10)
+│   │   │   ├── nk_client.py            # North Korea observations
+│   │   │   ├── snow_client.py          # Snow depth
+│   │   │   ├── uv_client.py            # UV radiation
+│   │   │   ├── aws_oa_client.py        # AWS objective analysis
+│   │   │   ├── season_client.py        # Seasonal observations
+│   │   │   └── station_client.py       # Station information
+│   │   ├── marine/           # Marine observation clients (1 API)
+│   │   │   └── buoy_client.py          # Buoy observations
+│   │   ├── upper_air/        # Upper-air observation clients (1 API)
+│   │   │   └── radiosonde_client.py    # Radiosonde observations
+│   │   ├── radar/            # Radar clients (1 API)
+│   │   │   └── radar_client.py         # Weather radar
+│   │   ├── satellite/        # Satellite clients (1 API)
+│   │   │   └── satellite_client.py     # GK2A satellite
+│   │   ├── earthquake/       # Earthquake clients (1 API)
+│   │   │   └── earthquake_client.py    # Earthquake monitoring
+│   │   ├── forecast/         # Forecast clients (2 APIs)
+│   │   │   ├── forecast_client.py      # Weather forecasts
+│   │   │   └── warning_client.py       # Weather warnings
+│   │   ├── typhoon/          # Typhoon clients (1 API)
+│   │   │   └── typhoon_client.py       # Typhoon information
+│   │   ├── global_met/       # Global meteorology clients (1 API)
+│   │   │   └── gts_client.py           # GTS worldwide data
+│   │   ├── aviation/         # Aviation meteorology clients (1 API)
+│   │   │   └── amos_client.py          # Airport observations
+│   │   ├── integrated/       # Integrated meteorology clients (1 API)
+│   │   │   └── integrated_client.py    # Lightning, wind profiler
+│   │   ├── utils/            # Utility modules
+│   │   │   └── weather_codes.py        # Korean weather code translations
+│   │   ├── mcp_server.py     # Main MCP server with all tools
+│   │   └── async_mcp_server.py  # Async MCP server template
+│   └── tests/                # Comprehensive test suite (198 tests)
+├── typescript/           # TypeScript implementation
+│   ├── src/
+│   │   ├── clients/          # TypeScript API clients (21 clients)
+│   │   │   ├── base.ts             # Base client implementation
+│   │   │   ├── asos.ts             # ASOS observations
+│   │   │   ├── aws.ts              # AWS observations
+│   │   │   ├── climate.ts          # Climate statistics
+│   │   │   ├── dust.ts             # Yellow dust (PM10)
+│   │   │   ├── nk.ts               # North Korea observations
+│   │   │   ├── snow.ts             # Snow depth
+│   │   │   ├── uv.ts               # UV radiation
+│   │   │   ├── aws_oa.ts           # AWS objective analysis
+│   │   │   ├── season.ts           # Seasonal observations
+│   │   │   ├── station.ts          # Station information
+│   │   │   ├── buoy.ts             # Buoy observations
+│   │   │   ├── radiosonde.ts       # Radiosonde observations
+│   │   │   ├── radar.ts            # Weather radar
+│   │   │   ├── satellite.ts        # GK2A satellite
+│   │   │   ├── earthquake.ts       # Earthquake monitoring
+│   │   │   ├── forecast.ts         # Weather forecasts
+│   │   │   ├── warning.ts          # Weather warnings
+│   │   │   ├── typhoon.ts          # Typhoon information
+│   │   │   ├── gts.ts              # GTS worldwide data
+│   │   │   ├── amos.ts             # Airport observations
+│   │   │   └── integrated.ts       # Lightning, wind profiler
+│   │   └── index.ts          # MCP server entry point
+│   ├── tests/                # TypeScript test suite
+│   ├── package.json          # TypeScript dependencies
+│   └── tsconfig.json         # TypeScript configuration
 ├── scripts/
-│   └── start_mcp_server.py    # Server startup script
+│   └── start_mcp_server.py    # Python server startup script
 ├── API_STATUS.md         # Detailed API implementation status
 ├── README.md             # Main documentation
-└── pyproject.toml        # Project configuration
+├── LICENSE               # Apache 2.0 license
+└── pyproject.toml        # Python project configuration
 
 ```
 
 ## Key Features
 
-### Dual Client Support
-- **Sync clients**: Standard synchronous HTTP clients using httpx
-- **Async clients**: Full async/await support for concurrent operations
-- All 21 APIs have both sync and async versions (42 clients total)
+### Dual Language Support
+- **Python Implementation**: FastMCP-based server with sync/async clients
+  - Sync clients: Standard synchronous HTTP clients using httpx
+  - Async clients: Full async/await support for concurrent operations
+  - All 21 APIs have both sync and async versions (42 Python clients total)
+- **TypeScript Implementation**: Native TypeScript MCP server with full type safety
+  - 21 TypeScript clients with complete type definitions
+  - Built with @modelcontextprotocol/sdk and axios
+  - Full type safety with Zod schema validation
 
 ### Time Format Support
 - String formats: 'YYYYMMDDHHmm' (hourly), 'YYYYMMDD' (daily)
@@ -447,12 +505,14 @@ Specialized integrated observation systems.
 
 ## Development
 
-### Requirements
+### Python Development
+
+**Requirements**:
 - Python 3.13+
 - uv (Python package manager)
 - KMA API key from https://apihub.kma.go.kr/
 
-### Setup
+**Setup**:
 ```bash
 # Install dependencies
 uv sync
@@ -470,15 +530,69 @@ uv run ruff check --fix .
 uv run ruff format .
 ```
 
+### TypeScript Development
+
+**Requirements**:
+- Node.js >= 18.0.0
+- Bun (recommended) or npm
+- KMA API key from https://apihub.kma.go.kr/
+
+**Setup**:
+```bash
+cd typescript
+
+# Install dependencies
+bun install
+
+# Build (TypeScript compiler)
+bun run build:tsc
+
+# Build (Bun bundler - alternative)
+bun run build
+
+# Watch mode (hot reload)
+bun run dev
+
+# Run tests
+bun test
+
+# Lint
+bun run lint
+
+# Lint and fix
+bun run lint:fix
+
+# Format
+bun run format
+
+# Format check
+bun run format:check
+
+# Generate documentation
+bun run docs
+```
+
 ### Adding New APIs
-1. Create client in appropriate category directory
+
+**Python**:
+1. Create client in appropriate category directory (e.g., `python/src/kma_mcp/surface/`)
 2. Implement sync version with context manager support
 3. Generate async version using `scripts/convert_to_async.py`
-4. Write comprehensive tests
-5. Add MCP tools to `mcp_server.py`
+4. Write comprehensive tests in `python/tests/`
+5. Add MCP tools to `python/src/kma_mcp/mcp_server.py`
+6. Update `API_STATUS.md`
+
+**TypeScript**:
+1. Create client in `typescript/src/clients/` directory
+2. Implement client extending base client class
+3. Define Zod schemas for type validation
+4. Write tests in `typescript/tests/`
+5. Add MCP tools to `typescript/src/index.ts`
 6. Update `API_STATUS.md`
 
 ### Code Structure
+
+**Python Example**:
 ```python
 class ExampleClient:
     """Client for Example API."""
@@ -510,9 +624,43 @@ class ExampleClient:
         return self._make_request('endpoint.php', params)
 ```
 
+**TypeScript Example**:
+```typescript
+import { BaseKMAClient } from './base';
+import { z } from 'zod';
+
+// Define response schema
+const DataSchema = z.object({
+  tm: z.string(),
+  stnId: z.string(),
+  ta: z.number(),
+  // ... more fields
+});
+
+export class ExampleClient extends BaseKMAClient {
+  /**
+   * Get observation data
+   * @param tm Time in YYYYMMDDHHmm format
+   * @param stn Station ID (default: 0 for all)
+   */
+  async getData(tm: string, stn: number = 0): Promise<z.infer<typeof DataSchema>[]> {
+    const params = {
+      tm,
+      stn: stn.toString(),
+      help: '0',
+    };
+
+    const response = await this.makeRequest('endpoint.php', params);
+    return this.extractItems(response);
+  }
+}
+```
+
 ## Testing
 
-All clients have comprehensive test coverage:
+### Python Testing
+
+All Python clients have comprehensive test coverage:
 - Initialization tests
 - Context manager tests
 - Request tests with mocked responses
@@ -524,7 +672,7 @@ All clients have comprehensive test coverage:
 uv run pytest
 
 # Run specific test file
-uv run pytest tests/surface/test_asos_client.py
+uv run pytest python/tests/surface/test_asos_client.py
 
 # Run with coverage
 uv run pytest --cov=kma_mcp
@@ -533,29 +681,80 @@ uv run pytest --cov=kma_mcp
 uv run pytest -v
 ```
 
+### TypeScript Testing
+
+TypeScript tests use Bun's built-in test runner:
+
+```bash
+cd typescript
+
+# Run all tests
+bun test
+
+# Run tests in watch mode
+bun test --watch
+
+# Run tests with coverage
+bun test --coverage
+```
+
 ## References
 
+### Core Resources
 - **KMA API Hub**: https://apihub.kma.go.kr/
-- **FastMCP**: https://github.com/jlowin/fastmcp
 - **Project Repository**: https://github.com/appleparan/kma-mcp
 - **API Documentation**: See `API_STATUS.md` for detailed status
+
+### Python Resources
+- **FastMCP**: https://github.com/jlowin/fastmcp
+- **httpx**: https://www.python-httpx.org/
+- **uv**: https://docs.astral.sh/uv/
+
+### TypeScript Resources
+- **MCP TypeScript SDK**: https://github.com/modelcontextprotocol/typescript-sdk
+- **Bun**: https://bun.sh/
+- **Zod**: https://zod.dev/
+- **TypeDoc**: https://typedoc.org/
 
 ## Contributing
 
 Contributions are welcome! Focus areas:
+
+### High Priority
 1. Implementing remaining 2 API categories (if endpoints become public)
-2. Adding more comprehensive examples
+2. Adding more comprehensive examples for both Python and TypeScript
 3. Improving documentation
-4. Adding integration tests
+4. Adding integration tests for both implementations
+
+### Medium Priority
 5. Performance optimizations
-6. Expanding Korean weather code utilities
+6. Expanding Korean weather code utilities (Python)
+7. Improving TypeScript type definitions
+8. Adding more Zod schemas for validation
+
+### Low Priority
+9. Enhancing error messages
+10. Adding retry logic for failed requests
+11. Implementing request caching
 
 ## License
 
-See LICENSE file for details.
+Apache 2.0 - See [LICENSE](LICENSE) file for details.
 
 ---
 
-Last updated: 2025-10-18
-Version: 0.1.0
-Maintained by: @appleparan
+**Last updated**: 2025-10-18
+**Python Version**: 0.2.2
+**TypeScript Version**: 0.1.0
+**Maintained by**: @appleparan
+
+---
+
+## Implementation Statistics
+
+- **Total APIs**: 21 implemented (85% of public KMA API Hub)
+- **Python Clients**: 42 (21 sync + 21 async)
+- **TypeScript Clients**: 21 (all async)
+- **Python Tests**: 198 comprehensive tests
+- **Categories Covered**: 11 out of 13 (85%)
+- **Code Quality**: Type-safe with full linting support
