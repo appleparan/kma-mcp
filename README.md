@@ -19,7 +19,14 @@ Real-time disaster prevention monitoring with extensive station coverage:
 - More observation points than ASOS
 - Focused on disaster prevention and real-time alerts
 
-> **Implementation Status**: 2 APIs implemented (ASOS, AWS). See [API_STATUS.md](API_STATUS.md) for complete list of 60+ available APIs.
+### ✅ Climate Statistics (기후통계)
+Long-term climate normals based on 30-year averages:
+- Daily, 10-day, monthly, and annual normals
+- Reference periods (e.g., 1991-2020)
+- Temperature, precipitation, wind, humidity averages
+- Essential for climate trend analysis
+
+> **Implementation Status**: 3 APIs implemented (ASOS, AWS, Climate). See [API_STATUS.md](API_STATUS.md) for complete list of 60+ available APIs.
 
 ## Quick Start
 
@@ -80,6 +87,11 @@ The MCP server provides the following tools:
 9. **get_aws_hourly_weather**: Get hourly AWS data for a time period
 10. **get_aws_daily_weather**: Get daily AWS data for a date range
 
+**Climate Statistics (기후통계)**:
+11. **get_climate_daily_normals**: Get daily climate normal values (30-year averages)
+12. **get_climate_monthly_normals**: Get monthly climate normal values
+13. **get_climate_annual_normals**: Get annual climate normal values
+
 ### Example Usage
 
 **ASOS Client**:
@@ -114,6 +126,23 @@ data = client.get_minutely_period(tm1='202501011200', tm2='202501011300', stn=10
 
 # Get hourly AWS data
 data = client.get_hourly_period(tm1='202501010000', tm2='202501020000', stn=108)
+```
+
+**Climate Client**:
+```python
+from kma_mcp.climate_client import ClimateClient
+
+# Initialize Climate client
+client = ClimateClient('your_api_key')
+
+# Get daily normals for January (30-year averages)
+data = client.get_daily_normals(start_month=1, start_day=1, end_month=1, end_day=31, stn=108)
+
+# Get monthly normals for the entire year
+data = client.get_monthly_normals(start_month=1, end_month=12, stn=108)
+
+# Get annual normals
+data = client.get_annual_normals(stn=108)
 ```
 
 ### Common Station IDs

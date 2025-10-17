@@ -15,6 +15,7 @@ from fastmcp import FastMCP
 
 from kma_mcp.asos_client import ASOSClient
 from kma_mcp.aws_client import AWSClient
+from kma_mcp.climate_client import ClimateClient
 
 # Load environment variables from .env file
 # Look for .env in project root (parent of parent of this file)
@@ -359,6 +360,102 @@ def get_aws_daily_weather(
             return str(data)
     except Exception as e:
         return f'Error fetching AWS daily weather data: {e!s}'
+
+
+# ============================================================================
+# Climate Statistics Tools
+# ============================================================================
+
+
+@mcp.tool()
+def get_climate_daily_normals(
+    start_month: int,
+    start_day: int,
+    end_month: int,
+    end_day: int,
+    station_id: int = 0,
+) -> str:
+    """Get daily climate normal values (30-year averages).
+
+    Climate normals provide long-term average values calculated over
+    30-year reference periods (e.g., 1991-2020).
+
+    Args:
+        start_month: Start month (1-12)
+        start_day: Start day (1-31)
+        end_month: End month (1-12)
+        end_day: End day (1-31)
+        station_id: Weather station ID (0 for all stations)
+
+    Returns:
+        Daily climate normal values in JSON format
+
+    Example:
+        get_climate_daily_normals(1, 1, 1, 31, 108)  # January normals for Seoul
+    """
+    if not API_KEY:
+        return 'Error: KMA_API_KEY environment variable not set'
+
+    try:
+        with ClimateClient(API_KEY) as client:
+            data = client.get_daily_normals(start_month, start_day, end_month, end_day, station_id)
+            return str(data)
+    except Exception as e:
+        return f'Error fetching daily climate normals: {e!s}'
+
+
+@mcp.tool()
+def get_climate_monthly_normals(
+    start_month: int,
+    end_month: int,
+    station_id: int = 0,
+) -> str:
+    """Get monthly climate normal values (30-year averages).
+
+    Args:
+        start_month: Start month (1-12)
+        end_month: End month (1-12)
+        station_id: Weather station ID (0 for all stations)
+
+    Returns:
+        Monthly climate normal values in JSON format
+
+    Example:
+        get_climate_monthly_normals(1, 12, 108)  # Full year normals for Seoul
+    """
+    if not API_KEY:
+        return 'Error: KMA_API_KEY environment variable not set'
+
+    try:
+        with ClimateClient(API_KEY) as client:
+            data = client.get_monthly_normals(start_month, end_month, station_id)
+            return str(data)
+    except Exception as e:
+        return f'Error fetching monthly climate normals: {e!s}'
+
+
+@mcp.tool()
+def get_climate_annual_normals(station_id: int = 0) -> str:
+    """Get annual climate normal values (30-year averages).
+
+    Args:
+        station_id: Weather station ID (0 for all stations)
+
+    Returns:
+        Annual climate normal values in JSON format
+
+    Example:
+        get_climate_annual_normals(108)  # Annual normals for Seoul
+    """
+    if not API_KEY:
+        return 'Error: KMA_API_KEY environment variable not set'
+
+    try:
+        with ClimateClient(API_KEY) as client:
+            data = client.get_annual_normals(station_id)
+            return str(data)
+    except Exception as e:
+        return f'Error fetching annual climate normals: {e!s}'
 
 
 if __name__ == '__main__':
