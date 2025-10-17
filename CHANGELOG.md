@@ -1,3 +1,9 @@
+## [0.1.2] - 2025-10-17
+
+### Bug Fixes
+
+- Correct mkdocstrings configuration for Read the Docs ([dded9e8](https://github.com/appleparan/kma-mcp/commit/dded9e8a01fb472e543ca8403edee6546718961e))
+
 ## [0.1.1] - 2025-10-17
 
 ### Bug Fixes
@@ -7,6 +13,10 @@
 ### Documentation
 
 - Update MkDocs documentation with current implementation ([73b12dd](https://github.com/appleparan/kma-mcp/commit/73b12ddebd72bd6a541535bdc9b525ce87350469))
+
+### Miscellaneous Tasks
+
+- Bump version to 0.1.1 ([dddc8aa](https://github.com/appleparan/kma-mcp/commit/dddc8aabe745eac22fc3025e5e89be8c3db08463))
 
 ## [0.1.0] - 2025-10-17
 
