@@ -4,19 +4,22 @@
     "target": "ESNext",
     // Node.js의 최신 모듈 해결 전략 및 ESM 지원에 최적화
     "module": "NodeNext",
-    "lib": ["ES2022"],
-    "moduleResolution": "node16",
+    "moduleResolution": "NodeNext",
+    "lib": ["ESNext"],
     "outDir": "./dist",
     "rootDir": "./src",
+    // 엄격한 타입 검사 (권장)
     "strict": true,
     "esModuleInterop": true,
-    "skipLibCheck": true,
+    "skipLibCheck": true, // 라이브러리 타입 체크 건너뛰기 (빌드 속도 향상)
     "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true,
-    "declaration": true,
-    "declarationMap": true,
-    "sourceMap": true,
-    "removeComments": true,
+    "resolveJsonModule": true,  // JSON 파일 import 허용
+    // 출력 설정 (라이브러리/패키지 배포 시 유용)
+    "declaration": true,  // .d.ts 파일 생성
+    "declarationMap": true, // .d.ts 파일 소스 맵 생성
+    "sourceMap": true, // .js 파일 소스 맵 생성
+    "removeComments": true, // 주석 제거
+    // 코드 품질 및 잠재적 버그 방지 (Strict 옵션에 포함되지만 명시적으로 유지 가능)
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noImplicitReturns": true,
