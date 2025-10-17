@@ -1,6 +1,6 @@
 [project]
 name = "kma_mcp"
-version = "0.1.0"
+version = "0.1.1"
 description = "MCP server for Korea Meteorological Administration API access"
 authors = [
     {name="Jongsu Liam Kim", email="jongsukim8@gmail.com"}

@@ -1,3 +1,13 @@
+## [0.1.1] - 2025-10-17
+
+### Bug Fixes
+
+- Suppress unrecognized links warning in mkdocs build ([eb38f5b](https://github.com/appleparan/kma-mcp/commit/eb38f5b848f088c8afb397a55a553c0f87c50063))
+
+### Documentation
+
+- Update MkDocs documentation with current implementation ([73b12dd](https://github.com/appleparan/kma-mcp/commit/73b12ddebd72bd6a541535bdc9b525ce87350469))
+
 ## [0.1.0] - 2025-10-17
 
 ### Bug Fixes
@@ -38,6 +48,7 @@
 
 - Add uv.lock for dependency version locking ([fc7a3f0](https://github.com/appleparan/kma-mcp/commit/fc7a3f0d01e2990d0debc07f7d62620835a30df0))
 - Remove CPU extra dependency from GitHub Actions CI ([4a1b872](https://github.com/appleparan/kma-mcp/commit/4a1b872b1fef6c8664c04cc510543bd521498aaa))
+- Bump version to 0.1.0 ([df2ff2b](https://github.com/appleparan/kma-mcp/commit/df2ff2b64b4329139f3fdb96bda8ea046ba16f44))
 
 ### Refactor
 
