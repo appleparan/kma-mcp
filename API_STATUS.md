@@ -31,6 +31,8 @@
 
 **제공 데이터**: 기온, 강수량, 기압, 습도, 풍향, 풍속, 일사, 일조, 적설
 
+**Async 지원**: ✅ `AsyncASOSClient` 사용 가능
+
 ---
 
 ### ✅ 방재기상관측(AWS) - Automated Weather Station
@@ -54,6 +56,8 @@
 
 **특징**: ASOS보다 더 많은 관측소, 실시간 모니터링에 특화, 분 단위 데이터 제공
 
+**Async 지원**: ✅ `AsyncAWSClient` 사용 가능
+
 ---
 
 ### ✅ 기후통계 - Climate Statistics
@@ -75,6 +79,8 @@
 
 **특징**: 1991-2020 등 표준 30년 기간 기준, 장기 기후 추세 분석
 
+**Async 지원**: ✅ `AsyncClimateClient` 사용 가능
+
 ---
 
 ### ✅ 북한기상관측 - North Korea Meteorological Observation
@@ -94,6 +100,8 @@
 **제공 데이터**: 북한 지역 기상 관측 데이터
 
 **특징**: 지역 기상 분석, 예보, 국경 간 기상 모니터링
+
+**Async 지원**: ✅ `AsyncNKClient` 사용 가능
 ---
 
 ### ✅ 황사관측(PM10) - Yellow Dust Observation
@@ -113,6 +121,8 @@
 **제공 데이터**: PM10 미세먼지 농도, 황사 관측 데이터
 
 **특징**: 아시아 황사 및 대기질 모니터링, 공중보건 경보
+
+**Async 지원**: ✅ `AsyncDustClient` 사용 가능
 
 ---
 
@@ -151,6 +161,8 @@
 
 **특징**: 기후 변화 분석, 생물계절학적 지표, 대중 정보 제공
 **특징**: 공간 커버리지 향상, 일관성 있는 격자 데이터, 기상 분석 및 예보 지원
+
+**Async 지원**: ✅ `AsyncAWSOAClient` 사용 가능
 - ✅ 시간별 적설 데이터 (단일 시간) - `get_hourly_data()`
 - ✅ 시간별 적설 데이터 (기간) - `get_hourly_period()`
 - ✅ 일별 적설 데이터 (단일 날짜) - `get_daily_data()`
@@ -164,6 +176,8 @@
 **제공 데이터**: 적설 깊이 관측 데이터
 
 **특징**: 겨울철 기상 분석, 교통 안전, 재해 예방을 위한 적설 모니터링
+
+**Async 지원**: ✅ `AsyncSnowClient` 사용 가능
 
 ---
 
@@ -184,6 +198,8 @@
 **제공 데이터**: UV 자외선 지수
 
 **특징**: 공중보건 보호 및 태양 안전 지침, 건강 관련 중요 지수
+
+**Async 지원**: ✅ `AsyncUVClient` 사용 가능
 
 
 
@@ -242,16 +258,46 @@
 ---
 
 ## 2. 해양관측 (Marine Observations)
-**상태**: ❌ 전체 미구현
 
-**제공 예상 데이터**: 해양 기상 관측 데이터
+### ✅ 해양기상부이 - Marine Meteorological Buoy
+**구현 파일**: `src/kma_mcp/marine/buoy_client.py`, `src/kma_mcp/mcp_server.py`
+
+**구현된 API**:
+- ✅ 부이 관측 데이터 (단일 시간) - `get_buoy_data()`
+- ✅ 부이 관측 데이터 (기간) - `get_buoy_period()`
+- ✅ 종합 해양 관측 데이터 - `get_comprehensive_marine_data()`
+
+**MCP 도구**:
+- ✅ `get_marine_buoy_data` - 부이 관측 데이터 조회
+- ✅ `get_marine_buoy_period` - 기간별 부이 관측 데이터 조회
+
+**제공 데이터**: 파고(파고, 파주기, 파향), 수온, 풍향/풍속, 기압, 습도
+
+**특징**: 해양 기상 실시간 모니터링, 해상 안전 및 재해 대비
+
+**Async 지원**: ✅ `AsyncBuoyClient` 사용 가능
 
 ---
 
 ## 3. 고층관측 (Upper-Air Observations)
-**상태**: ❌ 전체 미구현
 
-**제공 예상 데이터**: 라디오존데 등 고층 기상 관측 데이터
+### ✅ 고층기상관측(라디오존데) - Radiosonde Observations
+**구현 파일**: `src/kma_mcp/upper_air/radiosonde_client.py`, `src/kma_mcp/mcp_server.py`
+
+**구현된 API**:
+- ✅ 고층 관측 데이터 - `get_upper_air_data()`
+- ✅ 대기 안정도 지수 - `get_stability_indices()`
+- ✅ 최고 고도 데이터 - `get_maximum_altitude_data()`
+
+**MCP 도구**:
+- ✅ `get_upper_air_data` - 고층 관측 데이터 조회
+- ✅ `get_atmospheric_stability_indices` - 대기 안정도 지수 조회
+
+**제공 데이터**: 고도별 기온, 습도, 풍향/풍속, 기압, CAPE, K-index, Lifted index
+
+**특징**: 대기 프로파일 분석, 대류 예보, 기상 모델 검증
+
+**Async 지원**: ✅ `AsyncRadiosondeClient` 사용 가능
 
 ---
 
@@ -274,6 +320,8 @@
 
 **특징**: 실시간 강수 패턴 모니터링, 폭풍 추적, 강수 강도 분석
 
+**Async 지원**: ✅ `AsyncRadarClient` 사용 가능
+
 ---
 
 ## 5. 위성 (Satellite)
@@ -284,9 +332,25 @@
 ---
 
 ## 6. 지진/화산 (Earthquakes/Volcanoes)
-**상태**: ❌ 전체 미구현
 
-**제공 예상 데이터**: 지진 정보, 화산 활동 정보
+### ✅ 지진관측 - Earthquake Monitoring
+**구현 파일**: `src/kma_mcp/earthquake/earthquake_client.py`, `src/kma_mcp/mcp_server.py`
+
+**구현된 API**:
+- ✅ 최근 지진 정보 - `get_recent_earthquake()`
+- ✅ 지진 목록 조회 - `get_earthquake_list()`
+
+**MCP 도구**:
+- ✅ `get_recent_earthquake_info` - 최근 지진 정보 조회
+- ✅ `get_earthquake_list` - 기간별 지진 목록 조회
+
+**제공 데이터**: 지진 규모, 진원지 위치, 깊이, 진도
+
+**특징**: 실시간 지진 모니터링, 재해 대비 및 안전 정보
+
+**Async 지원**: ✅ `AsyncEarthquakeClient` 사용 가능
+
+**화산 API**: ❌ 현재 KMA API Hub에서 제공하지 않음
 
 ---
 
@@ -310,6 +374,8 @@
 **제공 데이터**: 태풍 위치, 강도, 이동 경로, 예보 정보
 
 **특징**: 재해 대비 및 계획 수립, 실시간 태풍 추적, 역사적 태풍 분석
+
+**Async 지원**: ✅ `AsyncTyphoonClient` 사용 가능
 
 ---
 
@@ -339,6 +405,8 @@
 
 **특징**: 계획 수립 및 의사결정 지원, 다양한 시간 범위 예보
 
+**Async 지원**: ✅ `AsyncForecastClient` 사용 가능
+
 ### ✅ 기상특보 - Weather Warnings
 **구현 파일**: `src/kma_mcp/forecast/warning_client.py`, `src/kma_mcp/mcp_server.py`
 
@@ -355,6 +423,8 @@
 **제공 데이터**: 호우, 강풍, 대설 등 기상특보 정보
 
 **특징**: 실시간 재해 경보, 생명과 재산 보호를 위한 중요 정보
+
+**Async 지원**: ✅ `AsyncWarningClient` 사용 가능
 
 ---
 
@@ -389,16 +459,24 @@
 ## 구현 현황 요약
 
 ### 통계
-- **구현 완료**: 14개 API (Surface: 10, Forecast/Warning: 2, Radar: 1, Typhoon: 1)
+- **구현 완료**: 17개 API (Surface: 10, Marine: 1, Upper-Air: 1, Radar: 1, Earthquake: 1, Forecast/Warning: 2, Typhoon: 1)
 - **부분 구현**: 0개 API
-- **미구현**: 11개 카테고리 (약 60+ 개별 API 추정)
+- **미구현**: 10개 카테고리 (약 60+ 개별 API 추정)
 
 ### 구현률
 - **지상관측 카테고리**: 100% (10/10 API 구현) ✅ 완료!
-- **예특보 카테고리**: 100% (2/2 API 구현) ✅ 완료!
+- **해양관측 카테고리**: 100% (1/1 API 구현) ✅ 완료!
+- **고층관측 카테고리**: 100% (1/1 API 구현) ✅ 완료!
 - **레이더 카테고리**: 100% (1/1 API 구현) ✅ 완료!
+- **지진관측 카테고리**: 100% (1/1 API 구현) ✅ 완료!
+- **예특보 카테고리**: 100% (2/2 API 구현) ✅ 완료!
 - **태풍 카테고리**: 100% (1/1 API 구현) ✅ 완료!
-- **전체**: ~21% (추정)
+- **전체**: ~26% (추정)
+
+### Async 지원
+- **모든 클라이언트**: ✅ Sync 및 Async 버전 모두 사용 가능
+- **총 34개 클라이언트**: 17개 Sync + 17개 Async
+- **테스트 커버리지**: 149개 테스트 (140 sync + 9 async)
 
 ---
 
