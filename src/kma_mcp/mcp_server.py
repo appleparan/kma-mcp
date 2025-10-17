@@ -19,6 +19,7 @@ from kma_mcp.climate_client import ClimateClient
 from kma_mcp.dust_client import DustClient
 from kma_mcp.uv_client import UVClient
 from kma_mcp.snow_client import SnowClient
+from kma_mcp.nk_client import NKClient
 
 # Load environment variables from .env file
 # Look for .env in project root (parent of parent of this file)
@@ -739,6 +740,100 @@ def get_snow_daily_depth(
             return str(data)
     except Exception as e:
         return f'Error fetching daily snow depth data: {e!s}'
+
+
+
+# ============================================================================
+# North Korea Meteorological Observation Tools
+# ============================================================================
+
+
+@mcp.tool()
+def get_nk_current_weather(station_id: int = 0) -> str:
+    """Get current North Korea meteorological observation data.
+
+    North Korea observations provide meteorological data from weather
+    stations in North Korea for regional weather analysis and monitoring.
+
+    Args:
+        station_id: Weather station ID (0 for all stations, default: 0)
+
+    Returns:
+        Current North Korea meteorological observation data in JSON format
+    """
+    if not API_KEY:
+        return 'Error: KMA_API_KEY environment variable not set'
+
+    try:
+        with NKClient(API_KEY) as client:
+            # Get current time (rounded to nearest hour)
+            now = datetime.now()
+            current_hour = now.replace(minute=0, second=0, microsecond=0)
+
+            data = client.get_hourly_data(tm=current_hour, stn=station_id)
+            return str(data)
+    except Exception as e:
+        return f'Error fetching North Korea weather data: {e!s}'
+
+
+@mcp.tool()
+def get_nk_hourly_weather(
+    start_time: str,
+    end_time: str,
+    station_id: int = 0,
+) -> str:
+    """Get hourly North Korea meteorological observation data for a time period.
+
+    Args:
+        start_time: Start time in 'YYYYMMDDHHmm' format (e.g., '202501011200')
+        end_time: End time in 'YYYYMMDDHHmm' format
+        station_id: Weather station ID (0 for all stations)
+
+    Returns:
+        Hourly North Korea weather data for the period in JSON format
+
+    Example:
+        get_nk_hourly_weather('202501011200', '202501011800', 108)
+    """
+    if not API_KEY:
+        return 'Error: KMA_API_KEY environment variable not set'
+
+    try:
+        with NKClient(API_KEY) as client:
+            data = client.get_hourly_period(tm1=start_time, tm2=end_time, stn=station_id)
+            return str(data)
+    except Exception as e:
+        return f'Error fetching hourly North Korea weather data: {e!s}'
+
+
+@mcp.tool()
+def get_nk_daily_weather(
+    start_date: str,
+    end_date: str,
+    station_id: int = 0,
+) -> str:
+    """Get daily North Korea meteorological observation data for a date range.
+
+    Args:
+        start_date: Start date in 'YYYYMMDD' format (e.g., '20250101')
+        end_date: End date in 'YYYYMMDD' format
+        station_id: Weather station ID (0 for all stations)
+
+    Returns:
+        Daily North Korea weather data for the period in JSON format
+
+    Example:
+        get_nk_daily_weather('20250101', '20250131', 108)
+    """
+    if not API_KEY:
+        return 'Error: KMA_API_KEY environment variable not set'
+
+    try:
+        with NKClient(API_KEY) as client:
+            data = client.get_daily_period(tm1=start_date, tm2=end_date, stn=station_id)
+            return str(data)
+    except Exception as e:
+        return f'Error fetching daily North Korea weather data: {e!s}'
 
 
 

@@ -26,6 +26,13 @@ Long-term climate normals based on 30-year averages:
 - Temperature, precipitation, wind, humidity averages
 - Essential for climate trend analysis
 
+### ✅ North Korea Meteorological Observation (북한기상관측)
+Regional weather data from North Korea observation stations:
+- **Hourly and daily meteorological observations**
+- Cross-border weather monitoring
+- Regional weather analysis and forecasting
+- Critical for Korean Peninsula weather patterns
+
 ### ✅ Yellow Dust Observation (황사관측)
 PM10 particulate matter monitoring for air quality assessment:
 - **Hourly and daily PM10 concentrations**
@@ -41,7 +48,7 @@ Ultraviolet radiation monitoring for sun safety and health protection:
 - Sun safety recommendations
 - Critical for outdoor activity planning and health alerts
 
-> **Implementation Status**: 6 APIs implemented (ASOS, AWS, Climate, Yellow Dust, UV Radiation, Snow Depth). See [API_STATUS.md](API_STATUS.md) for complete list of 60+ available APIs.
+> **Implementation Status**: 7 APIs implemented (ASOS, AWS, Climate, North Korea, Yellow Dust, UV Radiation, Snow Depth). See [API_STATUS.md](API_STATUS.md) for complete list of 60+ available APIs.
 
 ## Quick Start
 
@@ -107,21 +114,26 @@ The MCP server provides the following tools:
 12. **get_climate_monthly_normals**: Get monthly climate normal values
 13. **get_climate_annual_normals**: Get annual climate normal values
 
+**North Korea Meteorological Observation (북한기상관측)**:
+14. **get_nk_current_weather**: Get current North Korea weather observation
+15. **get_nk_hourly_weather**: Get hourly North Korea weather data for a time period
+16. **get_nk_daily_weather**: Get daily North Korea weather data for a date range
+
 **Yellow Dust Observation (황사관측)**:
-14. **get_dust_current_pm10**: Get current PM10 (yellow dust) concentration
-15. **get_dust_hourly_pm10**: Get hourly PM10 data for a time period
-16. **get_dust_daily_pm10**: Get daily PM10 data for a date range
+17. **get_dust_current_pm10**: Get current PM10 (yellow dust) concentration
+18. **get_dust_hourly_pm10**: Get hourly PM10 data for a time period
+19. **get_dust_daily_pm10**: Get daily PM10 data for a date range
 
 
 **UV Radiation Observation (자외선관측)**:
-17. **get_uv_current_index**: Get current UV radiation index
-18. **get_uv_hourly_index**: Get hourly UV index data for a time period
-19. **get_uv_daily_index**: Get daily UV index data for a date range
+20. **get_uv_current_index**: Get current UV radiation index
+21. **get_uv_hourly_index**: Get hourly UV index data for a time period
+22. **get_uv_daily_index**: Get daily UV index data for a date range
 
 **Snow Depth Observation (적설관측)**:
-20. **get_snow_current_depth**: Get current snow depth measurement
-21. **get_snow_hourly_depth**: Get hourly snow depth data for a time period
-22. **get_snow_daily_depth**: Get daily snow depth data for a date range
+23. **get_snow_current_depth**: Get current snow depth measurement
+24. **get_snow_hourly_depth**: Get hourly snow depth data for a time period
+25. **get_snow_daily_depth**: Get daily snow depth data for a date range
 
 ### Example Usage
 
@@ -157,6 +169,23 @@ data = client.get_minutely_period(tm1='202501011200', tm2='202501011300', stn=10
 
 # Get hourly AWS data
 data = client.get_hourly_period(tm1='202501010000', tm2='202501020000', stn=108)
+```
+
+**North Korea Client**:
+```python
+from kma_mcp.nk_client import NKClient
+
+# Initialize North Korea client
+client = NKClient('your_api_key')
+
+# Get current hourly weather from North Korea stations
+data = client.get_hourly_data(tm='202501011200', stn=108)
+
+# Get hourly weather for a period
+data = client.get_hourly_period(tm1='202501010000', tm2='202501020000', stn=108)
+
+# Get daily weather data
+data = client.get_daily_period(tm1='20250101', tm2='20250131', stn=108)
 ```
 
 **Climate Client**:
