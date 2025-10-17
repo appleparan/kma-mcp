@@ -7,7 +7,6 @@ Climate normals are calculated over standard 30-year periods and provide referen
 values for temperature, precipitation, and other meteorological elements.
 """
 
-from datetime import datetime
 from typing import Any
 
 import httpx

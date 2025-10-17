@@ -44,7 +44,9 @@ def mock_response_data() -> dict:
             'header': {'resultCode': '00', 'resultMsg': 'NORMAL_SERVICE'},
             'body': {
                 'dataType': 'JSON',
-                'items': {'item': [{'stnId': '108', 'tm': '202501011200', 'ta': '5.2', 'rn': '0.0'}]},
+                'items': {
+                    'item': [{'stnId': '108', 'tm': '202501011200', 'ta': '5.2', 'rn': '0.0'}]
+                },
                 'numOfRows': 1,
                 'pageNo': 1,
                 'totalCount': 1,

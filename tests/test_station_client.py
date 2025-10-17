@@ -28,7 +28,9 @@ def mock_response_data() -> dict:
             'header': {'resultCode': '00', 'resultMsg': 'NORMAL_SERVICE'},
             'body': {
                 'dataType': 'JSON',
-                'items': {'item': [{'stnId': '108', 'stnNm': 'Seoul', 'lat': '37.5', 'lon': '127.0'}]},
+                'items': {
+                    'item': [{'stnId': '108', 'stnNm': 'Seoul', 'lat': '37.5', 'lon': '127.0'}]
+                },
             },
         }
     }

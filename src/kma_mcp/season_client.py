@@ -7,7 +7,6 @@ Seasonal observations monitor phenological events such as cherry blossom
 flowering, autumn foliage, and other seasonal biological indicators.
 """
 
-from datetime import datetime
 from typing import Any
 
 import httpx
