@@ -3,11 +3,10 @@
  */
 import { describe, test, expect, beforeEach, mock } from 'bun:test';
 import { BaseKMAClient, KMAAPIError } from '../../src/clients/base';
-import axios from 'axios';
 
 // Create a concrete implementation for testing
 class TestKMAClient extends BaseKMAClient {
-  async testRequest<T = any>(endpoint: string, params: Record<string, any>): Promise<T[]> {
+  async testRequest<T>(endpoint: string, params: Record<string, unknown>): Promise<T[]> {
     return this.makeRequest<T>(endpoint, params);
   }
 
@@ -80,7 +79,7 @@ describe('BaseKMAClient', () => {
         })
       );
 
-      client['client'].get = mockGet as any;
+      client['client'].get = mockGet as typeof client['client']['get'];
 
       const result = await client.testRequest('test.php', { param: 'value' });
 
@@ -105,7 +104,7 @@ describe('BaseKMAClient', () => {
         })
       );
 
-      client['client'].get = mockGet as any;
+      client['client'].get = mockGet as typeof client['client']['get'];
 
       const result = await client.testRequest('test.php', {});
 
@@ -127,7 +126,7 @@ describe('BaseKMAClient', () => {
         })
       );
 
-      client['client'].get = mockGet as any;
+      client['client'].get = mockGet as typeof client['client']['get'];
 
       try {
         await client.testRequest('test.php', {});
@@ -150,7 +149,7 @@ describe('BaseKMAClient', () => {
         })
       );
 
-      client['client'].get = mockGet as any;
+      client['client'].get = mockGet as typeof client['client']['get'];
 
       try {
         await client.testRequest('test.php', {});

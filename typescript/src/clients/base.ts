@@ -9,7 +9,7 @@ export interface KMAClientConfig {
   timeout?: number;
 }
 
-export interface KMAResponse<T = any> {
+export interface KMAResponse<T = unknown> {
   response: {
     header: {
       resultCode: string;
@@ -53,9 +53,9 @@ export abstract class BaseKMAClient {
     });
   }
 
-  protected async makeRequest<T = any>(
+  protected async makeRequest<T = unknown>(
     endpoint: string,
-    params: Record<string, any>
+    params: Record<string, unknown>
   ): Promise<T[]> {
     try {
       const response = await this.client.get<KMAResponse<T>>(endpoint, {
