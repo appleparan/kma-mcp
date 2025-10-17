@@ -238,7 +238,7 @@ class ClimateClient:
             return self.get_annual_normals(stn)
         else:
             msg = (
-                f"Invalid period_type: {period_type}. "
+                f'Invalid period_type: {period_type}. '
                 f"Must be 'daily', 'tenday', 'monthly', or 'annual'"
             )
             raise ValueError(msg)

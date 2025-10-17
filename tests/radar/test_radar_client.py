@@ -1,6 +1,6 @@
 """Unit tests for Radar API client."""
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from unittest.mock import Mock, patch
 
 import httpx
@@ -29,7 +29,9 @@ def mock_response_data() -> dict:
             'header': {'resultCode': '00', 'resultMsg': 'NORMAL_SERVICE'},
             'body': {
                 'dataType': 'JSON',
-                'items': {'item': [{'tm': '202501011200', 'radar': 'ALL', 'image_url': 'http://...'}]},
+                'items': {
+                    'item': [{'tm': '202501011200', 'radar': 'ALL', 'image_url': 'http://...'}]
+                },
             },
         }
     }
@@ -84,7 +86,7 @@ class TestRadarClientRequests:
         mock_response.raise_for_status = Mock()
         mock_get.return_value = mock_response
 
-        dt = datetime(2025, 1, 1, 12, 0, tzinfo=timezone.utc)
+        dt = datetime(2025, 1, 1, 12, 0, tzinfo=UTC)
         result = radar_client.get_radar_image(tm=dt)
 
         assert result == mock_response_data
