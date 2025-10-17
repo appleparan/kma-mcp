@@ -79,7 +79,7 @@ describe('BaseKMAClient', () => {
         })
       );
 
-      client['client'].get = mockGet as typeof client['client']['get'];
+      client['client'].get = mockGet as (typeof client)['client']['get'];
 
       const result = await client.testRequest('test.php', { param: 'value' });
 
@@ -104,7 +104,7 @@ describe('BaseKMAClient', () => {
         })
       );
 
-      client['client'].get = mockGet as typeof client['client']['get'];
+      client['client'].get = mockGet as (typeof client)['client']['get'];
 
       const result = await client.testRequest('test.php', {});
 
@@ -126,7 +126,7 @@ describe('BaseKMAClient', () => {
         })
       );
 
-      client['client'].get = mockGet as typeof client['client']['get'];
+      client['client'].get = mockGet as (typeof client)['client']['get'];
 
       try {
         await client.testRequest('test.php', {});
@@ -149,7 +149,7 @@ describe('BaseKMAClient', () => {
         })
       );
 
-      client['client'].get = mockGet as typeof client['client']['get'];
+      client['client'].get = mockGet as (typeof client)['client']['get'];
 
       try {
         await client.testRequest('test.php', {});
