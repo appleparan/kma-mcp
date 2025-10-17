@@ -1,0 +1,492 @@
+# KMA MCP Server
+
+> MCP server for Korea Meteorological Administration (기상청) API access
+
+## Overview
+
+This is a FastMCP server implementation that provides access to the Korea Meteorological Administration (KMA) API Hub. It offers comprehensive weather data access including surface observations, forecasts, radar, satellite imagery, and more.
+
+**Project URL**: https://github.com/appleparan/kma-mcp
+**License**: MIT (or as specified in LICENSE file)
+**Language**: Python 3.13+
+**Framework**: FastMCP (Model Context Protocol)
+
+## Quick Start
+
+### Prerequisites
+1. Get API key from https://apihub.kma.go.kr/
+2. Set environment variable: `export KMA_API_KEY='your_key'` or use `.env` file
+3. Install: `uv sync`
+4. Run: `uv run python scripts/start_mcp_server.py`
+
+### Basic Usage
+```python
+from kma_mcp.surface.asos_client import ASOSClient
+
+# Get current weather for Seoul (station 108)
+with ASOSClient('your_api_key') as client:
+    data = client.get_hourly_data(tm='202501011200', stn=108)
+```
+
+## Implementation Status
+
+**Total**: 18 APIs implemented, 36 clients (18 sync + 18 async), 154 tests
+**Coverage**: ~28% of total KMA API Hub APIs
+
+### Implemented Categories (8/8 = 100%)
+
+1. **Surface Observations (지상관측)** - 10 APIs ✅
+   - ASOS (종합기상관측): Standard meteorological observations (96 stations)
+   - AWS (방재기상관측): Real-time disaster prevention monitoring
+   - Climate Statistics (기후통계): 30-year climate normals
+   - North Korea Observations (북한기상관측): Cross-border weather data
+   - Yellow Dust (황사관측): PM10 particulate matter monitoring
+   - UV Radiation (자외선관측): UV index measurements
+   - Snow Depth (적설관측): Snow accumulation monitoring
+   - AWS Objective Analysis (AWS 객관분석): Gridded analysis data
+   - Seasonal Observations (계절관측): Phenological observations
+   - Station Information (지점정보): Station metadata
+
+2. **Marine Observations (해양관측)** - 1 API ✅
+   - Buoy Observations (해양기상부이): Marine weather from ocean buoys
+
+3. **Upper-Air Observations (고층관측)** - 1 API ✅
+   - Radiosonde (고층기상관측): Atmospheric vertical profiles
+
+4. **Radar (레이더)** - 1 API ✅
+   - Weather Radar (기상레이더): Precipitation detection and tracking
+
+5. **Satellite (위성)** - 1 API ✅
+   - GK2A Satellite (천리안위성): GEO-KOMPSAT-2A imagery (L1B/L2 products)
+
+6. **Earthquakes (지진/화산)** - 1 API ✅
+   - Earthquake Monitoring (지진관측): Real-time seismic activity
+
+7. **Forecasts & Warnings (예특보)** - 2 APIs ✅
+   - Weather Forecasts (기상예보): Short/medium/weekly forecasts
+   - Weather Warnings (기상특보): Severe weather alerts
+
+8. **Typhoon (태풍)** - 1 API ✅
+   - Typhoon Information (태풍정보): Tropical cyclone tracking
+
+### Not Yet Implemented (5 categories)
+- Numerical Models (수치모델)
+- Integrated Meteorology (융합기상)
+- Aviation Meteorology (항공기상)
+- Global Meteorology (세계기상)
+- Industry-Specific APIs (산업특화)
+
+## Available MCP Tools (49 total)
+
+### Surface Observations (32 tools)
+
+**ASOS (Synoptic Observations)**
+- `get_current_weather` - Current hourly weather data
+- `get_hourly_weather` - Hourly data for time period (max 31 days)
+- `get_daily_weather` - Daily data for date range
+- `get_temperature_data` - Temperature observations for period
+- `get_precipitation_data` - Precipitation observations for period
+- `list_station_info` - Station IDs and names
+
+**AWS (Automated Weather Station)**
+- `get_aws_current_weather` - Current real-time AWS data
+- `get_aws_minutely_weather` - Minutely data for rapid monitoring
+- `get_aws_hourly_weather` - Hourly AWS data for time period
+- `get_aws_daily_weather` - Daily AWS data for date range
+
+**Climate Statistics**
+- `get_climate_daily_normals` - Daily 30-year averages
+- `get_climate_monthly_normals` - Monthly 30-year averages
+- `get_climate_annual_normals` - Annual 30-year averages
+
+**North Korea Observations**
+- `get_nk_current_weather` - Current North Korea weather
+- `get_nk_hourly_weather` - Hourly North Korea data
+- `get_nk_daily_weather` - Daily North Korea data
+
+**Yellow Dust (PM10)**
+- `get_dust_current_pm10` - Current PM10 concentration
+- `get_dust_hourly_pm10` - Hourly PM10 data
+- `get_dust_daily_pm10` - Daily PM10 data
+
+**UV Radiation**
+- `get_uv_current_index` - Current UV index
+- `get_uv_hourly_index` - Hourly UV index data
+- `get_uv_daily_index` - Daily UV index data
+
+**Snow Depth**
+- `get_snow_current_depth` - Current snow depth
+- `get_snow_hourly_depth` - Hourly snow depth data
+- `get_snow_daily_depth` - Daily snow depth data
+
+**AWS Objective Analysis**
+- `get_aws_oa_current` - Current gridded analysis for location
+- `get_aws_oa_period` - Gridded analysis for time period
+
+**Seasonal Observations**
+- `get_season_current_year` - Seasonal data for current year
+- `get_season_by_year` - Seasonal data for specific year
+- `get_season_period` - Seasonal data for year range
+
+**Station Information**
+- `get_asos_station_list` - ASOS station metadata
+- `get_aws_station_list` - AWS station metadata
+
+### Marine Observations (3 tools)
+- `get_buoy_current_data` - Current buoy observation
+- `get_buoy_period_data` - Buoy data for time period
+- `get_comprehensive_marine_data` - Comprehensive marine observations
+
+### Upper-Air Observations (3 tools)
+- `get_upper_air_observation` - Radiosonde observation data
+- `get_atmospheric_stability_indices` - Stability indices (CAPE, CIN, etc.)
+- `get_maximum_altitude_observation` - Maximum altitude data
+
+### Forecasts & Warnings (6 tools)
+- `get_short_term_forecast` - 3-day weather forecast
+- `get_medium_term_forecast` - 3-10 day forecast
+- `get_weekly_forecast` - Weekly forecast
+- `get_current_weather_warnings` - Active weather warnings
+- `get_weather_warning_history` - Historical warnings
+- `get_special_weather_report` - Special weather reports
+
+### Radar (3 tools)
+- `get_radar_image` - Radar image data
+- `get_radar_image_sequence` - Radar animation sequence
+- `get_radar_reflectivity_at_location` - Reflectivity for location
+
+### Satellite (2 tools)
+- `get_satellite_file_list` - Available satellite files (GK2A)
+- `get_satellite_imagery` - Satellite imagery data (L1B/L2)
+
+### Typhoon (4 tools)
+- `get_current_typhoons` - Currently active typhoons
+- `get_typhoon_details` - Detailed typhoon information
+- `get_typhoon_forecast_track` - Typhoon forecast track
+- `get_typhoon_history_by_year` - Historical typhoon data
+
+### Earthquake (2 tools)
+- `get_recent_earthquake_info` - Most recent earthquake
+- `get_earthquake_list` - Earthquake list for time period
+
+## Project Structure
+
+```
+kma-mcp/
+├── src/kma_mcp/
+│   ├── surface/          # Surface observation clients (10 APIs)
+│   │   ├── asos_client.py          # ASOS observations
+│   │   ├── aws_client.py           # AWS observations
+│   │   ├── climate_client.py       # Climate statistics
+│   │   ├── dust_client.py          # Yellow dust (PM10)
+│   │   ├── nk_client.py            # North Korea observations
+│   │   ├── snow_client.py          # Snow depth
+│   │   ├── uv_client.py            # UV radiation
+│   │   ├── aws_oa_client.py        # AWS objective analysis
+│   │   ├── season_client.py        # Seasonal observations
+│   │   └── station_client.py       # Station information
+│   ├── marine/           # Marine observation clients (1 API)
+│   │   └── buoy_client.py          # Buoy observations
+│   ├── upper_air/        # Upper-air observation clients (1 API)
+│   │   └── radiosonde_client.py    # Radiosonde observations
+│   ├── radar/            # Radar clients (1 API)
+│   │   └── radar_client.py         # Weather radar
+│   ├── satellite/        # Satellite clients (1 API)
+│   │   └── satellite_client.py     # GK2A satellite
+│   ├── earthquake/       # Earthquake clients (1 API)
+│   │   └── earthquake_client.py    # Earthquake monitoring
+│   ├── forecast/         # Forecast clients (2 APIs)
+│   │   ├── forecast_client.py      # Weather forecasts
+│   │   └── warning_client.py       # Weather warnings
+│   ├── typhoon/          # Typhoon clients (1 API)
+│   │   └── typhoon_client.py       # Typhoon information
+│   ├── mcp_server.py     # Main MCP server with all tools
+│   └── async_mcp_server.py  # Async MCP server template
+├── tests/                # Comprehensive test suite (154 tests)
+├── scripts/
+│   └── start_mcp_server.py    # Server startup script
+├── API_STATUS.md         # Detailed API implementation status
+├── README.md             # Main documentation
+└── pyproject.toml        # Project configuration
+
+```
+
+## Key Features
+
+### Dual Client Support
+- **Sync clients**: Standard synchronous HTTP clients using httpx
+- **Async clients**: Full async/await support for concurrent operations
+- All 18 APIs have both sync and async versions (36 clients total)
+
+### Time Format Support
+- String formats: 'YYYYMMDDHHmm' (hourly), 'YYYYMMDD' (daily)
+- Python datetime objects (automatically converted)
+- Timezone-aware datetime handling (UTC)
+
+### Error Handling
+- Proper HTTP error handling with raise_for_status()
+- Comprehensive error messages
+- Context manager support (__enter__/__exit__)
+
+### Testing
+- 154 comprehensive tests covering all clients
+- Mock-based testing with httpx
+- Both sync and async test coverage
+- 100% test pass rate
+
+## Common Patterns
+
+### Using Context Managers
+```python
+# Sync version
+with ASOSClient('api_key') as client:
+    data = client.get_hourly_data(tm='202501011200', stn=108)
+
+# Async version
+async with AsyncASOSClient('api_key') as client:
+    data = await client.get_hourly_data(tm='202501011200', stn=108)
+```
+
+### Time Period Queries
+```python
+# Hourly data for a period
+data = client.get_hourly_period(
+    tm1='202501010000',  # Start: 2025-01-01 00:00
+    tm2='202501020000',  # End: 2025-01-02 00:00
+    stn=108              # Seoul station
+)
+
+# Daily data for a period
+data = client.get_daily_period(
+    tm1='20250101',      # Start: 2025-01-01
+    tm2='20250131',      # End: 2025-01-31
+    stn=108              # Seoul station
+)
+```
+
+### Common Station IDs
+- 108: Seoul (서울)
+- 112: Incheon (인천)
+- 133: Daejeon (대전)
+- 143: Daegu (대구)
+- 156: Gwangju (광주)
+- 159: Busan (부산)
+- 184: Jeju (제주)
+- 0: All stations (모든 지점)
+
+## API Endpoints
+
+All APIs use the base URL: `https://apihub.kma.go.kr/api/typ01/url/`
+
+### Authentication
+All requests require `authKey` parameter with your API key.
+
+### Rate Limits
+- Varies by API endpoint
+- Check KMA API Hub documentation for specific limits
+- Generally: 1000 requests/day for basic tier
+
+### Response Format
+All APIs return JSON data with structure:
+```json
+{
+  "response": {
+    "header": {
+      "resultCode": "00",
+      "resultMsg": "NORMAL_SERVICE"
+    },
+    "body": {
+      "dataType": "JSON",
+      "items": {
+        "item": [...]
+      },
+      "pageNo": 1,
+      "numOfRows": 10,
+      "totalCount": 100
+    }
+  }
+}
+```
+
+## Data Categories
+
+### 1. Surface Observations (지상관측)
+Real-time and historical weather observations from ground stations.
+
+**Data Types**: Temperature, precipitation, wind, pressure, humidity, solar radiation, snow depth, PM10, UV index
+
+**Temporal Resolution**: Minutely (AWS), hourly, daily, monthly, annually
+
+**Coverage**: ~600 AWS stations, 96 ASOS stations nationwide
+
+### 2. Marine Observations (해양관측)
+Ocean weather data from buoys.
+
+**Data Types**: Wave height, sea temperature, wind, atmospheric pressure
+
+**Coverage**: Coastal waters and open seas around Korean Peninsula
+
+### 3. Upper-Air Observations (고층관측)
+Atmospheric vertical profiles from radiosondes.
+
+**Data Types**: Temperature, humidity, wind at various pressure levels
+
+**Levels**: Surface to upper atmosphere (up to ~30km)
+
+### 4. Radar (레이더)
+Real-time precipitation detection and tracking.
+
+**Data Types**: Reflectivity, precipitation intensity, storm movement
+
+**Coverage**: National radar network with 10+ stations
+
+**Temporal Resolution**: 10-minute updates
+
+### 5. Satellite (위성)
+GEO-KOMPSAT-2A (GK2A) satellite imagery.
+
+**Data Types**:
+- Level 1B: 16 spectral channels (visible, infrared)
+- Level 2: Derived products (cloud imagery, SST, etc.)
+
+**Coverage**: Full Disk (FD), Korea (KO), East Asia (EA)
+
+**Temporal Resolution**: 10 minutes (full disk), 2 minutes (Korea)
+
+### 6. Forecasts & Warnings (예특보)
+Official weather forecasts and severe weather alerts.
+
+**Forecast Types**:
+- Short-term: 3-day detailed forecast
+- Medium-term: 3-10 day outlook
+- Weekly: 7-day forecast
+
+**Warnings**: Typhoon, heavy rain, heavy snow, strong wind, etc.
+
+### 7. Typhoon (태풍)
+Tropical cyclone tracking and forecasting.
+
+**Data Types**: Position, intensity, forecast track, wind radii
+
+**Coverage**: Northwest Pacific region
+
+### 8. Earthquakes (지진/화산)
+Seismic activity monitoring.
+
+**Data Types**: Magnitude, location, depth, time
+
+**Coverage**: Korean Peninsula and surrounding regions
+
+## Development
+
+### Requirements
+- Python 3.13+
+- uv (Python package manager)
+- KMA API key from https://apihub.kma.go.kr/
+
+### Setup
+```bash
+# Install dependencies
+uv sync
+
+# Install with dev tools
+uv sync --group dev
+
+# Run tests
+uv run pytest
+
+# Run linter
+uv run ruff check --fix .
+
+# Run formatter
+uv run ruff format .
+```
+
+### Adding New APIs
+1. Create client in appropriate category directory
+2. Implement sync version with context manager support
+3. Generate async version using `scripts/convert_to_async.py`
+4. Write comprehensive tests
+5. Add MCP tools to `mcp_server.py`
+6. Update `API_STATUS.md`
+
+### Code Structure
+```python
+class ExampleClient:
+    """Client for Example API."""
+
+    BASE_URL = 'https://apihub.kma.go.kr/api/typ01/url'
+
+    def __init__(self, auth_key: str, timeout: float = 30.0):
+        self.auth_key = auth_key
+        self._client = httpx.Client(timeout=timeout)
+
+    def __enter__(self) -> 'ExampleClient':
+        return self
+
+    def __exit__(self, *args: object) -> None:
+        self.close()
+
+    def close(self) -> None:
+        self._client.close()
+
+    def _make_request(self, endpoint: str, params: dict) -> dict:
+        params['authKey'] = self.auth_key
+        response = self._client.get(f'{self.BASE_URL}/{endpoint}', params=params)
+        response.raise_for_status()
+        return response.json()
+
+    def get_data(self, tm: str, stn: int = 0) -> dict:
+        """Get observation data."""
+        params = {'tm': tm, 'stn': stn, 'help': '0'}
+        return self._make_request('endpoint.php', params)
+```
+
+## Testing
+
+All clients have comprehensive test coverage:
+- Initialization tests
+- Context manager tests
+- Request tests with mocked responses
+- Error handling tests
+- Datetime conversion tests (where applicable)
+
+```bash
+# Run all tests
+uv run pytest
+
+# Run specific test file
+uv run pytest tests/surface/test_asos_client.py
+
+# Run with coverage
+uv run pytest --cov=kma_mcp
+
+# Run verbose
+uv run pytest -v
+```
+
+## References
+
+- **KMA API Hub**: https://apihub.kma.go.kr/
+- **FastMCP**: https://github.com/jlowin/fastmcp
+- **Project Repository**: https://github.com/appleparan/kma-mcp
+- **API Documentation**: See `API_STATUS.md` for detailed status
+
+## Contributing
+
+Contributions are welcome! Focus areas:
+1. Implementing remaining 5 API categories
+2. Adding more comprehensive examples
+3. Improving documentation
+4. Adding integration tests
+5. Performance optimizations
+
+## License
+
+See LICENSE file for details.
+
+---
+
+Last updated: 2025-10-18
+Version: 0.1.0
+Maintained by: @appleparan
