@@ -1,0 +1,24 @@
+# Dependencies
+node_modules/
+package-lock.json
+
+# Build output
+dist/
+*.tsbuildinfo
+
+# Testing
+coverage/
+
+# Environment
+.env
+.env.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
