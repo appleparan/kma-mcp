@@ -12,40 +12,45 @@ kma-mcp is a comprehensive FastMCP server implementation that provides programma
 ## Key Features
 
 ### 🌦️ Comprehensive Weather Data Access
-- **21 API clients** covering surface observations, marine data, upper-air measurements, radar, satellite imagery, forecasts, warnings, typhoons, earthquakes, aviation weather, and global meteorological data
-- **42 total clients** (sync + async versions) for flexible integration
-- **198 comprehensive tests** ensuring reliability
+
+* **21 API clients** covering surface observations, marine data, upper-air measurements, radar, satellite imagery, forecasts, warnings, typhoons, earthquakes, aviation weather, and global meteorological data
+* **42 total clients** (sync + async versions) for flexible integration
+* **198 comprehensive tests** ensuring reliability
 
 ### ⚡ Dual Client Support
-- **Synchronous clients** for simple, straightforward operations
-- **Asynchronous clients** for high-performance concurrent requests
-- Context manager support for automatic resource cleanup
+
+* **Synchronous clients** for simple, straightforward operations
+* **Asynchronous clients** for high-performance concurrent requests
+* Context manager support for automatic resource cleanup
 
 ### 🌏 Korean Weather Specialization
-- Korean weather code utilities (wind direction, precipitation types, sky conditions)
-- Automatic enhancement of weather data with Korean-language fields
-- Human-readable Korean weather summaries
+
+* Korean weather code utilities (wind direction, precipitation types, sky conditions)
+* Automatic enhancement of weather data with Korean-language fields
+* Human-readable Korean weather summaries
 
 ### 📊 Implementation Status
 
 **Coverage**: 85% of public KMA API Hub categories (11/13)
 
 **Implemented Categories**:
-- ✅ Surface Observations (지상관측) - 10 APIs
-- ✅ Marine Observations (해양관측) - 1 API
-- ✅ Upper-Air Observations (고층관측) - 1 API
-- ✅ Radar (레이더) - 1 API
-- ✅ Satellite (위성) - 1 API
-- ✅ Earthquakes (지진/화산) - 1 API
-- ✅ Typhoon (태풍) - 1 API
-- ✅ Forecasts & Warnings (예특보) - 2 APIs
-- ✅ Global Meteorology (세계기상) - 1 API
-- ✅ Aviation Meteorology (항공기상) - 1 API
-- ✅ Integrated Meteorology (융합기상) - 1 API
+
+* ✅ Surface Observations (지상관측) - 10 APIs
+* ✅ Marine Observations (해양관측) - 1 API
+* ✅ Upper-Air Observations (고층관측) - 1 API
+* ✅ Radar (레이더) - 1 API
+* ✅ Satellite (위성) - 1 API
+* ✅ Earthquakes (지진/화산) - 1 API
+* ✅ Typhoon (태풍) - 1 API
+* ✅ Forecasts & Warnings (예특보) - 2 APIs
+* ✅ Global Meteorology (세계기상) - 1 API
+* ✅ Aviation Meteorology (항공기상) - 1 API
+* ✅ Integrated Meteorology (융합기상) - 1 API
 
 **Not Implemented** (no public endpoints):
-- ❌ Numerical Models (수치모델)
-- ❌ Industry-Specific APIs (산업특화)
+
+* ❌ Numerical Models (수치모델)
+* ❌ Industry-Specific APIs (산업특화)
 
 ## Quick Start
 
@@ -120,21 +125,21 @@ kma-mcp/
 
 ## Use Cases
 
-- **Weather Research**: Access historical and real-time Korean weather data
-- **Climate Analysis**: Long-term climate statistics and trends
-- **Disaster Monitoring**: Real-time tracking of typhoons, earthquakes, severe weather
-- **Aviation Safety**: Airport weather observations and aircraft meteorological data
-- **Marine Operations**: Ocean buoy data for maritime safety
-- **Air Quality**: PM10 yellow dust monitoring
-- **Public Health**: UV index tracking
-- **Agricultural Planning**: Seasonal observations and phenological data
+* **Weather Research**: Access historical and real-time Korean weather data
+* **Climate Analysis**: Long-term climate statistics and trends
+* **Disaster Monitoring**: Real-time tracking of typhoons, earthquakes, severe weather
+* **Aviation Safety**: Airport weather observations and aircraft meteorological data
+* **Marine Operations**: Ocean buoy data for maritime safety
+* **Air Quality**: PM10 yellow dust monitoring
+* **Public Health**: UV index tracking
+* **Agricultural Planning**: Seasonal observations and phenological data
 
 ## Resources
 
-- **Documentation**: [https://appleparan.github.io/kma-mcp/](https://appleparan.github.io/kma-mcp/)
-- **GitHub**: [https://github.com/appleparan/kma-mcp](https://github.com/appleparan/kma-mcp)
-- **KMA API Hub**: [https://apihub.kma.go.kr/](https://apihub.kma.go.kr/)
-- **FastMCP**: [https://github.com/jlowin/fastmcp](https://github.com/jlowin/fastmcp)
+* **Documentation**: [https://appleparan.github.io/kma-mcp/](https://appleparan.github.io/kma-mcp/)
+* **GitHub**: [https://github.com/appleparan/kma-mcp](https://github.com/appleparan/kma-mcp)
+* **KMA API Hub**: [https://apihub.kma.go.kr/](https://apihub.kma.go.kr/)
+* **FastMCP**: [https://github.com/jlowin/fastmcp](https://github.com/jlowin/fastmcp)
 
 ## License
 
