@@ -16,14 +16,21 @@ kma-mcp is a comprehensive MCP (Model Context Protocol) server implementation th
 ### 🌦️ Comprehensive Weather Data Access
 
 * **21 API clients** covering surface observations, marine data, upper-air measurements, radar, satellite imagery, forecasts, warnings, typhoons, earthquakes, aviation weather, and global meteorological data
-* **42 total clients** (sync + async versions) for flexible integration
-* **198 comprehensive tests** ensuring reliability
+* **Dual implementations**: Python and TypeScript for maximum flexibility
+* **251+ comprehensive tests** (198 Python + 53 TypeScript) ensuring reliability
 
-### ⚡ Dual Client Support
+### ⚡ Multiple Implementation Options
 
+**Python Implementation**:
 * **Synchronous clients** for simple, straightforward operations
 * **Asynchronous clients** for high-performance concurrent requests
 * Context manager support for automatic resource cleanup
+* 42 total clients (21 sync + 21 async)
+
+**TypeScript Implementation**:
+* **Type-safe API clients** with full TypeScript support
+* MCP server built with `@modelcontextprotocol/sdk`
+* 21 clients with comprehensive type definitions
 
 ### 🌏 Korean Weather Specialization
 
@@ -106,26 +113,38 @@ uv run python scripts/start_mcp_server.py
 
 ```
 kma-mcp/
-├── src/kma_mcp/
-│   ├── surface/          # Surface observation clients (10 APIs)
-│   ├── marine/           # Marine observation clients (1 API)
-│   ├── upper_air/        # Upper-air observation clients (1 API)
-│   ├── radar/            # Radar clients (1 API)
-│   ├── satellite/        # Satellite clients (1 API)
-│   ├── earthquake/       # Earthquake clients (1 API)
-│   ├── typhoon/          # Typhoon clients (1 API)
-│   ├── forecast/         # Forecast clients (2 APIs)
-│   ├── global_met/       # Global meteorology clients (1 API)
-│   ├── aviation/         # Aviation meteorology clients (1 API)
-│   ├── integrated/       # Integrated meteorology clients (1 API)
-│   ├── utils/            # Utility modules
-│   └── mcp_server.py     # Main MCP server
-├── tests/                # Comprehensive test suite (198 tests)
-├── docs/                 # Documentation (MkDocs)
-├── scripts/              # Helper scripts
-├── API_STATUS.md         # Detailed API implementation status
-├── llms.txt              # LLM-friendly project documentation
-└── README.md             # Main documentation
+├── python/                      # Python implementation
+│   ├── src/kma_mcp/
+│   │   ├── surface/            # Surface observation clients (10 APIs)
+│   │   ├── marine/             # Marine observation clients (1 API)
+│   │   ├── upper_air/          # Upper-air observation clients (1 API)
+│   │   ├── radar/              # Radar clients (1 API)
+│   │   ├── satellite/          # Satellite clients (1 API)
+│   │   ├── earthquake/         # Earthquake clients (1 API)
+│   │   ├── typhoon/            # Typhoon clients (1 API)
+│   │   ├── forecast/           # Forecast clients (2 APIs)
+│   │   ├── global_met/         # Global meteorology clients (1 API)
+│   │   ├── aviation/           # Aviation meteorology clients (1 API)
+│   │   ├── integrated/         # Integrated meteorology clients (1 API)
+│   │   ├── utils/              # Utility modules
+│   │   └── mcp_server.py       # Main MCP server
+│   └── tests/                  # Python test suite (198 tests)
+├── typescript/                  # TypeScript implementation
+│   ├── src/
+│   │   ├── clients/            # TypeScript API clients (21 clients)
+│   │   │   ├── base.ts         # Base client
+│   │   │   ├── asos.ts         # ASOS client
+│   │   │   ├── aws.ts          # AWS client
+│   │   │   └── ...             # Other clients
+│   │   └── index.ts            # MCP server entry point
+│   └── tests/                  # TypeScript test suite (53 tests)
+├── docs/                        # Documentation (MkDocs)
+│   ├── reference/              # Python API reference (auto-generated)
+│   └── reference-ts/           # TypeScript API reference (auto-generated)
+├── scripts/                     # Helper scripts
+├── API_STATUS.md                # Detailed API implementation status
+├── llms.txt                     # LLM-friendly project documentation
+└── README.md                    # Main documentation
 ```
 
 ## Use Cases
@@ -165,4 +184,6 @@ Contributions are welcome! See [CONTRIBUTING.md](https://github.com/appleparan/k
 
 ---
 
-**Built with**: Python 3.13+, FastMCP, httpx, uv
+**Built with**:
+- **Python**: Python 3.13+, FastMCP, httpx, uv
+- **TypeScript**: TypeScript 5.7+, Bun, @modelcontextprotocol/sdk, axios

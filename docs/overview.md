@@ -28,55 +28,69 @@ graph TB
 
 ```
 kma-mcp/
-├── src/kma_mcp/
-│   ├── surface/          # 10 Surface observation APIs
-│   │   ├── asos_client.py
-│   │   ├── aws_client.py
-│   │   ├── climate_client.py
-│   │   ├── dust_client.py
-│   │   ├── nk_client.py
-│   │   ├── snow_client.py
-│   │   ├── uv_client.py
-│   │   ├── aws_oa_client.py
-│   │   ├── season_client.py
-│   │   └── station_client.py
-│   ├── marine/
-│   │   └── buoy_client.py        # Marine buoy observations
-│   ├── upper_air/
-│   │   └── radiosonde_client.py  # Upper-air soundings
-│   ├── radar/
-│   │   └── radar_client.py       # Weather radar imagery
-│   ├── satellite/
-│   │   └── satellite_client.py   # GK2A satellite data
-│   ├── earthquake/
-│   │   └── earthquake_client.py  # Earthquake monitoring
-│   ├── typhoon/
-│   │   └── typhoon_client.py     # Typhoon tracking
-│   ├── forecast/
-│   │   ├── forecast_client.py    # Weather forecasts
-│   │   └── warning_client.py     # Weather warnings
-│   ├── global_met/
-│   │   └── gts_client.py         # GTS worldwide data
-│   ├── aviation/
-│   │   └── amos_client.py        # Aviation weather
-│   ├── integrated/
-│   │   └── integrated_client.py  # Lightning, wind profiler
-│   ├── utils/
-│   │   └── weather_codes.py      # Korean weather utilities
-│   └── mcp_server.py             # Main MCP server
-└── tests/                         # 198 comprehensive tests
+├── python/                        # Python implementation
+│   ├── src/kma_mcp/
+│   │   ├── surface/              # 10 Surface observation APIs
+│   │   │   ├── asos_client.py
+│   │   │   ├── aws_client.py
+│   │   │   ├── climate_client.py
+│   │   │   ├── dust_client.py
+│   │   │   ├── nk_client.py
+│   │   │   ├── snow_client.py
+│   │   │   ├── uv_client.py
+│   │   │   ├── aws_oa_client.py
+│   │   │   ├── season_client.py
+│   │   │   └── station_client.py
+│   │   ├── marine/
+│   │   │   └── buoy_client.py        # Marine buoy observations
+│   │   ├── upper_air/
+│   │   │   └── radiosonde_client.py  # Upper-air soundings
+│   │   ├── radar/
+│   │   │   └── radar_client.py       # Weather radar imagery
+│   │   ├── satellite/
+│   │   │   └── satellite_client.py   # GK2A satellite data
+│   │   ├── earthquake/
+│   │   │   └── earthquake_client.py  # Earthquake monitoring
+│   │   ├── typhoon/
+│   │   │   └── typhoon_client.py     # Typhoon tracking
+│   │   ├── forecast/
+│   │   │   ├── forecast_client.py    # Weather forecasts
+│   │   │   └── warning_client.py     # Weather warnings
+│   │   ├── global_met/
+│   │   │   └── gts_client.py         # GTS worldwide data
+│   │   ├── aviation/
+│   │   │   └── amos_client.py        # Aviation weather
+│   │   ├── integrated/
+│   │   │   └── integrated_client.py  # Lightning, wind profiler
+│   │   ├── utils/
+│   │   │   └── weather_codes.py      # Korean weather utilities
+│   │   └── mcp_server.py             # Main MCP server
+│   └── tests/                        # 198 comprehensive tests
+├── typescript/                       # TypeScript implementation
+│   ├── src/
+│   │   ├── clients/                  # 21 API clients
+│   │   │   ├── base.ts
+│   │   │   ├── asos.ts
+│   │   │   ├── aws.ts
+│   │   │   └── ...                   # Other clients
+│   │   └── index.ts                  # MCP server entry point
+│   └── tests/                        # 53 comprehensive tests
+└── docs/                             # Documentation
+    ├── reference/                    # Python API reference
+    └── reference-ts/                 # TypeScript API reference
 ```
 
 ## Implementation Status
 
 ### Summary Statistics
 
-| Metric | Value |
-|--------|-------|
-| **API Clients** | 21 implemented |
-| **Total Clients** | 42 (21 sync + 21 async) |
-| **Tests** | 198 (100% pass rate) |
-| **Category Coverage** | 85% (11/13 categories) |
+| Metric | Python | TypeScript | Total |
+|--------|--------|------------|-------|
+| **API Clients** | 21 | 21 | 21 APIs |
+| **Total Implementations** | 42 (sync + async) | 21 | 63 clients |
+| **Tests** | 198 | 53 | 251 tests |
+| **Pass Rate** | 100% | 100% | 100% |
+| **Category Coverage** | 85% (11/13) | 85% (11/13) | 85% |
 
 ### Category Status
 
@@ -100,9 +114,9 @@ kma-mcp/
 
 ## Key Features
 
-### 1. Dual Client Support
+### 1. Python: Dual Client Support
 
-Every API has both synchronous and asynchronous implementations:
+Every Python API has both synchronous and asynchronous implementations:
 
 ```python
 # Synchronous version
@@ -277,6 +291,8 @@ Consider:
 
 ## Technology Stack
 
+### Python Implementation
+
 | Component | Technology |
 |-----------|-----------|
 | **Language** | Python 3.13+ |
@@ -286,7 +302,26 @@ Consider:
 | **Testing** | pytest |
 | **Linting** | ruff |
 | **Type Checking** | mypy |
-| **Documentation** | MkDocs Material |
+
+### TypeScript Implementation
+
+| Component | Technology |
+|-----------|-----------|
+| **Language** | TypeScript 5.7+ |
+| **Runtime** | Bun |
+| **HTTP Client** | axios |
+| **MCP Framework** | @modelcontextprotocol/sdk |
+| **Testing** | Bun test |
+| **Linting** | ESLint + TypeScript ESLint |
+| **Formatting** | Prettier |
+
+### Documentation
+
+| Component | Technology |
+|-----------|-----------|
+| **Generator** | MkDocs Material |
+| **Python API Docs** | mkdocstrings |
+| **TypeScript API Docs** | TypeDoc + typedoc-plugin-markdown |
 
 ## Use Cases
 
@@ -311,6 +346,8 @@ Consider:
 
 ## Next Steps
 
-- [Getting Started](getting-started.md) - Installation and setup guide
+- [Getting Started](getting-started.md) - Installation and setup guide for Python
+- [TypeScript Overview](typescript-overview.md) - TypeScript implementation guide
 - [API Categories](api-categories.md) - Detailed API documentation
-- [API Reference](reference/) - Full API reference documentation
+- [Python API Reference](reference/) - Full Python API reference documentation
+- [TypeScript API Reference](reference-ts/README.md) - Full TypeScript API reference documentation

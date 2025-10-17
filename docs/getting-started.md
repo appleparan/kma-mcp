@@ -4,9 +4,11 @@ This guide will help you set up and start using kma-mcp to access Korean weather
 
 **Note**: All APIs in this package are based on the official [KMA API Hub](https://apihub.kma.go.kr/) specifications. You'll need a KMA API Hub account and API key to use these services.
 
+This guide focuses on the **Python implementation**. For TypeScript, see the [TypeScript Overview](typescript-overview.md).
+
 ## Prerequisites
 
-- Python 3.13+
+- Python 3.13+ (for Python implementation) OR TypeScript 5.7+ (for TypeScript implementation)
 - Git
 - KMA API Hub account and API key
 
@@ -433,9 +435,11 @@ client = ASOSClient(api_key, timeout=60.0)
 
 ## Next Steps
 
-- [Overview](overview.md) - Understand the architecture and features
+- [Overview](overview.md) - Understand the architecture and features for both Python and TypeScript
+- [TypeScript Overview](typescript-overview.md) - TypeScript implementation guide
 - [API Categories](api-categories.md) - Explore all available APIs
-- [API Reference](reference/) - Detailed API documentation
+- [Python API Reference](reference/) - Detailed Python API documentation
+- [TypeScript API Reference](reference-ts/README.md) - Detailed TypeScript API documentation
 - [GitHub Repository](https://github.com/appleparan/kma-mcp) - Source code and issues
 
 ## Getting Help
