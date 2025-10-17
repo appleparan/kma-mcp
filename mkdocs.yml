@@ -116,6 +116,7 @@ extra_javascript:
 validation:
   links:
     absolute_links: relative_to_docs  # Absolute links are relative to the docs directory.
+    unrecognized_links: ignore  # Ignore unrecognized links (like dynamically generated reference/)
 
 # +--------------------------------------------------------------------------------------------------------+
 # |                                                                                                        |
