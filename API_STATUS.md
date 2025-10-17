@@ -446,16 +446,40 @@
 ---
 
 ## 10. 융합기상 (Integrated Meteorology)
-**상태**: ❌ 전체 미구현
 
-**제공 예상 데이터**: 다양한 기상 데이터를 융합한 서비스
+### ✅ 통합 기상 관측 - Integrated Observations
+**구현 파일**: `src/kma_mcp/integrated/integrated_client.py`
+
+**구현된 API**:
+- ✅ 낙뢰 탐지 데이터 - `get_lightning_data()`
+- ✅ 윈드프로파일러 데이터 - `get_wind_profiler_data()`
+
+**제공 데이터**: 다양한 기상 관측 시스템을 통합한 특화 데이터
+- 낙뢰 탐지 네트워크 (위치, 강도)
+- 윈드프로파일러 (고도별 풍향/풍속)
+
+**특징**: 실시간 특수 기상 관측, 다중 소스 통합 데이터
+
+**Async 지원**: ✅ `AsyncIntegratedClient` 사용 가능
 
 ---
 
 ## 11. 항공기상 (Aviation Meteorology)
-**상태**: ❌ 전체 미구현
 
-**제공 예상 데이터**: 항공 기상 정보
+### ✅ 항공 기상 관측 - Aviation Observations
+**구현 파일**: `src/kma_mcp/aviation/amos_client.py`
+
+**구현된 API**:
+- ✅ 공항 기상 관측 (AMOS) - `get_airport_observations()`
+- ✅ 항공기 기상 중계 (AMDAR) - `get_amdar_data()`
+
+**제공 데이터**: 항공 안전을 위한 공항 및 비행 중 기상 데이터
+- AMOS: 공항/비행장 기상 관측
+- AMDAR: 상업 항공기 탑재 센서 관측
+
+**특징**: 항공 운항 안전, 실시간 항공 기상 정보
+
+**Async 지원**: ✅ `AsyncAMOSClient` 사용 가능
 
 ---
 
@@ -494,9 +518,9 @@
 ## 구현 현황 요약
 
 ### 통계
-- **구현 완료**: 19개 API (Surface: 10, Marine: 1, Upper-Air: 1, Radar: 1, Satellite: 1, Earthquake: 1, Global: 1, Forecast/Warning: 2, Typhoon: 1)
+- **구현 완료**: 21개 API (Surface: 10, Marine: 1, Upper-Air: 1, Radar: 1, Satellite: 1, Earthquake: 1, Global: 1, Aviation: 1, Integrated: 1, Forecast/Warning: 2, Typhoon: 1)
 - **부분 구현**: 0개 API
-- **미구현**: 8개 카테고리 (약 50+ 개별 API 추정)
+- **미구현**: 6개 카테고리 (약 40+ 개별 API 추정)
 
 ### 구현률
 - **지상관측 카테고리**: 100% (10/10 API 구현) ✅ 완료!
@@ -505,15 +529,17 @@
 - **레이더 카테고리**: 100% (1/1 API 구현) ✅ 완료!
 - **위성 카테고리**: 100% (1/1 API 구현) ✅ 완료!
 - **지진관측 카테고리**: 100% (1/1 API 구현) ✅ 완료!
+- **융합기상 카테고리**: 100% (1/1 API 구현) ✅ 완료!
+- **항공기상 카테고리**: 100% (1/1 API 구현) ✅ 완료!
 - **세계기상 카테고리**: 100% (1/1 GTS API 구현) ✅ 완료!
 - **예특보 카테고리**: 100% (2/2 API 구현) ✅ 완료!
 - **태풍 카테고리**: 100% (1/1 API 구현) ✅ 완료!
-- **전체**: ~30% (추정)
+- **전체**: ~33% (추정)
 
 ### Async 지원
 - **모든 클라이언트**: ✅ Sync 및 Async 버전 모두 사용 가능
-- **총 38개 클라이언트**: 19개 Sync + 19개 Async
-- **테스트 커버리지**: 188개 테스트 (179 sync + 9 async)
+- **총 42개 클라이언트**: 21개 Sync + 21개 Async
+- **테스트 커버리지**: 198개 테스트 (188 sync + 10 async)
 
 ---
 
