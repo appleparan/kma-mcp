@@ -18,6 +18,7 @@ from kma_mcp.forecast.forecast_client import ForecastClient
 from kma_mcp.forecast.warning_client import WarningClient
 from kma_mcp.marine.buoy_client import BuoyClient
 from kma_mcp.radar.radar_client import RadarClient
+from kma_mcp.satellite.satellite_client import SatelliteClient
 from kma_mcp.surface.asos_client import ASOSClient
 from kma_mcp.surface.aws_client import AWSClient
 from kma_mcp.surface.aws_oa_client import AWSOAClient
@@ -1579,6 +1580,91 @@ def get_earthquake_list(start_time: str, end_time: str) -> str:
             return str(data)
     except Exception as e:  # noqa: BLE001
         return f'Error fetching earthquake list: {e!s}'
+
+
+# ============================================================================
+# Satellite Imagery Tools
+# ============================================================================
+
+
+@mcp.tool()
+def get_satellite_file_list(
+    satellite: str = 'GK2A',
+    variables: str = 'L1B',
+    area: str = 'FD',
+    file_format: str = 'NetCDF',
+    time_filter: str | None = None,
+) -> str:
+    """Get list of available GK2A satellite files.
+
+    Provides a list of available satellite imagery files from the
+    GEO-KOMPSAT-2A satellite.
+
+    Args:
+        satellite: Satellite identifier (default: 'GK2A')
+        variables: Product type (default: 'L1B')
+                  Options: L1B, L2, etc.
+        area: Region code (default: 'FD' for Full Disk)
+             Options: FD, KO (Korea), EA (East Asia), etc.
+        file_format: File format (default: 'NetCDF')
+        time_filter: Time filter in 'YYYYMMDDHHmm' format (optional)
+
+    Returns:
+        List of available satellite files in JSON format
+
+    Example:
+        get_satellite_file_list('GK2A', 'L1B', 'KO')
+    """
+    if not API_KEY:
+        return 'Error: KMA_API_KEY environment variable not set'
+
+    try:
+        with SatelliteClient(API_KEY) as client:
+            data = client.get_satellite_file_list(
+                sat=satellite, vars=variables, area=area, fmt=file_format, tm=time_filter
+            )
+            return str(data)
+    except Exception as e:  # noqa: BLE001
+        return f'Error fetching satellite file list: {e!s}'
+
+
+@mcp.tool()
+def get_satellite_imagery(
+    level: str,
+    product: str,
+    area: str,
+    observation_time: str,
+) -> str:
+    """Get GK2A satellite imagery data.
+
+    Provides satellite imagery from the GEO-KOMPSAT-2A satellite including
+    various spectral channels and derived products.
+
+    Args:
+        level: Data level ('l1b' or 'l2')
+        product: Product type/channel
+                For L1B: NR016, SW038, etc. (16 channels)
+                For L2: CI (Cloud Imagery), SST, etc.
+        area: Area code (FD, KO, EA, ELA, TP)
+        observation_time: Time in 'YYYYMMDDHHmm' format (e.g., '202501011200')
+
+    Returns:
+        Satellite imagery data in JSON format
+
+    Example:
+        get_satellite_imagery('l1b', 'NR016', 'KO', '202501011200')
+    """
+    if not API_KEY:
+        return 'Error: KMA_API_KEY environment variable not set'
+
+    try:
+        with SatelliteClient(API_KEY) as client:
+            data = client.get_satellite_imagery(
+                level=level, product=product, area=area, tm=observation_time
+            )
+            return str(data)
+    except Exception as e:  # noqa: BLE001
+        return f'Error fetching satellite imagery: {e!s}'
 
 
 if __name__ == '__main__':
