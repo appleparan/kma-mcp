@@ -1,6 +1,6 @@
 """Unit tests for North Korea Meteorological API client."""
 
-from datetime import datetime
+from datetime import UTC, datetime
 from unittest.mock import Mock, patch
 
 import httpx
@@ -84,7 +84,7 @@ class TestNKClientRequests:
         mock_response.raise_for_status = Mock()
         mock_get.return_value = mock_response
 
-        dt = datetime(2025, 1, 1, 12, 0)
+        dt = datetime(2025, 1, 1, 12, 0, tzinfo=UTC)
         result = nk_client.get_hourly_data(tm=dt, stn=108)
 
         assert result == mock_response_data

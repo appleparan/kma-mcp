@@ -7,7 +7,7 @@ KMA weather observation data through standardized tools, including:
 """
 
 import os
-from datetime import datetime
+from datetime import UTC, datetime
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -58,7 +58,7 @@ def get_current_weather(station_id: int = 0) -> str:
     try:
         with ASOSClient(API_KEY) as client:
             # Get current time (rounded to nearest hour)
-            now = datetime.now()
+            now = datetime.now(UTC)
             current_hour = now.replace(minute=0, second=0, microsecond=0)
 
             data = client.get_hourly_data(tm=current_hour, stn=station_id)
@@ -270,7 +270,7 @@ def get_aws_current_weather(station_id: int = 0) -> str:
     try:
         with AWSClient(API_KEY) as client:
             # Get current time (rounded to nearest minute)
-            now = datetime.now()
+            now = datetime.now(UTC)
             current_minute = now.replace(second=0, microsecond=0)
 
             data = client.get_minutely_data(tm=current_minute, stn=station_id)
@@ -489,7 +489,7 @@ def get_dust_current_pm10(station_id: int = 0) -> str:
     try:
         with DustClient(API_KEY) as client:
             # Get current time (rounded to nearest hour)
-            now = datetime.now()
+            now = datetime.now(UTC)
             current_hour = now.replace(minute=0, second=0, microsecond=0)
 
             data = client.get_hourly_data(tm=current_hour, stn=station_id)
@@ -582,7 +582,7 @@ def get_uv_current_index(station_id: int = 0) -> str:
     try:
         with UVClient(API_KEY) as client:
             # Get current time (rounded to nearest hour)
-            now = datetime.now()
+            now = datetime.now(UTC)
             current_hour = now.replace(minute=0, second=0, microsecond=0)
 
             data = client.get_hourly_data(tm=current_hour, stn=station_id)
@@ -675,7 +675,7 @@ def get_snow_current_depth(station_id: int = 0) -> str:
     try:
         with SnowClient(API_KEY) as client:
             # Get current time (rounded to nearest hour)
-            now = datetime.now()
+            now = datetime.now(UTC)
             current_hour = now.replace(minute=0, second=0, microsecond=0)
 
             data = client.get_hourly_data(tm=current_hour, stn=station_id)
@@ -768,7 +768,7 @@ def get_nk_current_weather(station_id: int = 0) -> str:
     try:
         with NKClient(API_KEY) as client:
             # Get current time (rounded to nearest hour)
-            now = datetime.now()
+            now = datetime.now(UTC)
             current_hour = now.replace(minute=0, second=0, microsecond=0)
 
             data = client.get_hourly_data(tm=current_hour, stn=station_id)
@@ -862,7 +862,7 @@ def get_aws_oa_current(longitude: float, latitude: float) -> str:
     try:
         with AWSOAClient(API_KEY) as client:
             # Get current time (rounded to nearest hour)
-            now = datetime.now()
+            now = datetime.now(UTC)
             current_hour = now.replace(minute=0, second=0, microsecond=0)
 
             data = client.get_analysis_data(tm=current_hour, x=longitude, y=latitude)
@@ -927,7 +927,7 @@ def get_season_current_year(station_id: int = 0) -> str:
     try:
         with SeasonClient(API_KEY) as client:
             # Get current year
-            current_year = datetime.now().year
+            current_year = datetime.now(UTC).year
 
             data = client.get_observation_data(year=current_year, stn=station_id)
             return str(data)

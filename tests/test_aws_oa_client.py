@@ -1,6 +1,6 @@
 """Unit tests for AWS Objective Analysis API client."""
 
-from datetime import datetime
+from datetime import UTC, datetime
 from unittest.mock import Mock, patch
 
 import httpx
@@ -84,7 +84,7 @@ class TestAWSOAClientRequests:
         mock_response.raise_for_status = Mock()
         mock_get.return_value = mock_response
 
-        dt = datetime(2025, 1, 1, 12, 0)
+        dt = datetime(2025, 1, 1, 12, 0, tzinfo=UTC)
         result = aws_oa_client.get_analysis_data(tm=dt, x=127.0, y=37.5)
 
         assert result == mock_response_data

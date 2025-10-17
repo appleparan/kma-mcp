@@ -37,7 +37,7 @@ class ClimateClient:
         """Context manager entry."""
         return self
 
-    def __exit__(self, *args: Any) -> None:
+    def __exit__(self, *args: object) -> None:
         """Context manager exit."""
         self.close()
 
@@ -237,5 +237,8 @@ class ClimateClient:
         elif period_type == 'annual':
             return self.get_annual_normals(stn)
         else:
-            msg = f"Invalid period_type: {period_type}. Must be 'daily', 'tenday', 'monthly', or 'annual'"
+            msg = (
+                f"Invalid period_type: {period_type}. "
+                f"Must be 'daily', 'tenday', 'monthly', or 'annual'"
+            )
             raise ValueError(msg)

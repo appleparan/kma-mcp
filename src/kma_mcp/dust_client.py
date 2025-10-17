@@ -38,7 +38,7 @@ class DustClient:
         """Context manager entry."""
         return self
 
-    def __exit__(self, *args: Any) -> None:
+    def __exit__(self, *args: object) -> None:
         """Context manager exit."""
         self.close()
 

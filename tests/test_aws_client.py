@@ -1,6 +1,6 @@
 """Unit tests for AWS API client."""
 
-from datetime import datetime
+from datetime import UTC, datetime
 from unittest.mock import Mock, patch
 
 import httpx
@@ -116,7 +116,7 @@ class TestAWSClientRequests:
         mock_response.raise_for_status = Mock()
         mock_get.return_value = mock_response
 
-        dt = datetime(2025, 1, 1, 12, 0)
+        dt = datetime(2025, 1, 1, 12, 0, tzinfo=UTC)
         result = aws_client.get_minutely_data(tm=dt, stn=108)
 
         assert result == mock_response_data
@@ -286,7 +286,7 @@ class TestAWSClientDateTimeConversion:
         mock_response.raise_for_status = Mock()
         mock_get.return_value = mock_response
 
-        dt = datetime(2025, 10, 18, 15, 30)
+        dt = datetime(2025, 10, 18, 15, 30, tzinfo=UTC)
         aws_client.get_minutely_data(tm=dt)
 
         call_args = mock_get.call_args
@@ -305,7 +305,7 @@ class TestAWSClientDateTimeConversion:
         mock_response.raise_for_status = Mock()
         mock_get.return_value = mock_response
 
-        dt = datetime(2025, 10, 18)
+        dt = datetime(2025, 10, 18, tzinfo=UTC)
         aws_client.get_daily_data(tm=dt)
 
         call_args = mock_get.call_args
