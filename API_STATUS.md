@@ -291,9 +291,40 @@
 ---
 
 ## 9. 예특보 (Forecasts/Warnings)
-**상태**: ❌ 전체 미구현
 
-**제공 예상 데이터**: 기상 예보, 특보 정보
+### ✅ 기상예보 - Weather Forecasts
+**구현 파일**: `src/kma_mcp/forecast/forecast_client.py`, `src/kma_mcp/mcp_server.py`
+
+**구현된 API**:
+- ✅ 단기예보 (3일) - `get_short_term_forecast()`
+- ✅ 중기예보 (3-10일) - `get_medium_term_forecast()`
+- ✅ 주간예보 - `get_weekly_forecast()`
+
+**MCP 도구**:
+- ✅ `get_short_term_forecast` - 단기 기상예보 조회
+- ✅ `get_medium_term_forecast` - 중기 기상예보 조회
+- ✅ `get_weekly_forecast` - 주간 기상예보 조회
+
+**제공 데이터**: 기온, 강수확률, 하늘상태, 풍향/풍속 예보
+
+**특징**: 계획 수립 및 의사결정 지원, 다양한 시간 범위 예보
+
+### ✅ 기상특보 - Weather Warnings
+**구현 파일**: `src/kma_mcp/forecast/warning_client.py`, `src/kma_mcp/mcp_server.py`
+
+**구현된 API**:
+- ✅ 현재 특보 - `get_current_warnings()`
+- ✅ 특보 이력 - `get_warning_history()`
+- ✅ 기상속보 - `get_special_weather_report()`
+
+**MCP 도구**:
+- ✅ `get_current_weather_warnings` - 현재 활성 특보 조회
+- ✅ `get_weather_warning_history` - 특보 이력 조회
+- ✅ `get_special_weather_report` - 기상속보 조회
+
+**제공 데이터**: 호우, 강풍, 대설 등 기상특보 정보
+
+**특징**: 실시간 재해 경보, 생명과 재산 보호를 위한 중요 정보
 
 ---
 
@@ -328,13 +359,13 @@
 ## 구현 현황 요약
 
 ### 통계
-- **구현 완료**: 10개 API (ASOS, AWS, Climate Statistics, North Korea, Yellow Dust, UV Radiation, Snow Depth, AWS OA, Seasonal, Station Info)
+- **구현 완료**: 12개 API (Surface: 10, Forecast/Warning: 2)
 - **부분 구현**: 0개 API
 - **미구현**: 12개 카테고리 (약 60+ 개별 API 추정)
 
 ### 구현률
 - **지상관측 카테고리**: 100% (10/10 API 구현) ✅ 완료!
-- **전체**: ~15% (추정)
+- **전체**: ~18% (추정)
 
 ---
 
@@ -350,6 +381,7 @@
 9. ~~**AWS 객관분석**~~ - ✅ **완료** (격자 기상 데이터 분석)
 10. ~~**계절관측**~~ - ✅ **완료** (생물계절 현상 관측)
 11. ~~**지상관측 지점정보**~~ - ✅ **완료** (관측소 메타데이터)
+12. ~~**예특보**~~ - ✅ **완료** (기상예보 및 특보 정보)
 
 
 
@@ -357,14 +389,14 @@
 모든 지상관측 API (10/10) 구현이 완료되었습니다.
 
 ### Medium Priority (중간 우선순위)
-12. **레이더** - 실시간 강수 패턴
-13. **태풍** - 재해 대비 중요 정보
+13. **레이더** - 실시간 강수 패턴
+14. **태풍** - 재해 대비 중요 정보
 
 ### Low Priority (낮은 우선순위)
-14. **위성** - 영상 데이터 처리 복잡도 높음
-15. **수치모델** - 전문적인 데이터, 일반 사용자에게 복잡
-16. **항공기상** - 특수 목적 데이터
-17. **세계기상** - 국내 데이터 우선 후 확장
+15. **위성** - 영상 데이터 처리 복잡도 높음
+16. **수치모델** - 전문적인 데이터, 일반 사용자에게 복잡
+17. **항공기상** - 특수 목적 데이터
+18. **세계기상** - 국내 데이터 우선 후 확장
 
 ---
 
