@@ -63,7 +63,7 @@ def get_current_weather(station_id: int = 0) -> str:
 
             data = client.get_hourly_data(tm=current_hour, stn=station_id)
             return str(data)
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
         return f'Error fetching weather data: {e!s}'
 
 
@@ -93,7 +93,7 @@ def get_hourly_weather(
         with ASOSClient(API_KEY) as client:
             data = client.get_hourly_period(tm1=start_time, tm2=end_time, stn=station_id)
             return str(data)
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
         return f'Error fetching hourly weather data: {e!s}'
 
 
@@ -123,7 +123,7 @@ def get_daily_weather(
         with ASOSClient(API_KEY) as client:
             data = client.get_daily_period(tm1=start_date, tm2=end_date, stn=station_id)
             return str(data)
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
         return f'Error fetching daily weather data: {e!s}'
 
 
@@ -154,7 +154,7 @@ def get_temperature_data(
             # TA is the code for temperature (기온)
             data = client.get_element_data(tm1=start_time, tm2=end_time, obs='TA', stn=station_id)
             return str(data)
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
         return f'Error fetching temperature data: {e!s}'
 
 
@@ -185,7 +185,7 @@ def get_precipitation_data(
             # RN is the code for precipitation (강수량)
             data = client.get_element_data(tm1=start_time, tm2=end_time, obs='RN', stn=station_id)
             return str(data)
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
         return f'Error fetching precipitation data: {e!s}'
 
 
@@ -275,7 +275,7 @@ def get_aws_current_weather(station_id: int = 0) -> str:
 
             data = client.get_minutely_data(tm=current_minute, stn=station_id)
             return str(data)
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
         return f'Error fetching AWS weather data: {e!s}'
 
 
@@ -305,7 +305,7 @@ def get_aws_minutely_weather(
         with AWSClient(API_KEY) as client:
             data = client.get_minutely_period(tm1=start_time, tm2=end_time, stn=station_id)
             return str(data)
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
         return f'Error fetching AWS minutely weather data: {e!s}'
 
 
@@ -335,7 +335,7 @@ def get_aws_hourly_weather(
         with AWSClient(API_KEY) as client:
             data = client.get_hourly_period(tm1=start_time, tm2=end_time, stn=station_id)
             return str(data)
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
         return f'Error fetching AWS hourly weather data: {e!s}'
 
 
@@ -365,7 +365,7 @@ def get_aws_daily_weather(
         with AWSClient(API_KEY) as client:
             data = client.get_daily_period(tm1=start_date, tm2=end_date, stn=station_id)
             return str(data)
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
         return f'Error fetching AWS daily weather data: {e!s}'
 
 
@@ -407,7 +407,7 @@ def get_climate_daily_normals(
         with ClimateClient(API_KEY) as client:
             data = client.get_daily_normals(start_month, start_day, end_month, end_day, station_id)
             return str(data)
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
         return f'Error fetching daily climate normals: {e!s}'
 
 
@@ -437,7 +437,7 @@ def get_climate_monthly_normals(
         with ClimateClient(API_KEY) as client:
             data = client.get_monthly_normals(start_month, end_month, station_id)
             return str(data)
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
         return f'Error fetching monthly climate normals: {e!s}'
 
 
@@ -461,7 +461,7 @@ def get_climate_annual_normals(station_id: int = 0) -> str:
         with ClimateClient(API_KEY) as client:
             data = client.get_annual_normals(station_id)
             return str(data)
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
         return f'Error fetching annual climate normals: {e!s}'
 
 
@@ -494,7 +494,7 @@ def get_dust_current_pm10(station_id: int = 0) -> str:
 
             data = client.get_hourly_data(tm=current_hour, stn=station_id)
             return str(data)
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
         return f'Error fetching PM10 data: {e!s}'
 
 
@@ -524,7 +524,7 @@ def get_dust_hourly_pm10(
         with DustClient(API_KEY) as client:
             data = client.get_hourly_period(tm1=start_time, tm2=end_time, stn=station_id)
             return str(data)
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
         return f'Error fetching hourly PM10 data: {e!s}'
 
 
@@ -554,7 +554,7 @@ def get_dust_daily_pm10(
         with DustClient(API_KEY) as client:
             data = client.get_daily_period(tm1=start_date, tm2=end_date, stn=station_id)
             return str(data)
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
         return f'Error fetching daily PM10 data: {e!s}'
 
 
@@ -587,7 +587,7 @@ def get_uv_current_index(station_id: int = 0) -> str:
 
             data = client.get_hourly_data(tm=current_hour, stn=station_id)
             return str(data)
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
         return f'Error fetching UV index data: {e!s}'
 
 
@@ -617,7 +617,7 @@ def get_uv_hourly_index(
         with UVClient(API_KEY) as client:
             data = client.get_hourly_period(tm1=start_time, tm2=end_time, stn=station_id)
             return str(data)
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
         return f'Error fetching hourly UV index data: {e!s}'
 
 
@@ -647,7 +647,7 @@ def get_uv_daily_index(
         with UVClient(API_KEY) as client:
             data = client.get_daily_period(tm1=start_date, tm2=end_date, stn=station_id)
             return str(data)
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
         return f'Error fetching daily UV index data: {e!s}'
 
 
@@ -680,7 +680,7 @@ def get_snow_current_depth(station_id: int = 0) -> str:
 
             data = client.get_hourly_data(tm=current_hour, stn=station_id)
             return str(data)
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
         return f'Error fetching snow depth data: {e!s}'
 
 
@@ -710,7 +710,7 @@ def get_snow_hourly_depth(
         with SnowClient(API_KEY) as client:
             data = client.get_hourly_period(tm1=start_time, tm2=end_time, stn=station_id)
             return str(data)
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
         return f'Error fetching hourly snow depth data: {e!s}'
 
 
@@ -740,7 +740,7 @@ def get_snow_daily_depth(
         with SnowClient(API_KEY) as client:
             data = client.get_daily_period(tm1=start_date, tm2=end_date, stn=station_id)
             return str(data)
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
         return f'Error fetching daily snow depth data: {e!s}'
 
 
@@ -773,7 +773,7 @@ def get_nk_current_weather(station_id: int = 0) -> str:
 
             data = client.get_hourly_data(tm=current_hour, stn=station_id)
             return str(data)
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
         return f'Error fetching North Korea weather data: {e!s}'
 
 
@@ -803,7 +803,7 @@ def get_nk_hourly_weather(
         with NKClient(API_KEY) as client:
             data = client.get_hourly_period(tm1=start_time, tm2=end_time, stn=station_id)
             return str(data)
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
         return f'Error fetching hourly North Korea weather data: {e!s}'
 
 
@@ -833,7 +833,7 @@ def get_nk_daily_weather(
         with NKClient(API_KEY) as client:
             data = client.get_daily_period(tm1=start_date, tm2=end_date, stn=station_id)
             return str(data)
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
         return f'Error fetching daily North Korea weather data: {e!s}'
 
 
@@ -867,7 +867,7 @@ def get_aws_oa_current(longitude: float, latitude: float) -> str:
 
             data = client.get_analysis_data(tm=current_hour, x=longitude, y=latitude)
             return str(data)
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
         return f'Error fetching AWS objective analysis data: {e!s}'
 
 
@@ -899,7 +899,7 @@ def get_aws_oa_period(
         with AWSOAClient(API_KEY) as client:
             data = client.get_analysis_period(tm1=start_time, tm2=end_time, x=longitude, y=latitude)
             return str(data)
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
         return f'Error fetching AWS objective analysis data: {e!s}'
 
 
@@ -931,7 +931,7 @@ def get_season_current_year(station_id: int = 0) -> str:
 
             data = client.get_observation_data(year=current_year, stn=station_id)
             return str(data)
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
         return f'Error fetching seasonal observation data: {e!s}'
 
 
@@ -956,7 +956,7 @@ def get_season_by_year(year: int, station_id: int = 0) -> str:
         with SeasonClient(API_KEY) as client:
             data = client.get_observation_data(year=year, stn=station_id)
             return str(data)
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
         return f'Error fetching seasonal observation data: {e!s}'
 
 
@@ -988,7 +988,7 @@ def get_season_period(
                 start_year=start_year, end_year=end_year, stn=station_id
             )
             return str(data)
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
         return f'Error fetching seasonal observation data: {e!s}'
 
 
@@ -1017,7 +1017,7 @@ def get_asos_station_list(station_id: int = 0) -> str:
         with StationClient(API_KEY) as client:
             data = client.get_asos_stations(stn=station_id)
             return str(data)
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
         return f'Error fetching ASOS station information: {e!s}'
 
 
@@ -1041,7 +1041,7 @@ def get_aws_station_list(station_id: int = 0) -> str:
         with StationClient(API_KEY) as client:
             data = client.get_aws_stations(stn=station_id)
             return str(data)
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
         return f'Error fetching AWS station information: {e!s}'
 
 
