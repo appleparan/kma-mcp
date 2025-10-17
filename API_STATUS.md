@@ -256,9 +256,23 @@
 ---
 
 ## 4. 레이더 (Radar)
-**상태**: ❌ 전체 미구현
 
-**제공 예상 데이터**: 기상 레이더 영상 및 데이터
+### ✅ 기상 레이더 - Weather Radar
+**구현 파일**: `src/kma_mcp/radar/radar_client.py`, `src/kma_mcp/mcp_server.py`
+
+**구현된 API**:
+- ✅ 레이더 영상 데이터 (단일 시간) - `get_radar_image()`
+- ✅ 레이더 영상 시퀀스 (기간) - `get_radar_image_sequence()`
+- ✅ 위치별 반사도 데이터 - `get_radar_reflectivity()`
+
+**MCP 도구**:
+- ✅ `get_radar_image` - 레이더 영상 데이터 조회
+- ✅ `get_radar_image_sequence` - 레이더 영상 시퀀스 조회 (애니메이션용)
+- ✅ `get_radar_reflectivity_at_location` - 특정 위치 반사도 조회
+
+**제공 데이터**: 기상 레이더 강수 영상, 반사도 데이터
+
+**특징**: 실시간 강수 패턴 모니터링, 폭풍 추적, 강수 강도 분석
 
 ---
 
@@ -277,9 +291,25 @@
 ---
 
 ## 7. 태풍 (Typhoons)
-**상태**: ❌ 전체 미구현
 
-**제공 예상 데이터**: 태풍 정보 (위치, 강도, 이동 경로 등)
+### ✅ 태풍 정보 - Typhoon Information
+**구현 파일**: `src/kma_mcp/typhoon/typhoon_client.py`, `src/kma_mcp/mcp_server.py`
+
+**구현된 API**:
+- ✅ 현재 활성 태풍 조회 - `get_current_typhoons()`
+- ✅ 태풍 상세 정보 - `get_typhoon_by_id()`
+- ✅ 태풍 예상 경로 - `get_typhoon_forecast()`
+- ✅ 연도별 태풍 이력 - `get_typhoon_history()`
+
+**MCP 도구**:
+- ✅ `get_current_typhoons` - 현재 활성 태풍 조회
+- ✅ `get_typhoon_details` - 태풍 상세 정보 조회
+- ✅ `get_typhoon_forecast_track` - 태풍 예상 경로 조회
+- ✅ `get_typhoon_history_by_year` - 연도별 태풍 이력 조회
+
+**제공 데이터**: 태풍 위치, 강도, 이동 경로, 예보 정보
+
+**특징**: 재해 대비 및 계획 수립, 실시간 태풍 추적, 역사적 태풍 분석
 
 ---
 
@@ -359,13 +389,16 @@
 ## 구현 현황 요약
 
 ### 통계
-- **구현 완료**: 12개 API (Surface: 10, Forecast/Warning: 2)
+- **구현 완료**: 14개 API (Surface: 10, Forecast/Warning: 2, Radar: 1, Typhoon: 1)
 - **부분 구현**: 0개 API
-- **미구현**: 12개 카테고리 (약 60+ 개별 API 추정)
+- **미구현**: 11개 카테고리 (약 60+ 개별 API 추정)
 
 ### 구현률
 - **지상관측 카테고리**: 100% (10/10 API 구현) ✅ 완료!
-- **전체**: ~18% (추정)
+- **예특보 카테고리**: 100% (2/2 API 구현) ✅ 완료!
+- **레이더 카테고리**: 100% (1/1 API 구현) ✅ 완료!
+- **태풍 카테고리**: 100% (1/1 API 구현) ✅ 완료!
+- **전체**: ~21% (추정)
 
 ---
 
@@ -389,8 +422,8 @@
 모든 지상관측 API (10/10) 구현이 완료되었습니다.
 
 ### Medium Priority (중간 우선순위)
-13. **레이더** - 실시간 강수 패턴
-14. **태풍** - 재해 대비 중요 정보
+13. ~~**레이더**~~ - ✅ **완료** (실시간 강수 패턴 모니터링)
+14. ~~**태풍**~~ - ✅ **완료** (재해 대비 중요 정보)
 
 ### Low Priority (낮은 우선순위)
 15. **위성** - 영상 데이터 처리 복잡도 높음

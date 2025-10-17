@@ -48,7 +48,35 @@ Ultraviolet radiation monitoring for sun safety and health protection:
 - Sun safety recommendations
 - Critical for outdoor activity planning and health alerts
 
-> **Implementation Status**: 7 APIs implemented (ASOS, AWS, Climate, North Korea, Yellow Dust, UV Radiation, Snow Depth). See [API_STATUS.md](API_STATUS.md) for complete list of 60+ available APIs.
+### ✅ Snow Depth Observation (적설관측)
+Snow accumulation monitoring for winter weather analysis:
+- **Hourly and daily snow depth measurements**
+- Winter weather analysis and transportation safety
+- Disaster prevention and planning
+- Critical for snow-related emergency response
+
+### ✅ Weather Forecast and Warnings (예특보)
+Comprehensive weather forecasting and severe weather alerts:
+- **Short-term (3-day), medium-term (3-10 day), and weekly forecasts**
+- Current active weather warnings and alerts
+- Special weather reports for significant events
+- Critical for disaster preparedness and planning
+
+### ✅ Weather Radar (기상 레이더)
+Real-time precipitation monitoring and storm tracking:
+- **Radar imagery for precipitation patterns**
+- Radar animation sequences for storm movement
+- Location-specific reflectivity data
+- Critical for nowcasting and severe weather monitoring
+
+### ✅ Typhoon Information (태풍 정보)
+Tropical cyclone tracking and forecasting:
+- **Current active typhoon positions and intensity**
+- Detailed typhoon information and forecast tracks
+- Historical typhoon data for climatological analysis
+- Critical for disaster preparedness and emergency response
+
+> **Implementation Status**: 14 APIs implemented (Surface: 10, Forecast/Warning: 2, Radar: 1, Typhoon: 1). See [API_STATUS.md](API_STATUS.md) for complete list of 60+ available APIs.
 
 ## Quick Start
 
@@ -134,6 +162,40 @@ The MCP server provides the following tools:
 23. **get_snow_current_depth**: Get current snow depth measurement
 24. **get_snow_hourly_depth**: Get hourly snow depth data for a time period
 25. **get_snow_daily_depth**: Get daily snow depth data for a date range
+
+**AWS Objective Analysis (AWS 객관분석)**:
+26. **get_aws_oa_current**: Get current AWS gridded analysis data for a location
+27. **get_aws_oa_period**: Get AWS gridded analysis data for a time period
+
+**Seasonal Observation (계절관측)**:
+28. **get_season_current_year**: Get seasonal observation data for current year
+29. **get_season_by_year**: Get seasonal observation data for a specific year
+30. **get_season_period**: Get seasonal observation data for a year range
+
+**Station Information (지점정보)**:
+31. **get_asos_station_list**: Get ASOS station metadata
+32. **get_aws_station_list**: Get AWS station metadata
+
+**Weather Forecast (기상예보)**:
+33. **get_short_term_forecast**: Get 3-day weather forecast
+34. **get_medium_term_forecast**: Get 3-10 day weather forecast
+35. **get_weekly_forecast**: Get weekly weather forecast
+
+**Weather Warnings (기상특보)**:
+36. **get_current_weather_warnings**: Get current active weather warnings
+37. **get_weather_warning_history**: Get historical weather warnings
+38. **get_special_weather_report**: Get special weather reports
+
+**Weather Radar (기상 레이더)**:
+39. **get_radar_image**: Get weather radar image data
+40. **get_radar_image_sequence**: Get radar animation sequence
+41. **get_radar_reflectivity_at_location**: Get radar reflectivity for a location
+
+**Typhoon Information (태풍 정보)**:
+42. **get_current_typhoons**: Get currently active typhoons
+43. **get_typhoon_details**: Get detailed information for a specific typhoon
+44. **get_typhoon_forecast_track**: Get typhoon forecast track
+45. **get_typhoon_history_by_year**: Get historical typhoon data for a year
 
 ### Example Usage
 
@@ -254,6 +316,43 @@ data = client.get_hourly_period(tm1='202501010000', tm2='202501020000', stn=108)
 
 # Get daily snow depth data
 data = client.get_daily_period(tm1='20250101', tm2='20250131', stn=108)
+```
+
+**Radar Client**:
+```python
+from kma_mcp.radar.radar_client import RadarClient
+
+# Initialize Radar client
+client = RadarClient('your_api_key')
+
+# Get radar image for a specific time
+data = client.get_radar_image(tm='202501011200', radar_id='ALL')
+
+# Get radar image sequence for animation
+data = client.get_radar_image_sequence(tm1='202501011200', tm2='202501011300', radar_id='ALL')
+
+# Get radar reflectivity at a specific location
+data = client.get_radar_reflectivity(tm='202501011200', x=127.0, y=37.5)
+```
+
+**Typhoon Client**:
+```python
+from kma_mcp.typhoon.typhoon_client import TyphoonClient
+
+# Initialize Typhoon client
+client = TyphoonClient('your_api_key')
+
+# Get currently active typhoons
+data = client.get_current_typhoons()
+
+# Get detailed information for a specific typhoon
+data = client.get_typhoon_by_id(typhoon_id='2501')
+
+# Get forecast track for a typhoon
+data = client.get_typhoon_forecast(typhoon_id='2501')
+
+# Get historical typhoon data for a year
+data = client.get_typhoon_history(year=2024)
 ```
 
 ### Common Station IDs

@@ -25,6 +25,8 @@ from kma_mcp.surface.station_client import StationClient
 from kma_mcp.surface.uv_client import UVClient
 from kma_mcp.forecast.forecast_client import ForecastClient
 from kma_mcp.forecast.warning_client import WarningClient
+from kma_mcp.radar.radar_client import RadarClient
+from kma_mcp.typhoon.typhoon_client import TyphoonClient
 
 # Load environment variables from .env file
 # Look for .env in project root (parent of parent of this file)
@@ -1205,6 +1207,213 @@ def get_special_weather_report(report_time: str, region_id: int = 0) -> str:
     except Exception as e:  # noqa: BLE001
         return f'Error fetching special weather report: {e!s}'
 
+
+# ============================================================================
+# Weather Radar Tools
+# ============================================================================
+
+
+@mcp.tool()
+def get_radar_image(observation_time: str, radar_id: str = 'ALL') -> str:
+    """Get weather radar image data.
+
+    Provides weather radar image data showing precipitation intensity
+    and distribution for monitoring storms and rainfall.
+
+    Args:
+        observation_time: Observation time in 'YYYYMMDDHHmm' format (e.g., '202501011200')
+        radar_id: Radar station ID (default: 'ALL' for composite image)
+                 Common radar IDs:
+                 - 'ALL': Composite of all radars
+                 - 'KSN': Gangneung
+                 - 'KWK': Gwangdeoksan
+                 - 'PSN': Baengnyeongdo
+
+    Returns:
+        Weather radar image data in JSON format
+    """
+    if not API_KEY:
+        return 'Error: KMA_API_KEY environment variable not set'
+
+    try:
+        with RadarClient(API_KEY) as client:
+            data = client.get_radar_image(tm=observation_time, radar_id=radar_id)
+            return str(data)
+    except Exception as e:  # noqa: BLE001
+        return f'Error fetching radar image data: {e!s}'
+
+
+@mcp.tool()
+def get_radar_image_sequence(
+    start_time: str,
+    end_time: str,
+    radar_id: str = 'ALL',
+) -> str:
+    """Get weather radar image sequence for animation.
+
+    Provides a sequence of radar images over a time period for creating
+    animated displays of precipitation movement.
+
+    Args:
+        start_time: Start time in 'YYYYMMDDHHmm' format (e.g., '202501011200')
+        end_time: End time in 'YYYYMMDDHHmm' format
+        radar_id: Radar station ID (default: 'ALL' for composite)
+
+    Returns:
+        Sequence of radar images in JSON format
+
+    Example:
+        get_radar_image_sequence('202501011200', '202501011300', 'ALL')
+    """
+    if not API_KEY:
+        return 'Error: KMA_API_KEY environment variable not set'
+
+    try:
+        with RadarClient(API_KEY) as client:
+            data = client.get_radar_image_sequence(tm1=start_time, tm2=end_time, radar_id=radar_id)
+            return str(data)
+    except Exception as e:  # noqa: BLE001
+        return f'Error fetching radar image sequence: {e!s}'
+
+
+@mcp.tool()
+def get_radar_reflectivity_at_location(
+    observation_time: str,
+    longitude: float,
+    latitude: float,
+) -> str:
+    """Get radar reflectivity data for a specific location.
+
+    Provides radar reflectivity measurements at a specific geographic
+    location for precise precipitation intensity estimates.
+
+    Args:
+        observation_time: Observation time in 'YYYYMMDDHHmm' format (e.g., '202501011200')
+        longitude: Longitude coordinate (e.g., 127.0 for Seoul)
+        latitude: Latitude coordinate (e.g., 37.5 for Seoul)
+
+    Returns:
+        Radar reflectivity data in JSON format
+
+    Example:
+        get_radar_reflectivity_at_location('202501011200', 127.0, 37.5)
+    """
+    if not API_KEY:
+        return 'Error: KMA_API_KEY environment variable not set'
+
+    try:
+        with RadarClient(API_KEY) as client:
+            data = client.get_radar_reflectivity(tm=observation_time, x=longitude, y=latitude)
+            return str(data)
+    except Exception as e:  # noqa: BLE001
+        return f'Error fetching radar reflectivity data: {e!s}'
+
+
+# ============================================================================
+# Typhoon Information Tools
+# ============================================================================
+
+
+@mcp.tool()
+def get_current_typhoons() -> str:
+    """Get information on currently active typhoons.
+
+    Provides real-time information about active tropical cyclones including
+    position, intensity, movement, and current status.
+
+    Returns:
+        Current active typhoon information in JSON format
+    """
+    if not API_KEY:
+        return 'Error: KMA_API_KEY environment variable not set'
+
+    try:
+        with TyphoonClient(API_KEY) as client:
+            data = client.get_current_typhoons()
+            return str(data)
+    except Exception as e:  # noqa: BLE001
+        return f'Error fetching current typhoon data: {e!s}'
+
+
+@mcp.tool()
+def get_typhoon_details(typhoon_id: str) -> str:
+    """Get detailed information for a specific typhoon.
+
+    Provides comprehensive data about a specific typhoon including
+    position history, intensity, size, and movement patterns.
+
+    Args:
+        typhoon_id: Typhoon identification number (e.g., '2501' for first typhoon of 2025)
+
+    Returns:
+        Detailed typhoon information in JSON format
+
+    Example:
+        get_typhoon_details('2501')
+    """
+    if not API_KEY:
+        return 'Error: KMA_API_KEY environment variable not set'
+
+    try:
+        with TyphoonClient(API_KEY) as client:
+            data = client.get_typhoon_by_id(typhoon_id=typhoon_id)
+            return str(data)
+    except Exception as e:  # noqa: BLE001
+        return f'Error fetching typhoon details: {e!s}'
+
+
+@mcp.tool()
+def get_typhoon_forecast_track(typhoon_id: str) -> str:
+    """Get forecast track for a specific typhoon.
+
+    Provides predicted future path and intensity of a typhoon for
+    disaster preparedness and planning.
+
+    Args:
+        typhoon_id: Typhoon identification number (e.g., '2501')
+
+    Returns:
+        Typhoon forecast track data in JSON format
+
+    Example:
+        get_typhoon_forecast_track('2501')
+    """
+    if not API_KEY:
+        return 'Error: KMA_API_KEY environment variable not set'
+
+    try:
+        with TyphoonClient(API_KEY) as client:
+            data = client.get_typhoon_forecast(typhoon_id=typhoon_id)
+            return str(data)
+    except Exception as e:  # noqa: BLE001
+        return f'Error fetching typhoon forecast: {e!s}'
+
+
+@mcp.tool()
+def get_typhoon_history_by_year(year: int) -> str:
+    """Get typhoon history for a specific year.
+
+    Provides historical data on all typhoons that occurred during
+    a specific year for climatological analysis.
+
+    Args:
+        year: Year in YYYY format (e.g., 2024)
+
+    Returns:
+        Typhoon history data for the year in JSON format
+
+    Example:
+        get_typhoon_history_by_year(2024)
+    """
+    if not API_KEY:
+        return 'Error: KMA_API_KEY environment variable not set'
+
+    try:
+        with TyphoonClient(API_KEY) as client:
+            data = client.get_typhoon_history(year=year)
+            return str(data)
+    except Exception as e:  # noqa: BLE001
+        return f'Error fetching typhoon history: {e!s}'
 
 
 if __name__ == '__main__':
