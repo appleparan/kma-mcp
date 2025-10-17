@@ -2,6 +2,81 @@
 
 MCP server for Korea Meteorological Administration API access
 
+## Features
+
+### ASOS (Automated Synoptic Observing System) MCP Server
+
+This project provides a FastMCP server for accessing KMA's ASOS (종관기상관측) surface weather observation data. The ASOS system collects atmospheric data at standardized times across all observation stations, measuring:
+
+- Temperature (기온)
+- Precipitation (강수량)
+- Pressure (기압)
+- Humidity (습도)
+- Wind direction and speed (풍향, 풍속)
+- Solar radiation (일사)
+- Sunshine duration (일조)
+- Snow depth (적설)
+
+## Quick Start
+
+### Prerequisites
+
+1. Get an API key from [KMA API Hub](https://apihub.kma.go.kr/)
+2. Set the API key as an environment variable:
+
+```bash
+export KMA_API_KEY='your_api_key_here'
+```
+
+### Run the MCP Server
+
+```bash
+# Using uv
+uv run python scripts/start_mcp_server.py
+
+# Or directly
+python scripts/start_mcp_server.py
+```
+
+### Available Tools
+
+The MCP server provides the following tools:
+
+1. **get_current_weather**: Get current hourly weather observation data
+2. **get_hourly_weather**: Get hourly weather data for a time period (max 31 days)
+3. **get_daily_weather**: Get daily weather data for a date range
+4. **get_temperature_data**: Get temperature observations for a specific period
+5. **get_precipitation_data**: Get precipitation observations for a specific period
+6. **list_station_info**: Get a list of weather station IDs and names
+
+### Example Usage
+
+```python
+from kma_mcp.asos_client import ASOSClient
+
+# Initialize client
+client = ASOSClient('your_api_key')
+
+# Get current weather for Seoul (station 108)
+data = client.get_hourly_data(tm='202501011200', stn=108)
+
+# Get daily weather for a period
+data = client.get_daily_period(tm1='20250101', tm2='20250131', stn=108)
+
+# Get temperature data
+data = client.get_element_data(tm1='202501011200', tm2='202501011800', obs='TA', stn=108)
+```
+
+### Common Station IDs
+
+- 108: Seoul (서울)
+- 112: Incheon (인천)
+- 133: Daejeon (대전)
+- 143: Daegu (대구)
+- 156: Gwangju (광주)
+- 159: Busan (부산)
+- 184: Jeju (제주)
+
 
 ## Project Organization
 
