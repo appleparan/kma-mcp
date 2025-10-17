@@ -1,180 +1,149 @@
 # kma-mcp
 
-MCP server for Korea Meteorological Administration API access
+**Model Context Protocol (MCP) server for Korea Meteorological Administration API access**
 
+[![Python Version](https://img.shields.io/badge/python-3.13%2B-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-## Project Organization
+## What is kma-mcp?
 
-```plaintext
-kma_mcp/
-├── LICENSE            <- Open-source license if one is chosen
-├── README.md          <- The top-level README for developers using this project.
-├── mkdocs.yml         <- mkdocs-material configuration file.
-├── pyproject.toml     <- Project configuration file with package metadata for
-│                         kma_mcp and configuration for tools like ruff
-├── uv.lock            <- The lock file for reproducing the production environment, e.g.
-│                         generated with `uv sync`
-├── data
-│   ├── external       <- Data from third party sources.
-│   ├── interim        <- Intermediate data that has been transformed.
-│   ├── processed      <- The final, canonical data sets for modeling.
-│   └── raw            <- The original, immutable data dump.
-├── docs               <- A default mkdocs project; see www.mkdocs.org for details
-├── models             <- Trained and serialized models, model predictions, or model summaries
-├── notebooks          <- Jupyter notebooks. Naming convention is a number (for ordering),
-│                         the creator's initials, and a short `-` delimited description, e.g.
-│                         `1.0-jqp-initial-data-exploration`.
-├── references         <- Data dictionaries, manuals, and all other explanatory materials.
-├── reports            <- Generated analysis as HTML, PDF, LaTeX, etc.
-│   └── figures        <- Generated graphics and figures to be used in reporting
-├── tests              <- Unit test files.
-└── src/kma_mcp   <- Source code for use in this project.
-    │
-    ├── __init__.py             <- Makes kma_mcp a Python module
-    │
-    └── cli.py                  <- Default CLI program
+kma-mcp is a comprehensive FastMCP server implementation that provides programmatic access to the Korea Meteorological Administration (KMA) API Hub. It enables developers and researchers to easily access real-time and historical Korean weather data through a simple, consistent Python interface.
+
+## Key Features
+
+### 🌦️ Comprehensive Weather Data Access
+- **21 API clients** covering surface observations, marine data, upper-air measurements, radar, satellite imagery, forecasts, warnings, typhoons, earthquakes, aviation weather, and global meteorological data
+- **42 total clients** (sync + async versions) for flexible integration
+- **198 comprehensive tests** ensuring reliability
+
+### ⚡ Dual Client Support
+- **Synchronous clients** for simple, straightforward operations
+- **Asynchronous clients** for high-performance concurrent requests
+- Context manager support for automatic resource cleanup
+
+### 🌏 Korean Weather Specialization
+- Korean weather code utilities (wind direction, precipitation types, sky conditions)
+- Automatic enhancement of weather data with Korean-language fields
+- Human-readable Korean weather summaries
+
+### 📊 Implementation Status
+
+**Coverage**: 85% of public KMA API Hub categories (11/13)
+
+**Implemented Categories**:
+- ✅ Surface Observations (지상관측) - 10 APIs
+- ✅ Marine Observations (해양관측) - 1 API
+- ✅ Upper-Air Observations (고층관측) - 1 API
+- ✅ Radar (레이더) - 1 API
+- ✅ Satellite (위성) - 1 API
+- ✅ Earthquakes (지진/화산) - 1 API
+- ✅ Typhoon (태풍) - 1 API
+- ✅ Forecasts & Warnings (예특보) - 2 APIs
+- ✅ Global Meteorology (세계기상) - 1 API
+- ✅ Aviation Meteorology (항공기상) - 1 API
+- ✅ Integrated Meteorology (융합기상) - 1 API
+
+**Not Implemented** (no public endpoints):
+- ❌ Numerical Models (수치모델)
+- ❌ Industry-Specific APIs (산업특화)
+
+## Quick Start
+
+### Installation
+
+```bash
+# Install uv (if not already installed)
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# Clone repository
+git clone https://github.com/appleparan/kma-mcp.git
+cd kma-mcp
+
+# Install dependencies
+uv sync
 ```
 
-## For Developers
+### Get API Key
 
-### Whether to use `package`
+1. Visit [KMA API Hub](https://apihub.kma.go.kr/)
+2. Create an account and request an API key
+3. Set your API key:
 
-This determines if the project should be treated as a Python package or a "virtual" project.
-
-A `package` is a fully installable Python module,
-while a virtual project is not installable but manages its dependencies in the virtual environment.
-
-If you don't want to use this packaging feature,
-you can set `tool.uv.package = false` in the pyproject.toml file.
-This tells `uv` to handle your project as a virtual project instead of a package.
-
-### Install Python (3.13)
-```shell
-uv python install 3.13
+```bash
+export KMA_API_KEY='your_key_here'
+# Or create a .env file with:
+# KMA_API_KEY=your_key_here
 ```
 
-### Pin Python version
-```shell
-uv python pin 3.13
+### Basic Usage
+
+```python
+from kma_mcp.surface.asos_client import ASOSClient
+
+# Get current weather for Seoul (station 108)
+with ASOSClient('your_api_key') as client:
+    data = client.get_hourly_data(tm='202501011200', stn=108)
+    print(data)
 ```
 
-### Install packages with PyTorch + CUDA 12.6 (Ubuntu)
-```shell
-uv sync --extra cu126
+### Run MCP Server
+
+```bash
+uv run python scripts/start_mcp_server.py
 ```
 
-### Install packages without locking environments
-```shell
-uv sync --frozen
+## Project Structure
+
+```
+kma-mcp/
+├── src/kma_mcp/
+│   ├── surface/          # Surface observation clients (10 APIs)
+│   ├── marine/           # Marine observation clients (1 API)
+│   ├── upper_air/        # Upper-air observation clients (1 API)
+│   ├── radar/            # Radar clients (1 API)
+│   ├── satellite/        # Satellite clients (1 API)
+│   ├── earthquake/       # Earthquake clients (1 API)
+│   ├── typhoon/          # Typhoon clients (1 API)
+│   ├── forecast/         # Forecast clients (2 APIs)
+│   ├── global_met/       # Global meteorology clients (1 API)
+│   ├── aviation/         # Aviation meteorology clients (1 API)
+│   ├── integrated/       # Integrated meteorology clients (1 API)
+│   ├── utils/            # Utility modules
+│   └── mcp_server.py     # Main MCP server
+├── tests/                # Comprehensive test suite (198 tests)
+├── docs/                 # Documentation (MkDocs)
+├── scripts/              # Helper scripts
+├── API_STATUS.md         # Detailed API implementation status
+├── llms.txt              # LLM-friendly project documentation
+└── README.md             # Main documentation
 ```
 
-### Install dev packages, too
-```shell
-uv sync --group dev --group docs --extra cu126
-```
+## Use Cases
 
-### Run tests
-```shell
-uv run pytest
-```
+- **Weather Research**: Access historical and real-time Korean weather data
+- **Climate Analysis**: Long-term climate statistics and trends
+- **Disaster Monitoring**: Real-time tracking of typhoons, earthquakes, severe weather
+- **Aviation Safety**: Airport weather observations and aircraft meteorological data
+- **Marine Operations**: Ocean buoy data for maritime safety
+- **Air Quality**: PM10 yellow dust monitoring
+- **Public Health**: UV index tracking
+- **Agricultural Planning**: Seasonal observations and phenological data
 
-### Linting
-```shell
-uv ruff check --fix .
-```
+## Resources
 
-### Formatting
-```shell
-uv ruff format
-```
+- **Documentation**: [https://appleparan.github.io/kma-mcp/](https://appleparan.github.io/kma-mcp/)
+- **GitHub**: [https://github.com/appleparan/kma-mcp](https://github.com/appleparan/kma-mcp)
+- **KMA API Hub**: [https://apihub.kma.go.kr/](https://apihub.kma.go.kr/)
+- **FastMCP**: [https://github.com/jlowin/fastmcp](https://github.com/jlowin/fastmcp)
 
-### Run pre-commit
-* Assume that `pre-commit` installed with `uv tool install pre-commit`
+## License
 
-```shell
-uvx pre-commit run --all-files
-```
+MIT License - See [LICENSE](https://github.com/appleparan/kma-mcp/blob/main/LICENSE) file for details.
 
-### Build package
-```shell
-uv build
-```
+## Contributing
 
-### Serve Document
-```shell
-uv run mkdocs serve
-```
+Contributions are welcome! See [CONTRIBUTING.md](https://github.com/appleparan/kma-mcp/blob/main/CONTRIBUTING.md) for guidelines.
 
-### Build Document
-```shell
-uv run mkdocs build
-```
+---
 
-### Build Docker Image (from source)
-
-[ref. uv docs](https://docs.astral.sh/uv/guides/integration/docker/#installing-a-project)
-
-```shell
-docker build -t TAGNAME -f Dockerfile.source
-```
-
-### Build Docker Image (from package)
-
-[ref. uv docs](https://docs.astral.sh/uv/guides/integration/docker/#non-editable-installs)
-
-```shell
-docker build -t TAGNAME -f Dockerfile.package
-```
-
-### Run Docker Container
-```shell
-docker run --gpus all -p 8000:8000 my-production-app
-```
-
-### Check next version
-```shell
-uv run git-cliff --bumped-version
-```
-
-### Release
-Execute scripts
-```shell
-sh scripts/release.sh
-```
-
-What `release.sh` do:
-
-1. Set next version to `BUMPED_VERSION`: This ensures that the `git-cliff --bumped-version` command produces consistent results.
-
-    ```shell
-    BUMPED_VERSION=$(uv run git-cliff --bumped-version)
-    ```
-
-2. Generate `CHANGELOG.md` and `RELEASE.md`: The script creates or updates the changelog and release notes using the bumped version:
-
-    ```shell
-    uv run git-cliff --strip header --tag $BUMPED_VERSION -o CHANGELOG.md
-    uv run git-cliff --latest --strip header --tag $BUMPED_VERSION --unreleased -o RELEASE.md
-    ```
-
-3. Commit updated `CHANGELOG.md` and `RELEASE.md` then add tags and push: It commits the updated files, creates a tag for the new version, and pushes the changes to the repository:
-
-    ```shell
-    git add CHANGELOG.md RELEASE.md
-    git commit -am "docs: Add CHANGELOG.md and RELEASE.md to release $BUMPED_VERSION"
-    git tag -a v$BUMPED_VERSION -m "Release $BUMPED_VERSION"
-    git push origin tag $BUMPED_VERSION
-    ```
-
-4. For dry run:
-
-    ```shell
-    uv run git-cliff --latest --strip header --tag $(uv run git-cliff --bumped-version) --unreleased
-    ```
-
-## References
-* [Packaging Python Projects](https://packaging.python.org/tutorials/packaging-projects/)
-* [Python Packaging User Guide](https://packaging.python.org/)
-
-
-** This project template is generated by [copier-modern-ml](https://github.com/appleparan/copier-modern-ml)**
+**Built with**: Python 3.13+, FastMCP, httpx, uv

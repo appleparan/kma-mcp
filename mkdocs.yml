@@ -1,7 +1,9 @@
 site_name: kma-mcp
-site_description: MCP server for Korea Meteorological Administration API access
+site_description: Model Context Protocol (MCP) server for Korea Meteorological Administration API access
 site_author: Jongsu Liam Kim
-#site_url: 'SOME_URL' # Uncomment to set a canonical URL
+site_url: 'https://appleparan.github.io/kma-mcp/'
+repo_url: https://github.com/appleparan/kma-mcp
+repo_name: appleparan/kma-mcp
 
 copyright: |
   &copy; Jongsu Liam Kim
@@ -194,6 +196,7 @@ nav:
   - Home: index.md
   - Overview: overview.md
   - Getting Started: getting-started.md
+  - API Categories: api-categories.md
   - API Reference: reference/
 
 plugins:
