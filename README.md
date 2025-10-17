@@ -17,6 +17,8 @@ This project provides a FastMCP server for accessing KMA's ASOS (종관기상관
 - Sunshine duration (일조)
 - Snow depth (적설)
 
+> **Note**: Currently, only ASOS API is implemented. For a complete list of available APIs and implementation status, see [API_STATUS.md](API_STATUS.md).
+
 ## Quick Start
 
 ### Prerequisites
