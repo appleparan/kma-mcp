@@ -22,11 +22,25 @@ This project provides a FastMCP server for accessing KMA's ASOS (종관기상관
 ### Prerequisites
 
 1. Get an API key from [KMA API Hub](https://apihub.kma.go.kr/)
-2. Set the API key as an environment variable:
+   - Register an account on the KMA API Hub
+   - Request an API key from your account page
+   - The API key will be used as the `authKey` parameter in API requests
 
-```bash
-export KMA_API_KEY='your_api_key_here'
-```
+2. Set up your environment:
+
+   **Option 1: Using .env file (Recommended)**
+   ```bash
+   # Copy the example file
+   cp .env.example .env
+
+   # Edit .env and add your API key
+   # KMA_API_KEY=your_actual_api_key_here
+   ```
+
+   **Option 2: Using environment variable**
+   ```bash
+   export KMA_API_KEY='your_api_key_here'
+   ```
 
 ### Run the MCP Server
 
@@ -37,6 +51,12 @@ uv run python scripts/start_mcp_server.py
 # Or directly
 python scripts/start_mcp_server.py
 ```
+
+The server will automatically load your API key from:
+1. `.env` file in the project root (if exists)
+2. Environment variable `KMA_API_KEY` (if set)
+
+The API key is passed as `authKey` parameter in all API requests.
 
 ### Available Tools
 

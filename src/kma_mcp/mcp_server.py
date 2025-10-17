@@ -6,15 +6,22 @@ KMA ASOS weather observation data through standardized tools.
 
 import os
 from datetime import datetime
+from pathlib import Path
 
+from dotenv import load_dotenv
 from fastmcp import FastMCP
 
 from kma_mcp.asos_client import ASOSClient
 
+# Load environment variables from .env file
+# Look for .env in project root (parent of parent of this file)
+env_path = Path(__file__).resolve().parent.parent.parent / '.env'
+load_dotenv(dotenv_path=env_path)
+
 # Initialize FastMCP server
 mcp = FastMCP('KMA ASOS Weather Data')
 
-# Get API key from environment
+# Get API key from environment (from .env file or environment variable)
 API_KEY = os.getenv('KMA_API_KEY', '')
 
 
