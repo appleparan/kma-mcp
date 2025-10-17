@@ -212,18 +212,15 @@ plugins:
       handlers:
         python:
           paths: [src]  # search packages in the src folder
-          rendering:
-            show_source: true
           options:
+            show_source: true
             show_symbol_type_toc: true
             docstring_options:
               ignore_init_summary: true
             docstring_section_style: list
             filters: ["!^_", "!^test_"]
-            extra:
-              autodoc_type_aliases: true
           inventories:
-            - https://docs.python.org/3/objects.inv  # Python standard library
-            - https://numpy.org/doc/stable/objects.inv # numpy
+            - https://docs.python.org/3/objects.inv
+            - https://numpy.org/doc/stable/objects.inv
             - https://docs.pydantic.dev/latest/objects.inv
 
