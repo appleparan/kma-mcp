@@ -1,9 +1,11 @@
 {
   "compilerOptions": {
-    "target": "ES2022",
-    "module": "ES2022",
+    // 최신 JavaScript 기능 유지 (최신 번들러/환경용)
+    "target": "ESNext",
+    // Node.js의 최신 모듈 해결 전략 및 ESM 지원에 최적화
+    "module": "NodeNext",
     "lib": ["ES2022"],
-    "moduleResolution": "node",
+    "moduleResolution": "node16",
     "outDir": "./dist",
     "rootDir": "./src",
     "strict": true,

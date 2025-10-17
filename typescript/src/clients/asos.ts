@@ -5,29 +5,29 @@
 import { BaseKMAClient, KMAClientConfig } from './base.js';
 
 export interface ASOSObservation {
-  tm: string;          // 관측시각
-  stnId: string;       // 지점번호
-  stnNm: string;       // 지점명
-  ta: number;          // 기온(°C)
-  taQcflg: string;     // 기온 QC 플래그
-  rn: number;          // 강수량(mm)
-  rnQcflg: string;     // 강수량 QC 플래그
-  ws: number;          // 풍속(m/s)
-  wsQcflg: string;     // 풍속 QC 플래그
-  wd: number;          // 풍향(deg)
-  wdQcflg: string;     // 풍향 QC 플래그
-  hm: number;          // 습도(%)
-  hmQcflg: string;     // 습도 QC 플래그
-  pa: number;          // 현지기압(hPa)
-  paQcflg: string;     // 현지기압 QC 플래그
-  ps: number;          // 해면기압(hPa)
-  psQcflg: string;     // 해면기압 QC 플래그
-  ss: number;          // 일조(hr)
-  ssQcflg: string;     // 일조 QC 플래그
-  icsr: number;        // 일사(MJ/m²)
-  icsrQcflg: string;   // 일사 QC 플래그
-  dsnw: number;        // 적설(cm)
-  dsnwQcflg: string;   // 적설 QC 플래그
+  tm: string; // 관측시각
+  stnId: string; // 지점번호
+  stnNm: string; // 지점명
+  ta: number; // 기온(°C)
+  taQcflg: string; // 기온 QC 플래그
+  rn: number; // 강수량(mm)
+  rnQcflg: string; // 강수량 QC 플래그
+  ws: number; // 풍속(m/s)
+  wsQcflg: string; // 풍속 QC 플래그
+  wd: number; // 풍향(deg)
+  wdQcflg: string; // 풍향 QC 플래그
+  hm: number; // 습도(%)
+  hmQcflg: string; // 습도 QC 플래그
+  pa: number; // 현지기압(hPa)
+  paQcflg: string; // 현지기압 QC 플래그
+  ps: number; // 해면기압(hPa)
+  psQcflg: string; // 해면기압 QC 플래그
+  ss: number; // 일조(hr)
+  ssQcflg: string; // 일조 QC 플래그
+  icsr: number; // 일사(MJ/m²)
+  icsrQcflg: string; // 일사 QC 플래그
+  dsnw: number; // 적설(cm)
+  dsnwQcflg: string; // 적설 QC 플래그
 }
 
 export class ASOSClient extends BaseKMAClient {
@@ -40,10 +40,7 @@ export class ASOSClient extends BaseKMAClient {
    * @param tm - Time in YYYYMMDDHHmm format or Date object
    * @param stn - Station ID (0 for all stations)
    */
-  async getHourlyData(
-    tm: string | Date,
-    stn = 0
-  ): Promise<ASOSObservation[]> {
+  async getHourlyData(tm: string | Date, stn = 0): Promise<ASOSObservation[]> {
     const timeStr = typeof tm === 'string' ? tm : this.formatDateTime(tm);
     return this.makeRequest<ASOSObservation>('kma_sfctm2.php', {
       tm: timeStr,
@@ -76,10 +73,7 @@ export class ASOSClient extends BaseKMAClient {
    * @param tm - Date in YYYYMMDD format or Date object
    * @param stn - Station ID (0 for all stations)
    */
-  async getDailyData(
-    tm: string | Date,
-    stn = 0
-  ): Promise<ASOSObservation[]> {
+  async getDailyData(tm: string | Date, stn = 0): Promise<ASOSObservation[]> {
     const dateStr = typeof tm === 'string' ? tm : this.formatDateTime(tm, false);
     return this.makeRequest<ASOSObservation>('kma_sfcdd2.php', {
       tm: dateStr,

@@ -5,13 +5,13 @@
 import { BaseKMAClient, KMAClientConfig } from './base.js';
 
 export interface EarthquakeData {
-  tm: string;          // 발생시각
-  loc: string;         // 발생위치
-  lat: number;         // 위도
-  lon: number;         // 경도
-  mag: number;         // 규모
-  dep: number;         // 깊이(km)
-  int: string;         // 진도
+  tm: string; // 발생시각
+  loc: string; // 발생위치
+  lat: number; // 위도
+  lon: number; // 경도
+  mag: number; // 규모
+  dep: number; // 깊이(km)
+  int: string; // 진도
 }
 
 export class EarthquakeClient extends BaseKMAClient {
@@ -24,10 +24,7 @@ export class EarthquakeClient extends BaseKMAClient {
    * @param tm - Reference time in YYYYMMDDHHmm format or Date object (default: now)
    * @param disp - Output format (0/1/2, default: 0)
    */
-  async getRecentEarthquake(
-    tm?: string | Date,
-    disp: number = 0
-  ): Promise<EarthquakeData[]> {
+  async getRecentEarthquake(tm?: string | Date, disp: number = 0): Promise<EarthquakeData[]> {
     const timeStr = tm
       ? typeof tm === 'string'
         ? tm

@@ -69,11 +69,7 @@ export abstract class BaseKMAClient {
       const { header, body } = response.data.response;
 
       if (header.resultCode !== '00') {
-        throw new KMAAPIError(
-          header.resultMsg,
-          undefined,
-          header.resultCode
-        );
+        throw new KMAAPIError(header.resultMsg, undefined, header.resultCode);
       }
 
       return body.items?.item || [];

@@ -27,9 +27,12 @@ describe('EarthquakeClient', () => {
     const result = await client.getRecentEarthquake('202501011200', 0);
 
     expect(result).toEqual([mockEarthquake]);
-    expect(mockMakeRequest).toHaveBeenCalledWith('eqk_now.php', expect.objectContaining({
-      disp: '0',
-    }));
+    expect(mockMakeRequest).toHaveBeenCalledWith(
+      'eqk_now.php',
+      expect.objectContaining({
+        disp: '0',
+      })
+    );
   });
 
   test('should get earthquake list', async () => {

@@ -5,13 +5,13 @@
 import { BaseKMAClient, KMAClientConfig } from './base.js';
 
 export interface StationInfo {
-  stnId: string;       // 지점번호
-  stnNm: string;       // 지점명
-  lat: number;         // 위도
-  lon: number;         // 경도
-  stnEl: number;       // 해발고도(m)
-  stnType: string;     // 지점유형
-  startDate: string;   // 운영시작일
+  stnId: string; // 지점번호
+  stnNm: string; // 지점명
+  lat: number; // 위도
+  lon: number; // 경도
+  stnEl: number; // 해발고도(m)
+  stnType: string; // 지점유형
+  startDate: string; // 운영시작일
 }
 
 export class StationClient extends BaseKMAClient {
@@ -23,9 +23,7 @@ export class StationClient extends BaseKMAClient {
    * Get ASOS station information
    * @param stn - Station ID (0 for all stations)
    */
-  async getAsosStations(
-    stn: number | string = 0
-  ): Promise<StationInfo[]> {
+  async getAsosStations(stn: number | string = 0): Promise<StationInfo[]> {
     return this.makeRequest<StationInfo>('kma_stnlist.php', {
       stn: String(stn),
     });
@@ -35,9 +33,7 @@ export class StationClient extends BaseKMAClient {
    * Get AWS station information
    * @param stn - Station ID (0 for all stations)
    */
-  async getAwsStations(
-    stn: number | string = 0
-  ): Promise<StationInfo[]> {
+  async getAwsStations(stn: number | string = 0): Promise<StationInfo[]> {
     return this.makeRequest<StationInfo>('kma_aws_stnlist.php', {
       stn: String(stn),
     });

@@ -5,14 +5,14 @@
 import { BaseKMAClient, KMAClientConfig } from './base.js';
 
 export interface ClimateNormal {
-  stnId: string;       // 지점번호
-  stnNm: string;       // 지점명
-  avgTa: number;       // 평균기온(°C)
-  avgTmax: number;     // 평균최고기온(°C)
-  avgTmin: number;     // 평균최저기온(°C)
-  sumRn: number;       // 강수량합(mm)
-  avgWs: number;       // 평균풍속(m/s)
-  avgHm: number;       // 평균습도(%)
+  stnId: string; // 지점번호
+  stnNm: string; // 지점명
+  avgTa: number; // 평균기온(°C)
+  avgTmax: number; // 평균최고기온(°C)
+  avgTmin: number; // 평균최저기온(°C)
+  sumRn: number; // 강수량합(mm)
+  avgWs: number; // 평균풍속(m/s)
+  avgHm: number; // 평균습도(%)
 }
 
 export class ClimateClient extends BaseKMAClient {
@@ -91,9 +91,7 @@ export class ClimateClient extends BaseKMAClient {
    * Get annual climate normal values
    * @param stn - Station ID (0 for all stations)
    */
-  async getAnnualNormals(
-    stn: number | string = 0
-  ): Promise<ClimateNormal[]> {
+  async getAnnualNormals(stn: number | string = 0): Promise<ClimateNormal[]> {
     return this.makeRequest<ClimateNormal>('kma_clm_year.php', {
       stn: String(stn),
     });
@@ -124,9 +122,7 @@ export class ClimateClient extends BaseKMAClient {
           endMonth === undefined ||
           endDay === undefined
         ) {
-          throw new Error(
-            'Daily normals require startMonth, startDay, endMonth, endDay'
-          );
+          throw new Error('Daily normals require startMonth, startDay, endMonth, endDay');
         }
         return this.getDailyNormals(startMonth, startDay, endMonth, endDay, stn);
       case 'tenday':
@@ -136,9 +132,7 @@ export class ClimateClient extends BaseKMAClient {
           endMonth === undefined ||
           endDay === undefined
         ) {
-          throw new Error(
-            'Ten-day normals require startMonth, startPeriod, endMonth, endPeriod'
-          );
+          throw new Error('Ten-day normals require startMonth, startPeriod, endMonth, endPeriod');
         }
         return this.getTenDayNormals(startMonth, startDay, endMonth, endDay, stn);
       case 'monthly':

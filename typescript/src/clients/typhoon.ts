@@ -5,16 +5,16 @@
 import { BaseKMAClient, KMAClientConfig } from './base.js';
 
 export interface TyphoonInfo {
-  typId: string;       // 태풍번호
-  typNm: string;       // 태풍이름
-  typIntlNm: string;   // 국제명
-  tm: string;          // 발표시각
-  lat: number;         // 위도
-  lon: number;         // 경도
-  pres: number;        // 중심기압(hPa)
-  ws: number;          // 최대풍속(m/s)
-  mvDir: string;       // 이동방향
-  mvSpd: number;       // 이동속도(km/h)
+  typId: string; // 태풍번호
+  typNm: string; // 태풍이름
+  typIntlNm: string; // 국제명
+  tm: string; // 발표시각
+  lat: number; // 위도
+  lon: number; // 경도
+  pres: number; // 중심기압(hPa)
+  ws: number; // 최대풍속(m/s)
+  mvDir: string; // 이동방향
+  mvSpd: number; // 이동속도(km/h)
 }
 
 export class TyphoonClient extends BaseKMAClient {

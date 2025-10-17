@@ -89,11 +89,7 @@ describe('ASOSClient', () => {
       const mockMakeRequest = mock(() => Promise.resolve([mockObservation, mockObservation]));
       client['makeRequest'] = mockMakeRequest;
 
-      const result = await client.getHourlyPeriod(
-        '202501010000',
-        '202501011200',
-        108
-      );
+      const result = await client.getHourlyPeriod('202501010000', '202501011200', 108);
 
       expect(result).toHaveLength(2);
       expect(mockMakeRequest).toHaveBeenCalledWith('kma_sfctm2.php', {
@@ -183,12 +179,7 @@ describe('ASOSClient', () => {
       const mockMakeRequest = mock(() => Promise.resolve([mockObservation]));
       client['makeRequest'] = mockMakeRequest;
 
-      const result = await client.getElementData(
-        '202501010000',
-        '202501011200',
-        108,
-        'ta'
-      );
+      const result = await client.getElementData('202501010000', '202501011200', 108, 'ta');
 
       expect(result).toEqual([mockObservation]);
       expect(mockMakeRequest).toHaveBeenCalledWith('kma_sfcelm.php', {

@@ -5,31 +5,31 @@
 import { BaseKMAClient, KMAClientConfig } from './base.js';
 
 export interface SynopObservation {
-  tm: string;          // 관측시각
-  stnId: string;       // 지점번호
-  lat: number;         // 위도
-  lon: number;         // 경도
-  ta: number;          // 기온(°C)
-  pa: number;          // 기압(hPa)
-  ws: number;          // 풍속(m/s)
-  wd: number;          // 풍향(deg)
+  tm: string; // 관측시각
+  stnId: string; // 지점번호
+  lat: number; // 위도
+  lon: number; // 경도
+  ta: number; // 기온(°C)
+  pa: number; // 기압(hPa)
+  ws: number; // 풍속(m/s)
+  wd: number; // 풍향(deg)
 }
 
 export interface ShipObservation {
-  tm: string;          // 관측시각
-  shipId: string;      // 선박식별부호
-  lat: number;         // 위도
-  lon: number;         // 경도
-  ta: number;          // 기온(°C)
-  wt: number;          // 수온(°C)
-  ws: number;          // 풍속(m/s)
-  wd: number;          // 풍향(deg)
+  tm: string; // 관측시각
+  shipId: string; // 선박식별부호
+  lat: number; // 위도
+  lon: number; // 경도
+  ta: number; // 기온(°C)
+  wt: number; // 수온(°C)
+  ws: number; // 풍속(m/s)
+  wd: number; // 풍향(deg)
 }
 
 export interface ChartData {
-  tm: string;          // 발표시각
-  chartType: string;   // 천기도 종류
-  imageData: string;   // 이미지 데이터
+  tm: string; // 발표시각
+  chartType: string; // 천기도 종류
+  imageData: string; // 이미지 데이터
 }
 
 export class GTSClient extends BaseKMAClient {

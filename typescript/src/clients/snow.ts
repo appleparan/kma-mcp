@@ -5,11 +5,11 @@
 import { BaseKMAClient, KMAClientConfig } from './base.js';
 
 export interface SnowObservation {
-  tm: string;          // 관측시각
-  stnId: string;       // 지점번호
-  stnNm: string;       // 지점명
-  sd: number;          // 적설(cm)
-  sdFlag: string;      // 적설 QC 플래그
+  tm: string; // 관측시각
+  stnId: string; // 지점번호
+  stnNm: string; // 지점명
+  sd: number; // 적설(cm)
+  sdFlag: string; // 적설 QC 플래그
 }
 
 export class SnowClient extends BaseKMAClient {
@@ -22,10 +22,7 @@ export class SnowClient extends BaseKMAClient {
    * @param tm - Time in YYYYMMDDHHmm format or Date object
    * @param stn - Station ID (0 for all stations)
    */
-  async getHourlyData(
-    tm: string | Date,
-    stn: number | string = 0
-  ): Promise<SnowObservation[]> {
+  async getHourlyData(tm: string | Date, stn: number | string = 0): Promise<SnowObservation[]> {
     const timeStr = typeof tm === 'string' ? tm : this.formatDateTime(tm);
     return this.makeRequest<SnowObservation>('kma_snow.php', {
       tm: timeStr,
@@ -58,10 +55,7 @@ export class SnowClient extends BaseKMAClient {
    * @param tm - Date in YYYYMMDD format or Date object
    * @param stn - Station ID (0 for all stations)
    */
-  async getDailyData(
-    tm: string | Date,
-    stn: number | string = 0
-  ): Promise<SnowObservation[]> {
+  async getDailyData(tm: string | Date, stn: number | string = 0): Promise<SnowObservation[]> {
     const dateStr = typeof tm === 'string' ? tm : this.formatDateTime(tm, false);
     return this.makeRequest<SnowObservation>('kma_snow_day.php', {
       tm: dateStr,

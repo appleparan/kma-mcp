@@ -5,19 +5,19 @@
 import { BaseKMAClient, KMAClientConfig } from './base.js';
 
 export interface LightningData {
-  tm: string;          // 관측시각
-  lat: number;         // 위도
-  lon: number;         // 경도
-  intensity: number;   // 강도
-  type: string;        // 낙뢰 유형
+  tm: string; // 관측시각
+  lat: number; // 위도
+  lon: number; // 경도
+  intensity: number; // 강도
+  type: string; // 낙뢰 유형
 }
 
 export interface WindProfilerData {
-  tm: string;          // 관측시각
-  stnId: string;       // 지점번호
-  height: number;      // 고도(m)
-  ws: number;          // 풍속(m/s)
-  wd: number;          // 풍향(deg)
+  tm: string; // 관측시각
+  stnId: string; // 지점번호
+  height: number; // 고도(m)
+  ws: number; // 풍속(m/s)
+  wd: number; // 풍향(deg)
 }
 
 export class IntegratedClient extends BaseKMAClient {
@@ -30,10 +30,7 @@ export class IntegratedClient extends BaseKMAClient {
    * @param tm1 - Start time in YYYYMMDDHHmm format
    * @param tm2 - End time in YYYYMMDDHHmm format
    */
-  async getLightningData(
-    tm1: string,
-    tm2: string
-  ): Promise<LightningData[]> {
+  async getLightningData(tm1: string, tm2: string): Promise<LightningData[]> {
     return this.makeRequest<LightningData>('lgt_kma_np3.php', {
       tm1,
       tm2,

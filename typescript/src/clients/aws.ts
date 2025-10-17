@@ -5,21 +5,21 @@
 import { BaseKMAClient, KMAClientConfig } from './base.js';
 
 export interface AWSObservation {
-  tm: string;          // 관측시각
-  stnId: string;       // 지점번호
-  stnNm: string;       // 지점명
-  ta: number;          // 기온(°C)
-  taQcflg: string;     // 기온 QC 플래그
-  rn: number;          // 강수량(mm)
-  rnQcflg: string;     // 강수량 QC 플래그
-  ws: number;          // 풍속(m/s)
-  wsQcflg: string;     // 풍속 QC 플래그
-  wd: number;          // 풍향(deg)
-  wdQcflg: string;     // 풍향 QC 플래그
-  hm: number;          // 습도(%)
-  hmQcflg: string;     // 습도 QC 플래그
-  pa: number;          // 현지기압(hPa)
-  paQcflg: string;     // 현지기압 QC 플래그
+  tm: string; // 관측시각
+  stnId: string; // 지점번호
+  stnNm: string; // 지점명
+  ta: number; // 기온(°C)
+  taQcflg: string; // 기온 QC 플래그
+  rn: number; // 강수량(mm)
+  rnQcflg: string; // 강수량 QC 플래그
+  ws: number; // 풍속(m/s)
+  wsQcflg: string; // 풍속 QC 플래그
+  wd: number; // 풍향(deg)
+  wdQcflg: string; // 풍향 QC 플래그
+  hm: number; // 습도(%)
+  hmQcflg: string; // 습도 QC 플래그
+  pa: number; // 현지기압(hPa)
+  paQcflg: string; // 현지기압 QC 플래그
 }
 
 export class AWSClient extends BaseKMAClient {
@@ -32,10 +32,7 @@ export class AWSClient extends BaseKMAClient {
    * @param tm - Time in YYYYMMDDHHmm format or Date object
    * @param stn - Station ID (0 for all stations)
    */
-  async getMinutelyData(
-    tm: string | Date,
-    stn: number | string = 0
-  ): Promise<AWSObservation[]> {
+  async getMinutelyData(tm: string | Date, stn: number | string = 0): Promise<AWSObservation[]> {
     const timeStr = typeof tm === 'string' ? tm : this.formatDateTime(tm);
     return this.makeRequest<AWSObservation>('kma_aws.php', {
       tm: timeStr,
@@ -68,10 +65,7 @@ export class AWSClient extends BaseKMAClient {
    * @param tm - Time in YYYYMMDDHHmm format or Date object
    * @param stn - Station ID (0 for all stations)
    */
-  async getHourlyData(
-    tm: string | Date,
-    stn: number | string = 0
-  ): Promise<AWSObservation[]> {
+  async getHourlyData(tm: string | Date, stn: number | string = 0): Promise<AWSObservation[]> {
     const timeStr = typeof tm === 'string' ? tm : this.formatDateTime(tm);
     return this.makeRequest<AWSObservation>('kma_aws3.php', {
       tm: timeStr,
@@ -104,10 +98,7 @@ export class AWSClient extends BaseKMAClient {
    * @param tm - Date in YYYYMMDD format or Date object
    * @param stn - Station ID (0 for all stations)
    */
-  async getDailyData(
-    tm: string | Date,
-    stn: number | string = 0
-  ): Promise<AWSObservation[]> {
+  async getDailyData(tm: string | Date, stn: number | string = 0): Promise<AWSObservation[]> {
     const dateStr = typeof tm === 'string' ? tm : this.formatDateTime(tm, false);
     return this.makeRequest<AWSObservation>('kma_aws5.php', {
       tm: dateStr,

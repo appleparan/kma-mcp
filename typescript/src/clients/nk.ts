@@ -5,15 +5,15 @@
 import { BaseKMAClient, KMAClientConfig } from './base.js';
 
 export interface NKObservation {
-  tm: string;          // 관측시각
-  stnId: string;       // 지점번호
-  stnNm: string;       // 지점명
-  ta: number;          // 기온(°C)
-  rn: number;          // 강수량(mm)
-  ws: number;          // 풍속(m/s)
-  wd: number;          // 풍향(deg)
-  hm: number;          // 습도(%)
-  pa: number;          // 기압(hPa)
+  tm: string; // 관측시각
+  stnId: string; // 지점번호
+  stnNm: string; // 지점명
+  ta: number; // 기온(°C)
+  rn: number; // 강수량(mm)
+  ws: number; // 풍속(m/s)
+  wd: number; // 풍향(deg)
+  hm: number; // 습도(%)
+  pa: number; // 기압(hPa)
 }
 
 export class NKClient extends BaseKMAClient {
@@ -26,10 +26,7 @@ export class NKClient extends BaseKMAClient {
    * @param tm - Time in YYYYMMDDHHmm format or Date object
    * @param stn - Station ID (0 for all stations)
    */
-  async getHourlyData(
-    tm: string | Date,
-    stn: number | string = 0
-  ): Promise<NKObservation[]> {
+  async getHourlyData(tm: string | Date, stn: number | string = 0): Promise<NKObservation[]> {
     const timeStr = typeof tm === 'string' ? tm : this.formatDateTime(tm);
     return this.makeRequest<NKObservation>('kma_nkobs.php', {
       tm: timeStr,
@@ -62,10 +59,7 @@ export class NKClient extends BaseKMAClient {
    * @param tm - Date in YYYYMMDD format or Date object
    * @param stn - Station ID (0 for all stations)
    */
-  async getDailyData(
-    tm: string | Date,
-    stn: number | string = 0
-  ): Promise<NKObservation[]> {
+  async getDailyData(tm: string | Date, stn: number | string = 0): Promise<NKObservation[]> {
     const dateStr = typeof tm === 'string' ? tm : this.formatDateTime(tm, false);
     return this.makeRequest<NKObservation>('kma_nkobs_day.php', {
       tm: dateStr,

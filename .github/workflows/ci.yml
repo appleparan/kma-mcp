@@ -73,18 +73,17 @@ jobs:
         working-directory: ./typescript
         run: bun install
 
-      - name: Type check
+      - name: Format check
         working-directory: ./typescript
-        run: bun run build:tsc
+        run: bun run format:check
 
       - name: Lint
         working-directory: ./typescript
-        run: |
-          if [ -f "package.json" ] && grep -q "\"lint\"" package.json; then
-            bun run lint
-          else
-            echo "No lint script found, skipping"
-          fi
+        run: bun run lint
+
+      - name: Type check
+        working-directory: ./typescript
+        run: bun run build:tsc
 
   test-python:
     needs: lint-python

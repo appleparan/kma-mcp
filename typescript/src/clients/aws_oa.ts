@@ -5,15 +5,15 @@
 import { BaseKMAClient, KMAClientConfig } from './base.js';
 
 export interface AWSOAData {
-  tm: string;          // 분석시각
-  x: number;           // 경도
-  y: number;           // 위도
-  ta: number;          // 기온(°C)
-  rn: number;          // 강수량(mm)
-  ws: number;          // 풍속(m/s)
-  wd: number;          // 풍향(deg)
-  hm: number;          // 습도(%)
-  pa: number;          // 기압(hPa)
+  tm: string; // 분석시각
+  x: number; // 경도
+  y: number; // 위도
+  ta: number; // 기온(°C)
+  rn: number; // 강수량(mm)
+  ws: number; // 풍속(m/s)
+  wd: number; // 풍향(deg)
+  hm: number; // 습도(%)
+  pa: number; // 기압(hPa)
 }
 
 export class AWSOAClient extends BaseKMAClient {
@@ -27,11 +27,7 @@ export class AWSOAClient extends BaseKMAClient {
    * @param x - Longitude coordinate
    * @param y - Latitude coordinate
    */
-  async getAnalysisData(
-    tm: string | Date,
-    x: number,
-    y: number
-  ): Promise<AWSOAData[]> {
+  async getAnalysisData(tm: string | Date, x: number, y: number): Promise<AWSOAData[]> {
     const timeStr = typeof tm === 'string' ? tm : this.formatDateTime(tm);
     return this.makeRequest<AWSOAData>('kma_awsoa.php', {
       tm: timeStr,

@@ -5,11 +5,11 @@
 import { BaseKMAClient, KMAClientConfig } from './base.js';
 
 export interface SeasonObservation {
-  year: string;        // 연도
-  stnId: string;       // 지점번호
-  stnNm: string;       // 지점명
-  event: string;       // 관측 이벤트 (벚꽃개화, 단풍 등)
-  date: string;        // 관측일
+  year: string; // 연도
+  stnId: string; // 지점번호
+  stnNm: string; // 지점명
+  event: string; // 관측 이벤트 (벚꽃개화, 단풍 등)
+  date: string; // 관측일
 }
 
 export class SeasonClient extends BaseKMAClient {

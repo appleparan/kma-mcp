@@ -5,20 +5,20 @@
 import { BaseKMAClient, KMAClientConfig } from './base.js';
 
 export interface SatelliteFile {
-  fileName: string;    // 파일명
-  fileSize: number;    // 파일크기
-  fileDate: string;    // 파일날짜
-  sat: string;         // 위성명
-  area: string;        // 지역코드
-  product: string;     // 산출물
+  fileName: string; // 파일명
+  fileSize: number; // 파일크기
+  fileDate: string; // 파일날짜
+  sat: string; // 위성명
+  area: string; // 지역코드
+  product: string; // 산출물
 }
 
 export interface SatelliteImagery {
-  level: string;       // 데이터레벨
-  product: string;     // 산출물/채널
-  area: string;        // 지역코드
-  tm: string;          // 관측시각
-  data: string;        // 이미지 데이터
+  level: string; // 데이터레벨
+  product: string; // 산출물/채널
+  area: string; // 지역코드
+  tm: string; // 관측시각
+  data: string; // 이미지 데이터
 }
 
 export class SatelliteClient extends BaseKMAClient {
