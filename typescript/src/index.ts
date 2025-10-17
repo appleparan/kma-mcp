@@ -53,12 +53,6 @@ const DateStationSchema = z.object({
   stn: z.number().default(108).describe('Station ID (default: 108 for Seoul, 0 for all)'),
 });
 
-const DatePeriodStationSchema = z.object({
-  tm1: z.string().describe('Start date in YYYYMMDD format'),
-  tm2: z.string().describe('End date in YYYYMMDD format'),
-  stn: z.number().default(108).describe('Station ID (default: 108 for Seoul, 0 for all)'),
-});
-
 const ElementSchema = z.object({
   tm1: z.string().describe('Start time in YYYYMMDDHHmm format'),
   tm2: z.string().describe('End time in YYYYMMDDHHmm format'),
