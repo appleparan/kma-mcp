@@ -13,16 +13,16 @@ from pathlib import Path
 from dotenv import load_dotenv
 from fastmcp import FastMCP
 
-from kma_mcp.asos_client import ASOSClient
-from kma_mcp.aws_client import AWSClient
-from kma_mcp.aws_oa_client import AWSOAClient
-from kma_mcp.climate_client import ClimateClient
-from kma_mcp.dust_client import DustClient
-from kma_mcp.nk_client import NKClient
-from kma_mcp.season_client import SeasonClient
-from kma_mcp.snow_client import SnowClient
-from kma_mcp.station_client import StationClient
-from kma_mcp.uv_client import UVClient
+from kma_mcp.surface.asos_client import ASOSClient
+from kma_mcp.surface.aws_client import AWSClient
+from kma_mcp.surface.aws_oa_client import AWSOAClient
+from kma_mcp.surface.climate_client import ClimateClient
+from kma_mcp.surface.dust_client import DustClient
+from kma_mcp.surface.nk_client import NKClient
+from kma_mcp.surface.season_client import SeasonClient
+from kma_mcp.surface.snow_client import SnowClient
+from kma_mcp.surface.station_client import StationClient
+from kma_mcp.surface.uv_client import UVClient
 
 # Load environment variables from .env file
 # Look for .env in project root (parent of parent of this file)

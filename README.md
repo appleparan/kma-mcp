@@ -139,7 +139,7 @@ The MCP server provides the following tools:
 
 **ASOS Client**:
 ```python
-from kma_mcp.asos_client import ASOSClient
+from kma_mcp.surface.asos_client import ASOSClient
 
 # Initialize client
 client = ASOSClient('your_api_key')
@@ -156,7 +156,7 @@ data = client.get_element_data(tm1='202501011200', tm2='202501011800', obs='TA',
 
 **AWS Client**:
 ```python
-from kma_mcp.aws_client import AWSClient
+from kma_mcp.surface.aws_client import AWSClient
 
 # Initialize AWS client
 client = AWSClient('your_api_key')
@@ -173,7 +173,7 @@ data = client.get_hourly_period(tm1='202501010000', tm2='202501020000', stn=108)
 
 **North Korea Client**:
 ```python
-from kma_mcp.nk_client import NKClient
+from kma_mcp.surface.nk_client import NKClient
 
 # Initialize North Korea client
 client = NKClient('your_api_key')
@@ -190,7 +190,7 @@ data = client.get_daily_period(tm1='20250101', tm2='20250131', stn=108)
 
 **Climate Client**:
 ```python
-from kma_mcp.climate_client import ClimateClient
+from kma_mcp.surface.climate_client import ClimateClient
 
 # Initialize Climate client
 client = ClimateClient('your_api_key')
@@ -207,7 +207,7 @@ data = client.get_annual_normals(stn=108)
 
 **Yellow Dust Client**:
 ```python
-from kma_mcp.dust_client import DustClient
+from kma_mcp.surface.dust_client import DustClient
 
 # Initialize Yellow Dust client
 client = DustClient('your_api_key')
@@ -224,7 +224,7 @@ data = client.get_daily_period(tm1='20250101', tm2='20250131', stn=108)
 
 **UV Radiation Client**:
 ```python
-from kma_mcp.uv_client import UVClient
+from kma_mcp.surface.uv_client import UVClient
 
 # Initialize UV Radiation client
 client = UVClient('your_api_key')
@@ -241,7 +241,7 @@ data = client.get_daily_period(tm1='20250101', tm2='20250131', stn=108)
 
 **Snow Depth Client**:
 ```python
-from kma_mcp.snow_client import SnowClient
+from kma_mcp.surface.snow_client import SnowClient
 
 # Initialize Snow Depth client
 client = SnowClient('your_api_key')

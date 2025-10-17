@@ -6,7 +6,7 @@ from unittest.mock import Mock, patch
 import httpx
 import pytest
 
-from kma_mcp.snow_client import SnowClient
+from kma_mcp.surface.snow_client import SnowClient
 
 
 @pytest.fixture

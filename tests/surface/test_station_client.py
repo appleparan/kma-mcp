@@ -5,7 +5,7 @@ from unittest.mock import Mock, patch
 import httpx
 import pytest
 
-from kma_mcp.station_client import StationClient
+from kma_mcp.surface.station_client import StationClient
 
 
 @pytest.fixture

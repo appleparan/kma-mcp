@@ -12,7 +12,7 @@
 ## 1. 지상관측 (Surface Observations)
 
 ### ✅ 종관기상관측(ASOS) - Automated Synoptic Observing System
-**구현 파일**: `src/kma_mcp/asos_client.py`, `src/kma_mcp/mcp_server.py`
+**구현 파일**: `src/kma_mcp/surface/asos_client.py`, `src/kma_mcp/mcp_server.py`
 
 **구현된 API**:
 - ✅ 시간별 관측 데이터 (단일 시간) - `get_hourly_data()`
@@ -34,7 +34,7 @@
 ---
 
 ### ✅ 방재기상관측(AWS) - Automated Weather Station
-**구현 파일**: `src/kma_mcp/aws_client.py`, `src/kma_mcp/mcp_server.py`
+**구현 파일**: `src/kma_mcp/surface/aws_client.py`, `src/kma_mcp/mcp_server.py`
 
 **구현된 API**:
 - ✅ 분별 관측 데이터 (단일 시간) - `get_minutely_data()`
@@ -57,7 +57,7 @@
 ---
 
 ### ✅ 기후통계 - Climate Statistics
-**구현 파일**: `src/kma_mcp/climate_client.py`, `src/kma_mcp/mcp_server.py`
+**구현 파일**: `src/kma_mcp/surface/climate_client.py`, `src/kma_mcp/mcp_server.py`
 
 **구현된 API**:
 - ✅ 일별 평년값 - `get_daily_normals()`
@@ -78,7 +78,7 @@
 ---
 
 ### ✅ 북한기상관측 - North Korea Meteorological Observation
-**구현 파일**: `src/kma_mcp/nk_client.py`, `src/kma_mcp/mcp_server.py`
+**구현 파일**: `src/kma_mcp/surface/nk_client.py`, `src/kma_mcp/mcp_server.py`
 
 **구현된 API**:
 - ✅ 시간별 북한 기상 데이터 (단일 시간) - `get_hourly_data()`
@@ -97,7 +97,7 @@
 ---
 
 ### ✅ 황사관측(PM10) - Yellow Dust Observation
-**구현 파일**: `src/kma_mcp/dust_client.py`, `src/kma_mcp/mcp_server.py`
+**구현 파일**: `src/kma_mcp/surface/dust_client.py`, `src/kma_mcp/mcp_server.py`
 
 **구현된 API**:
 - ✅ 시간별 PM10 데이터 (단일 시간) - `get_hourly_data()`
@@ -117,7 +117,7 @@
 ---
 
 ### ✅ 적설관측 - Snow Depth Observation
-**구현 파일**: `src/kma_mcp/aws_oa_client.py`, `src/kma_mcp/mcp_server.py`
+**구현 파일**: `src/kma_mcp/surface/aws_oa_client.py`, `src/kma_mcp/mcp_server.py`
 
 **구현된 API**:
 - ✅ 격자 분석 데이터 (단일 시간) - `get_analysis_data()`
@@ -126,14 +126,14 @@
 **MCP 도구**:
 - ✅ `get_aws_oa_current` - 현재 AWS 객관분석 데이터 조회
 - ✅ `get_aws_oa_period` - 기간별 AWS 객관분석 데이터 조회
-**구현 파일**: `src/kma_mcp/season_client.py`, `src/kma_mcp/mcp_server.py`
+**구현 파일**: `src/kma_mcp/surface/season_client.py`, `src/kma_mcp/mcp_server.py`
 
 **구현된 API**:
 - ✅ 연도별 계절 관측 데이터 - `get_observation_data()`
 - ✅ 기간별 계절 관측 데이터 - `get_observation_period()`
 
 **MCP 도구**:
-**구현 파일**: `src/kma_mcp/station_client.py`, `src/kma_mcp/mcp_server.py`
+**구현 파일**: `src/kma_mcp/surface/station_client.py`, `src/kma_mcp/mcp_server.py`
 
 **구현된 API**:
 - ✅ ASOS 지점 정보 - `get_asos_stations()`
@@ -168,7 +168,7 @@
 ---
 
 ### ✅ 자외선관측 - Ultraviolet Radiation Observation
-**구현 파일**: `src/kma_mcp/uv_client.py`, `src/kma_mcp/mcp_server.py`
+**구현 파일**: `src/kma_mcp/surface/uv_client.py`, `src/kma_mcp/mcp_server.py`
 
 **구현된 API**:
 - ✅ 시간별 UV 데이터 (단일 시간) - `get_hourly_data()`
@@ -190,7 +190,7 @@
 ---
 
 ### ✅ AWS 객관분석 - AWS Objective Analysis
-**구현 파일**: `src/kma_mcp/aws_oa_client.py`, `src/kma_mcp/mcp_server.py`
+**구현 파일**: `src/kma_mcp/surface/aws_oa_client.py`, `src/kma_mcp/mcp_server.py`
 
 **구현된 API**:
 - ✅ 격자 분석 데이터 (단일 시간) - `get_analysis_data()`
@@ -207,7 +207,7 @@
 ---
 
 ### ✅ 계절관측 - Seasonal Observation
-**구현 파일**: `src/kma_mcp/season_client.py`, `src/kma_mcp/mcp_server.py`
+**구현 파일**: `src/kma_mcp/surface/season_client.py`, `src/kma_mcp/mcp_server.py`
 
 **구현된 API**:
 - ✅ 연도별 계절 관측 데이터 - `get_observation_data()`
@@ -225,7 +225,7 @@
 ---
 
 ### ✅ 지상관측 지점정보 - Surface Observation Station Information
-**구현 파일**: `src/kma_mcp/station_client.py`, `src/kma_mcp/mcp_server.py`
+**구현 파일**: `src/kma_mcp/surface/station_client.py`, `src/kma_mcp/mcp_server.py`
 
 **구현된 API**:
 - ✅ ASOS 지점 정보 - `get_asos_stations()`

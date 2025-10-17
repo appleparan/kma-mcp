@@ -6,7 +6,7 @@ from unittest.mock import Mock, patch
 import httpx
 import pytest
 
-from kma_mcp.nk_client import NKClient
+from kma_mcp.surface.nk_client import NKClient
 
 
 @pytest.fixture

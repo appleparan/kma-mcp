@@ -5,7 +5,7 @@ from unittest.mock import Mock, patch
 import httpx
 import pytest
 
-from kma_mcp.season_client import SeasonClient
+from kma_mcp.surface.season_client import SeasonClient
 
 
 @pytest.fixture

@@ -5,7 +5,7 @@ from unittest.mock import Mock, patch
 import httpx
 import pytest
 
-from kma_mcp.climate_client import ClimateClient
+from kma_mcp.surface.climate_client import ClimateClient
 
 
 @pytest.fixture

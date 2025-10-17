@@ -6,7 +6,7 @@ from unittest.mock import Mock, patch
 import httpx
 import pytest
 
-from kma_mcp.aws_client import AWSClient
+from kma_mcp.surface.aws_client import AWSClient
 
 
 @pytest.fixture

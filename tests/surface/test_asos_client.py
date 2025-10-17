@@ -6,7 +6,7 @@ from unittest.mock import Mock, patch
 import httpx
 import pytest
 
-from kma_mcp.asos_client import ASOSClient
+from kma_mcp.surface.asos_client import ASOSClient
 
 
 @pytest.fixture
