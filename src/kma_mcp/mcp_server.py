@@ -13,8 +13,10 @@ from pathlib import Path
 from dotenv import load_dotenv
 from fastmcp import FastMCP
 
+from kma_mcp.earthquake.earthquake_client import EarthquakeClient
 from kma_mcp.forecast.forecast_client import ForecastClient
 from kma_mcp.forecast.warning_client import WarningClient
+from kma_mcp.marine.buoy_client import BuoyClient
 from kma_mcp.radar.radar_client import RadarClient
 from kma_mcp.surface.asos_client import ASOSClient
 from kma_mcp.surface.aws_client import AWSClient
@@ -27,6 +29,7 @@ from kma_mcp.surface.snow_client import SnowClient
 from kma_mcp.surface.station_client import StationClient
 from kma_mcp.surface.uv_client import UVClient
 from kma_mcp.typhoon.typhoon_client import TyphoonClient
+from kma_mcp.upper_air.radiosonde_client import RadiosondeClient
 
 # Load environment variables from .env file
 # Look for .env in project root (parent of parent of this file)
@@ -1416,6 +1419,166 @@ def get_typhoon_history_by_year(year: int) -> str:
             return str(data)
     except Exception as e:  # noqa: BLE001
         return f'Error fetching typhoon history: {e!s}'
+
+
+# ============================================================================
+# Marine Observation (Buoy) Tools
+# ============================================================================
+
+
+@mcp.tool()
+def get_marine_buoy_data(observation_time: str, station_id: int = 0) -> str:
+    """Get marine buoy observation data.
+
+    Provides marine meteorological data from buoys including wave height,
+    water temperature, wind, and atmospheric conditions.
+
+    Args:
+        observation_time: Observation time in 'YYYYMMDDHHmm' format (e.g., '202501011200')
+        station_id: Buoy station ID (0 for all stations, default: 0)
+
+    Returns:
+        Marine buoy observation data in JSON format
+    """
+    if not API_KEY:
+        return 'Error: KMA_API_KEY environment variable not set'
+
+    try:
+        with BuoyClient(API_KEY) as client:
+            data = client.get_buoy_data(tm=observation_time, stn=station_id)
+            return str(data)
+    except Exception as e:  # noqa: BLE001
+        return f'Error fetching marine buoy data: {e!s}'
+
+
+@mcp.tool()
+def get_marine_buoy_period(start_time: str, end_time: str, station_id: int = 0) -> str:
+    """Get marine buoy observation data for a time period.
+
+    Args:
+        start_time: Start time in 'YYYYMMDDHHmm' format (e.g., '202501011200')
+        end_time: End time in 'YYYYMMDDHHmm' format
+        station_id: Buoy station ID (0 for all stations, default: 0)
+
+    Returns:
+        Marine buoy observation data for the period in JSON format
+    """
+    if not API_KEY:
+        return 'Error: KMA_API_KEY environment variable not set'
+
+    try:
+        with BuoyClient(API_KEY) as client:
+            data = client.get_buoy_period(tm1=start_time, tm2=end_time, stn=station_id)
+            return str(data)
+    except Exception as e:  # noqa: BLE001
+        return f'Error fetching marine buoy data: {e!s}'
+
+
+# ============================================================================
+# Upper-Air Observations (Radiosonde) Tools
+# ============================================================================
+
+
+@mcp.tool()
+def get_upper_air_data(
+    observation_time: str, station_id: int = 0, pressure_level: float | None = None
+) -> str:
+    """Get upper-air radiosonde observation data.
+
+    Provides atmospheric profile data including temperature, humidity,
+    and wind at various altitude levels.
+
+    Args:
+        observation_time: UTC observation time in 'YYYYMMDDHHmm' format
+        station_id: Station ID (0 for all stations, default: 0)
+        pressure_level: Pressure level in hPa (optional, e.g., 850, 500, 250)
+
+    Returns:
+        Upper-air observation data in JSON format
+    """
+    if not API_KEY:
+        return 'Error: KMA_API_KEY environment variable not set'
+
+    try:
+        with RadiosondeClient(API_KEY) as client:
+            data = client.get_upper_air_data(tm=observation_time, stn=station_id, pa=pressure_level)
+            return str(data)
+    except Exception as e:  # noqa: BLE001
+        return f'Error fetching upper-air data: {e!s}'
+
+
+@mcp.tool()
+def get_atmospheric_stability_indices(start_time: str, end_time: str, station_id: int = 0) -> str:
+    """Get atmospheric stability indices for convective forecasting.
+
+    Provides stability indices including CAPE, K-index, lifted index,
+    and cloud layer information for severe weather analysis.
+
+    Args:
+        start_time: Start UTC time in 'YYYYMMDDHHmm' format
+        end_time: End UTC time in 'YYYYMMDDHHmm' format
+        station_id: Station ID (0 for all stations, default: 0)
+
+    Returns:
+        Atmospheric stability indices in JSON format
+    """
+    if not API_KEY:
+        return 'Error: KMA_API_KEY environment variable not set'
+
+    try:
+        with RadiosondeClient(API_KEY) as client:
+            data = client.get_stability_indices(tm1=start_time, tm2=end_time, stn=station_id)
+            return str(data)
+    except Exception as e:  # noqa: BLE001
+        return f'Error fetching stability indices: {e!s}'
+
+
+# ============================================================================
+# Earthquake Monitoring Tools
+# ============================================================================
+
+
+@mcp.tool()
+def get_recent_earthquake_info() -> str:
+    """Get the most recent earthquake information.
+
+    Provides information on the most recent earthquake or earthquakes
+    within the past 10 days.
+
+    Returns:
+        Recent earthquake data in JSON format
+    """
+    if not API_KEY:
+        return 'Error: KMA_API_KEY environment variable not set'
+
+    try:
+        with EarthquakeClient(API_KEY) as client:
+            data = client.get_recent_earthquake()
+            return str(data)
+    except Exception as e:  # noqa: BLE001
+        return f'Error fetching recent earthquake data: {e!s}'
+
+
+@mcp.tool()
+def get_earthquake_list(start_time: str, end_time: str) -> str:
+    """Get earthquake list for a time period.
+
+    Args:
+        start_time: Start time in 'YYYYMMDDHHmm' format (e.g., '202501010000')
+        end_time: End time in 'YYYYMMDDHHmm' format
+
+    Returns:
+        List of earthquakes during the period in JSON format
+    """
+    if not API_KEY:
+        return 'Error: KMA_API_KEY environment variable not set'
+
+    try:
+        with EarthquakeClient(API_KEY) as client:
+            data = client.get_earthquake_list(tm1=start_time, tm2=end_time)
+            return str(data)
+    except Exception as e:  # noqa: BLE001
+        return f'Error fetching earthquake list: {e!s}'
 
 
 if __name__ == '__main__':
