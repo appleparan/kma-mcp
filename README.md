@@ -4,20 +4,22 @@ MCP server for Korea Meteorological Administration API access
 
 ## Features
 
-### ASOS (Automated Synoptic Observing System) MCP Server
+This project provides FastMCP servers for accessing KMA (Korea Meteorological Administration) weather APIs:
 
-This project provides a FastMCP server for accessing KMA's ASOS (종관기상관측) surface weather observation data. The ASOS system collects atmospheric data at standardized times across all observation stations, measuring:
+### ✅ ASOS (Automated Synoptic Observing System)
+Standard meteorological observations at 96 stations nationwide:
+- Temperature, Precipitation, Pressure, Humidity
+- Wind direction/speed, Solar radiation, Sunshine duration, Snow depth
+- Hourly and daily data
 
-- Temperature (기온)
-- Precipitation (강수량)
-- Pressure (기압)
-- Humidity (습도)
-- Wind direction and speed (풍향, 풍속)
-- Solar radiation (일사)
-- Sunshine duration (일조)
-- Snow depth (적설)
+### ✅ AWS (Automated Weather Station)
+Real-time disaster prevention monitoring with extensive station coverage:
+- **Minutely data** for rapid monitoring
+- Temperature, Precipitation, Wind, Humidity
+- More observation points than ASOS
+- Focused on disaster prevention and real-time alerts
 
-> **Note**: Currently, only ASOS API is implemented. For a complete list of available APIs and implementation status, see [API_STATUS.md](API_STATUS.md).
+> **Implementation Status**: 2 APIs implemented (ASOS, AWS). See [API_STATUS.md](API_STATUS.md) for complete list of 60+ available APIs.
 
 ## Quick Start
 
@@ -64,6 +66,7 @@ The API key is passed as `authKey` parameter in all API requests.
 
 The MCP server provides the following tools:
 
+**ASOS (Synoptic Observations)**:
 1. **get_current_weather**: Get current hourly weather observation data
 2. **get_hourly_weather**: Get hourly weather data for a time period (max 31 days)
 3. **get_daily_weather**: Get daily weather data for a date range
@@ -71,8 +74,15 @@ The MCP server provides the following tools:
 5. **get_precipitation_data**: Get precipitation observations for a specific period
 6. **list_station_info**: Get a list of weather station IDs and names
 
+**AWS (Automated Weather Station)**:
+7. **get_aws_current_weather**: Get current real-time AWS weather data
+8. **get_aws_minutely_weather**: Get minutely AWS data for rapid monitoring
+9. **get_aws_hourly_weather**: Get hourly AWS data for a time period
+10. **get_aws_daily_weather**: Get daily AWS data for a date range
+
 ### Example Usage
 
+**ASOS Client**:
 ```python
 from kma_mcp.asos_client import ASOSClient
 
@@ -87,6 +97,23 @@ data = client.get_daily_period(tm1='20250101', tm2='20250131', stn=108)
 
 # Get temperature data
 data = client.get_element_data(tm1='202501011200', tm2='202501011800', obs='TA', stn=108)
+```
+
+**AWS Client**:
+```python
+from kma_mcp.aws_client import AWSClient
+
+# Initialize AWS client
+client = AWSClient('your_api_key')
+
+# Get minutely data for real-time monitoring
+data = client.get_minutely_data(tm='202501011200', stn=108)
+
+# Get minutely data for a period (rapid monitoring)
+data = client.get_minutely_period(tm1='202501011200', tm2='202501011300', stn=108)
+
+# Get hourly AWS data
+data = client.get_hourly_period(tm1='202501010000', tm2='202501020000', stn=108)
 ```
 
 ### Common Station IDs

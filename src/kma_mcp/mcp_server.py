@@ -1,7 +1,9 @@
-"""FastMCP server for KMA ASOS API.
+"""FastMCP server for KMA Weather APIs.
 
 This module provides an MCP (Model Context Protocol) server that exposes
-KMA ASOS weather observation data through standardized tools.
+KMA weather observation data through standardized tools, including:
+- ASOS (Automated Synoptic Observing System)
+- AWS (Automated Weather Station)
 """
 
 import os
@@ -12,6 +14,7 @@ from dotenv import load_dotenv
 from fastmcp import FastMCP
 
 from kma_mcp.asos_client import ASOSClient
+from kma_mcp.aws_client import AWSClient
 
 # Load environment variables from .env file
 # Look for .env in project root (parent of parent of this file)
@@ -233,6 +236,129 @@ def list_station_info() -> str:
     }
 
     return str(stations)
+
+
+# ============================================================================
+# AWS (Automated Weather Station) Tools
+# ============================================================================
+
+
+@mcp.tool()
+def get_aws_current_weather(station_id: int = 0) -> str:
+    """Get current AWS real-time weather observation data.
+
+    AWS provides real-time weather data from automated weather stations
+    for disaster prevention monitoring.
+
+    Args:
+        station_id: AWS station ID (0 for all stations, default: 0)
+
+    Returns:
+        Current AWS weather observation data in JSON format
+    """
+    if not API_KEY:
+        return 'Error: KMA_API_KEY environment variable not set'
+
+    try:
+        with AWSClient(API_KEY) as client:
+            # Get current time (rounded to nearest minute)
+            now = datetime.now()
+            current_minute = now.replace(second=0, microsecond=0)
+
+            data = client.get_minutely_data(tm=current_minute, stn=station_id)
+            return str(data)
+    except Exception as e:
+        return f'Error fetching AWS weather data: {e!s}'
+
+
+@mcp.tool()
+def get_aws_minutely_weather(
+    start_time: str,
+    end_time: str,
+    station_id: int = 0,
+) -> str:
+    """Get AWS minutely weather observation data for a time period.
+
+    Args:
+        start_time: Start time in 'YYYYMMDDHHmm' format (e.g., '202501011200')
+        end_time: End time in 'YYYYMMDDHHmm' format
+        station_id: AWS station ID (0 for all stations)
+
+    Returns:
+        Minutely AWS weather observation data for the period in JSON format
+
+    Example:
+        get_aws_minutely_weather('202501011200', '202501011300', 108)
+    """
+    if not API_KEY:
+        return 'Error: KMA_API_KEY environment variable not set'
+
+    try:
+        with AWSClient(API_KEY) as client:
+            data = client.get_minutely_period(tm1=start_time, tm2=end_time, stn=station_id)
+            return str(data)
+    except Exception as e:
+        return f'Error fetching AWS minutely weather data: {e!s}'
+
+
+@mcp.tool()
+def get_aws_hourly_weather(
+    start_time: str,
+    end_time: str,
+    station_id: int = 0,
+) -> str:
+    """Get AWS hourly weather observation data for a time period.
+
+    Args:
+        start_time: Start time in 'YYYYMMDDHHmm' format (e.g., '202501011200')
+        end_time: End time in 'YYYYMMDDHHmm' format
+        station_id: AWS station ID (0 for all stations)
+
+    Returns:
+        Hourly AWS weather observation data for the period in JSON format
+
+    Example:
+        get_aws_hourly_weather('202501011200', '202501020000', 108)
+    """
+    if not API_KEY:
+        return 'Error: KMA_API_KEY environment variable not set'
+
+    try:
+        with AWSClient(API_KEY) as client:
+            data = client.get_hourly_period(tm1=start_time, tm2=end_time, stn=station_id)
+            return str(data)
+    except Exception as e:
+        return f'Error fetching AWS hourly weather data: {e!s}'
+
+
+@mcp.tool()
+def get_aws_daily_weather(
+    start_date: str,
+    end_date: str,
+    station_id: int = 0,
+) -> str:
+    """Get AWS daily weather observation data for a date range.
+
+    Args:
+        start_date: Start date in 'YYYYMMDD' format (e.g., '20250101')
+        end_date: End date in 'YYYYMMDD' format
+        station_id: AWS station ID (0 for all stations)
+
+    Returns:
+        Daily AWS weather observation data for the period in JSON format
+
+    Example:
+        get_aws_daily_weather('20250101', '20250131', 108)
+    """
+    if not API_KEY:
+        return 'Error: KMA_API_KEY environment variable not set'
+
+    try:
+        with AWSClient(API_KEY) as client:
+            data = client.get_daily_period(tm1=start_date, tm2=end_date, stn=station_id)
+            return str(data)
+    except Exception as e:
+        return f'Error fetching AWS daily weather data: {e!s}'
 
 
 if __name__ == '__main__':
