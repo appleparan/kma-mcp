@@ -1,3 +1,17 @@
+## [0.2.3] - 2025-10-17
+
+### Documentation
+
+- Update llms.txt with TypeScript implementation and Apache 2.0 license ([c9fe105](https://github.com/appleparan/kma-mcp/commit/c9fe105e28037b790bec4e72a15c14e05f35887c))
+
+### Miscellaneous Tasks
+
+- Exclude Windows from TypeScript CI jobs ([3875c46](https://github.com/appleparan/kma-mcp/commit/3875c46e3caf40d5120a87b71979fdaafd629a27))
+
+### Testing
+
+- Remove obsolete test_version.py ([9a5408d](https://github.com/appleparan/kma-mcp/commit/9a5408d6d344a566eab8d1e2bf835e15220df682))
+
 ## [0.2.2] - 2025-10-17
 
 ### Documentation
@@ -8,6 +22,7 @@
 ### Miscellaneous Tasks
 
 - Update TypeScript configuration and dependencies ([2567601](https://github.com/appleparan/kma-mcp/commit/2567601f9aa7931b135e5b8170754e93dc700ce3))
+- Bump version to 0.2.2 ([46c9fb7](https://github.com/appleparan/kma-mcp/commit/46c9fb70c0339bd654cfb00e45d1fcbdcbf81e3d))
 
 ### Styling
 
