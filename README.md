@@ -390,12 +390,16 @@ kma_mcp/
 ├── references         <- Data dictionaries, manuals, and all other explanatory materials.
 ├── reports            <- Generated analysis as HTML, PDF, LaTeX, etc.
 │   └── figures        <- Generated graphics and figures to be used in reporting
-├── tests              <- Unit test files.
-└── src/kma_mcp   <- Source code for use in this project.
-    │
-    ├── __init__.py             <- Makes kma_mcp a Python module
-    │
-    └── cli.py                  <- Default CLI program
+├── python/            <- Python implementation
+│   ├── src/kma_mcp    <- Source code for use in this project
+│   │   ├── __init__.py         <- Makes kma_mcp a Python module
+│   │   └── cli.py              <- Default CLI program
+│   └── tests/         <- Unit test files
+└── typescript/        <- TypeScript implementation
+    ├── src/           <- TypeScript source code
+    │   ├── clients/   <- API client implementations
+    │   └── index.ts   <- MCP server entry point
+    └── tests/         <- TypeScript test files
 ```
 
 ## For Developers

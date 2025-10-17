@@ -80,7 +80,7 @@ allow-direct-references = true
 
 # Only needed when `tool.uv.package = true`
 [tool.hatch.build.targets.wheel]
-packages = ["src/kma_mcp"]
+packages = ["python/src/kma_mcp"]
 
 [tool.uv]
 package = true
@@ -284,10 +284,10 @@ warn_unused_ignores = true
 [tool.pytest.ini_options]
 minversion = "8.0"
 testpaths = [
-    "tests",
+    "python/tests",
 ]
 pythonpath = [
-  "src"
+  "python/src"
 ]
 python_files = ["test_*.py"]
 # https://docs.pytest.org/en/6.2.x/customize.html#pyproject-toml
@@ -320,7 +320,7 @@ filterwarnings = [
 ]
 
 [tool.coverage.run]
-source = ["tests"]
+source = ["python/tests"]
 branch = true
 
 [tool.coverage.report]

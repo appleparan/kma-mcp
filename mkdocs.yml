@@ -211,7 +211,7 @@ plugins:
   - mkdocstrings:
       handlers:
         python:
-          paths: [src]  # search packages in the src folder
+          paths: [python/src]  # search packages in the python/src folder
           options:
             show_source: true
             show_symbol_type_toc: true

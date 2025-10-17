@@ -82,7 +82,7 @@ def main() -> None:
 
     # Find project root and source directories
     root_dir = Path(__file__).parent.parent
-    src_dir = root_dir / 'src'
+    src_dir = root_dir / 'python' / 'src'
 
     # Process each Python file
     for path in sorted(src_dir.rglob('*.py')):
