@@ -30,10 +30,10 @@ with ASOSClient('your_api_key') as client:
 
 ## Implementation Status
 
-**Total**: 18 APIs implemented, 36 clients (18 sync + 18 async), 154 tests
-**Coverage**: ~28% of total KMA API Hub APIs
+**Total**: 21 APIs implemented, 42 clients (21 sync + 21 async), 198 tests
+**Coverage**: 85% of public KMA API Hub categories (11/13)
 
-### Implemented Categories (8/8 = 100%)
+### Implemented Categories (11/13 = 85%)
 
 1. **Surface Observations (지상관측)** - 10 APIs ✅
    - ASOS (종합기상관측): Standard meteorological observations (96 stations)
@@ -69,14 +69,22 @@ with ASOSClient('your_api_key') as client:
 8. **Typhoon (태풍)** - 1 API ✅
    - Typhoon Information (태풍정보): Tropical cyclone tracking
 
-### Not Yet Implemented (5 categories)
-- Numerical Models (수치모델)
-- Integrated Meteorology (융합기상)
-- Aviation Meteorology (항공기상)
-- Global Meteorology (세계기상)
-- Industry-Specific APIs (산업특화)
+9. **Global Meteorology (세계기상)** - 1 API ✅
+   - GTS (Global Telecommunication System): Worldwide meteorological data network
 
-## Available MCP Tools (49 total)
+10. **Aviation Meteorology (항공기상)** - 1 API ✅
+   - AMOS (Aerodrome Observations): Airport weather observations
+   - AMDAR (Aircraft Data Relay): Aircraft meteorological data
+
+11. **Integrated Meteorology (융합기상)** - 1 API ✅
+   - Lightning Detection (낙뢰 탐지): Real-time lightning strike data
+   - Wind Profiler (윈드프로파일러): Vertical wind profile measurements
+
+### Not Yet Implemented (2 categories)
+- Numerical Models (수치모델) - No public endpoints available
+- Industry-Specific APIs (산업특화) - No public endpoints available
+
+## Available MCP Tools (55+ total)
 
 ### Surface Observations (32 tools)
 
@@ -169,6 +177,22 @@ with ASOSClient('your_api_key') as client:
 - `get_recent_earthquake_info` - Most recent earthquake
 - `get_earthquake_list` - Earthquake list for time period
 
+### Global Meteorology (6 tools)
+- `get_synop_observations` - Worldwide surface observations
+- `get_ship_observations` - Ship meteorological reports
+- `get_buoy_observations` - Global ocean buoy data
+- `get_aircraft_reports` - Aircraft meteorological reports (AIREP)
+- `get_surface_chart` - Surface weather analysis charts
+- `get_synop_chart` - SYNOP analysis charts
+
+### Aviation Meteorology (2 tools)
+- `get_airport_observations` - Airport weather (AMOS)
+- `get_amdar_data` - Aircraft relay data (AMDAR)
+
+### Integrated Meteorology (2 tools)
+- `get_lightning_data` - Lightning detection data
+- `get_wind_profiler_data` - Wind profiler vertical profiles
+
 ## Project Structure
 
 ```
@@ -200,9 +224,17 @@ kma-mcp/
 │   │   └── warning_client.py       # Weather warnings
 │   ├── typhoon/          # Typhoon clients (1 API)
 │   │   └── typhoon_client.py       # Typhoon information
+│   ├── global_met/       # Global meteorology clients (1 API)
+│   │   └── gts_client.py           # GTS worldwide data
+│   ├── aviation/         # Aviation meteorology clients (1 API)
+│   │   └── amos_client.py          # Airport observations
+│   ├── integrated/       # Integrated meteorology clients (1 API)
+│   │   └── integrated_client.py    # Lightning, wind profiler
+│   ├── utils/            # Utility modules
+│   │   └── weather_codes.py        # Korean weather code translations
 │   ├── mcp_server.py     # Main MCP server with all tools
 │   └── async_mcp_server.py  # Async MCP server template
-├── tests/                # Comprehensive test suite (154 tests)
+├── tests/                # Comprehensive test suite (198 tests)
 ├── scripts/
 │   └── start_mcp_server.py    # Server startup script
 ├── API_STATUS.md         # Detailed API implementation status
@@ -216,7 +248,7 @@ kma-mcp/
 ### Dual Client Support
 - **Sync clients**: Standard synchronous HTTP clients using httpx
 - **Async clients**: Full async/await support for concurrent operations
-- All 18 APIs have both sync and async versions (36 clients total)
+- All 21 APIs have both sync and async versions (42 clients total)
 
 ### Time Format Support
 - String formats: 'YYYYMMDDHHmm' (hourly), 'YYYYMMDD' (daily)
@@ -229,10 +261,17 @@ kma-mcp/
 - Context manager support (__enter__/__exit__)
 
 ### Testing
-- 154 comprehensive tests covering all clients
+- 198 comprehensive tests covering all clients
 - Mock-based testing with httpx
 - Both sync and async test coverage
 - 100% test pass rate
+
+### Korean Weather Code Utilities
+- Wind direction conversion (degrees → Korean text)
+- Precipitation type codes (0-7 → Korean descriptions)
+- Sky condition codes (1,3,4 → Korean text)
+- Auto-enhancement of weather data with Korean fields
+- Human-readable Korean weather summaries
 
 ## Common Patterns
 
@@ -377,6 +416,35 @@ Seismic activity monitoring.
 
 **Coverage**: Korean Peninsula and surrounding regions
 
+### 9. Global Meteorology (세계기상)
+Worldwide meteorological data via GTS (Global Telecommunication System).
+
+**Data Types**: SYNOP surface observations, ship reports, buoy data, aircraft reports, analysis charts
+
+**Coverage**: Worldwide via WMO network
+
+**Format**: BUFR and traditional formats
+
+### 10. Aviation Meteorology (항공기상)
+Aviation-specific weather data.
+
+**Data Types**:
+- AMOS: Airport/aerodrome meteorological observations
+- AMDAR: Aircraft-based meteorological data relay
+
+**Coverage**: Korean airports and commercial aircraft routes
+
+### 11. Integrated Meteorology (융합기상)
+Specialized integrated observation systems.
+
+**Data Types**:
+- Lightning detection network (location, intensity, time)
+- Wind profiler (vertical wind profiles by altitude)
+
+**Coverage**: Korean Peninsula
+
+**Temporal Resolution**: Real-time for lightning, 1-hour for wind profiler
+
 ## Development
 
 ### Requirements
@@ -475,11 +543,12 @@ uv run pytest -v
 ## Contributing
 
 Contributions are welcome! Focus areas:
-1. Implementing remaining 5 API categories
+1. Implementing remaining 2 API categories (if endpoints become public)
 2. Adding more comprehensive examples
 3. Improving documentation
 4. Adding integration tests
 5. Performance optimizations
+6. Expanding Korean weather code utilities
 
 ## License
 
