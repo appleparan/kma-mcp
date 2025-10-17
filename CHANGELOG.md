@@ -1,3 +1,10 @@
+## [0.2.1] - 2025-10-17
+
+### Documentation
+
+- Add TypeScript documentation with TypeDoc ([46d0caa](https://github.com/appleparan/kma-mcp/commit/46d0caa62b709a3719b952389a6803fec5dec84e))
+- Add KMA API Hub attribution and links ([ebe0d62](https://github.com/appleparan/kma-mcp/commit/ebe0d622aa208408308cb5c2d53e3191f4e22190))
+
 ## [0.2.0] - 2025-10-17
 
 ### Bug Fixes
@@ -22,6 +29,7 @@
 ### Miscellaneous Tasks
 
 - Add TypeScript CI workflow ([31616a5](https://github.com/appleparan/kma-mcp/commit/31616a50f3a6ef87ab82cefd29acc7fa885f3940))
+- Bump version to 0.2.0 ([d76825d](https://github.com/appleparan/kma-mcp/commit/d76825d83b398a574a6e9215caa9b03d62b638c4))
 
 ### Refactor
 
