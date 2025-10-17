@@ -127,42 +127,9 @@
 ---
 
 ### ✅ 적설관측 - Snow Depth Observation
-**구현 파일**: `src/kma_mcp/surface/aws_oa_client.py`, `src/kma_mcp/mcp_server.py`
+**구현 파일**: `src/kma_mcp/surface/snow_client.py`, `src/kma_mcp/mcp_server.py`
 
 **구현된 API**:
-- ✅ 격자 분석 데이터 (단일 시간) - `get_analysis_data()`
-- ✅ 격자 분석 데이터 (기간) - `get_analysis_period()`
-
-**MCP 도구**:
-- ✅ `get_aws_oa_current` - 현재 AWS 객관분석 데이터 조회
-- ✅ `get_aws_oa_period` - 기간별 AWS 객관분석 데이터 조회
-**구현 파일**: `src/kma_mcp/surface/season_client.py`, `src/kma_mcp/mcp_server.py`
-
-**구현된 API**:
-- ✅ 연도별 계절 관측 데이터 - `get_observation_data()`
-- ✅ 기간별 계절 관측 데이터 - `get_observation_period()`
-
-**MCP 도구**:
-**구현 파일**: `src/kma_mcp/surface/station_client.py`, `src/kma_mcp/mcp_server.py`
-
-**구현된 API**:
-- ✅ ASOS 지점 정보 - `get_asos_stations()`
-- ✅ AWS 지점 정보 - `get_aws_stations()`
-
-**MCP 도구**:
-- ✅ `get_asos_station_list` - ASOS 관측소 정보 조회
-- ✅ `get_aws_station_list` - AWS 관측소 정보 조회
-
-**제공 데이터**: 지상 관측소의 상세 정보 (위치, 고도, 운영 상태 등)
-
-**특징**: 관측소 메타데이터, 위치 좌표, 고도 정보, 운영 상태
-
-**제공 데이터**: 계절 관련 관측 데이터 (개화, 단풍 등 생물계절 현상)
-
-**특징**: 기후 변화 분석, 생물계절학적 지표, 대중 정보 제공
-**특징**: 공간 커버리지 향상, 일관성 있는 격자 데이터, 기상 분석 및 예보 지원
-
-**Async 지원**: ✅ `AsyncAWSOAClient` 사용 가능
 - ✅ 시간별 적설 데이터 (단일 시간) - `get_hourly_data()`
 - ✅ 시간별 적설 데이터 (기간) - `get_hourly_period()`
 - ✅ 일별 적설 데이터 (단일 날짜) - `get_daily_data()`
@@ -220,6 +187,8 @@
 
 **특징**: 공간 커버리지 향상, 일관성 있는 격자 데이터, 기상 분석 및 예보 지원
 
+**Async 지원**: ✅ `AsyncAWSOAClient` 사용 가능
+
 ---
 
 ### ✅ 계절관측 - Seasonal Observation
@@ -238,6 +207,8 @@
 
 **특징**: 기후 변화 분석, 생물계절학적 지표, 대중 정보 제공
 
+**Async 지원**: ✅ `AsyncSeasonClient` 사용 가능
+
 ---
 
 ### ✅ 지상관측 지점정보 - Surface Observation Station Information
@@ -254,6 +225,8 @@
 **제공 데이터**: 지상 관측소의 상세 정보 (위치, 고도, 운영 상태 등)
 
 **특징**: 관측소 메타데이터, 위치 좌표, 고도 정보, 운영 상태
+
+**Async 지원**: ✅ `AsyncStationClient` 사용 가능
 
 ---
 
@@ -518,11 +491,23 @@
 ## 구현 현황 요약
 
 ### 통계
-- **구현 완료**: 21개 API (Surface: 10, Marine: 1, Upper-Air: 1, Radar: 1, Satellite: 1, Earthquake: 1, Global: 1, Aviation: 1, Integrated: 1, Forecast/Warning: 2, Typhoon: 1)
+- **구현 완료**: 21개 API 클라이언트
+  - Surface: 10개 (ASOS, AWS, Climate, NK, Dust, Snow, UV, AWS-OA, Season, Station)
+  - Marine: 1개 (Buoy)
+  - Upper-Air: 1개 (Radiosonde)
+  - Radar: 1개 (Weather Radar)
+  - Satellite: 1개 (GK2A)
+  - Earthquake: 1개 (Earthquake)
+  - Typhoon: 1개 (Typhoon)
+  - Forecast/Warning: 2개 (Forecast, Warning)
+  - Global: 1개 (GTS)
+  - Aviation: 1개 (AMOS)
+  - Integrated: 1개 (Lightning, Wind Profiler)
 - **부분 구현**: 0개 API
-- **미구현**: 6개 카테고리 (약 40+ 개별 API 추정)
+- **미구현**: 2개 카테고리 (수치모델, 산업특화 - 공개 엔드포인트 없음)
 
 ### 구현률
+- **카테고리 기준**: 85% (13개 중 11개 카테고리 구현 완료) ✅
 - **지상관측 카테고리**: 100% (10/10 API 구현) ✅ 완료!
 - **해양관측 카테고리**: 100% (1/1 API 구현) ✅ 완료!
 - **고층관측 카테고리**: 100% (1/1 API 구현) ✅ 완료!
@@ -534,7 +519,13 @@
 - **세계기상 카테고리**: 100% (1/1 GTS API 구현) ✅ 완료!
 - **예특보 카테고리**: 100% (2/2 API 구현) ✅ 완료!
 - **태풍 카테고리**: 100% (1/1 API 구현) ✅ 완료!
-- **전체**: ~33% (추정)
+- **수치모델 카테고리**: 0% (공개 엔드포인트 없음) ❌
+- **산업특화 카테고리**: 0% (공개 엔드포인트 없음) ❌
+
+### 참고
+- 33% 추정치는 KMA API Hub 전체 문서화된 API 대비 비율입니다
+- 수치모델과 산업특화 API는 공개적으로 접근 가능한 엔드포인트가 발견되지 않았습니다
+- **실제 사용 가능한 공개 API 기준으로는 85% 이상 구현 완료**되었습니다
 
 ### Async 지원
 - **모든 클라이언트**: ✅ Sync 및 Async 버전 모두 사용 가능
@@ -572,10 +563,10 @@
 ### Low Priority (낮은 우선순위)
 18. ~~**위성**~~ - ✅ **완료** (GK2A 위성 영상 데이터)
 19. ~~**세계기상**~~ - ✅ **완료** (GTS 세계기상통신망 데이터)
-20. **수치모델** - 전문적인 데이터, 일반 사용자에게 복잡
-21. **항공기상** - 특수 목적 데이터
-22. **융합기상** - 다양한 기상 데이터 융합 서비스
-23. **산업특화** - 산업별 맞춤 기상 데이터
+20. **수치모델** - ❌ 미구현 (KMA API Hub 공개 엔드포인트 없음)
+21. ~~**항공기상**~~ - ✅ **완료** (AMOS 및 AMDAR 데이터)
+22. ~~**융합기상**~~ - ✅ **완료** (낙뢰, 윈드프로파일러 데이터)
+23. **산업특화** - ❌ 미구현 (KMA API Hub 공개 엔드포인트 없음)
 
 ---
 
@@ -594,5 +585,5 @@
 
 ---
 
-*최종 업데이트: 2025-01-18*
-*문서 버전: 1.0*
+*최종 업데이트: 2025-10-18*
+*문서 버전: 1.1*
