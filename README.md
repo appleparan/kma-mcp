@@ -94,6 +94,18 @@ Tropical cyclone tracking and forecasting:
 
 ## Quick Start
 
+### Running the MCP Server
+
+**Python:**
+```bash
+weatherrun
+```
+
+**Node.js:**
+```bash
+kma-mcp-server
+```
+
 ### Prerequisites
 
 1. Get an API key from [KMA API Hub](https://apihub.kma.go.kr/)
