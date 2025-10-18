@@ -6,8 +6,9 @@ KMA weather observation data through standardized tools, including:
 - AWS (Automated Weather Station)
 """
 
+import logging
 import os
-from datetime import UTC, datetime
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -32,6 +33,13 @@ from kma_mcp.surface.uv_client import UVClient
 from kma_mcp.typhoon.typhoon_client import TyphoonClient
 from kma_mcp.upper_air.radiosonde_client import RadiosondeClient
 
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
+logger = logging.getLogger(__name__)
+
 # Load environment variables from .env file
 # Look for .env in project root (parent of parent of this file)
 env_path = Path(__file__).resolve().parent.parent.parent / '.env'
@@ -42,6 +50,42 @@ mcp = FastMCP('KMA ASOS Weather Data')
 
 # Get API key from environment (from .env file or environment variable)
 API_KEY = os.getenv('KMA_API_KEY', '')
+
+
+def validate_api_key(api_key: str) -> bool:
+    """Validate API key by making a simple API call.
+
+    Uses AWS minutely data API as a lightweight validation endpoint.
+
+    Args:
+        api_key: KMA API key to validate
+
+    Returns:
+        True if API key is valid, False otherwise
+    """
+    if not api_key:
+        logger.error('API key is empty')
+        return False
+
+    try:
+        # Use AWS minutely data for validation (lightweight endpoint)
+        with AWSClient(api_key) as client:
+            # Get data from 10 minutes ago to ensure data availability
+            test_time = datetime.now(UTC) - timedelta(minutes=10)
+            # Test with a single station (104 = Bukgangneung)
+            result = client.get_minutely_data(tm=test_time, stn=104)
+
+            # Check if we got valid data back
+            if result and not isinstance(result, str):
+                logger.info('API key validation successful')
+                return True
+            else:
+                logger.error('API key validation failed: %s', result)
+                return False
+
+    except Exception as e:  # noqa: BLE001
+        logger.error('API key validation error: %s', e)
+        return False
 
 
 @mcp.tool()
@@ -1666,8 +1710,24 @@ def get_satellite_imagery(
     except Exception as e:  # noqa: BLE001
         return f'Error fetching satellite imagery: {e!s}'
 
-def main():
+def main() -> None:
+    """Initialize and run the MCP server with API key validation."""
+    logger.info('Starting KMA MCP server...')
+
+    # Validate API key on startup
+    if not API_KEY:
+        logger.warning('KMA_API_KEY environment variable not set')
+        logger.warning('Server will start but API calls will fail')
+    else:
+        logger.info('Validating API key...')
+        if validate_api_key(API_KEY):
+            logger.info('API key is valid and working')
+        else:
+            logger.error('API key validation failed - API calls may not work properly')
+            logger.error('Please check your API key at https://apihub.kma.go.kr/')
+
     # Initialize and run the server
+    logger.info('Server initialized successfully')
     mcp.run(transport='stdio')
 
 if __name__ == '__main__':

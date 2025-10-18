@@ -8,9 +8,46 @@ import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js'
 import { CallToolRequestSchema, ListToolsRequestSchema } from '@modelcontextprotocol/sdk/types.js';
 import { z } from 'zod';
 import { ASOSClient } from './clients/asos.js';
+import { AWSClient } from './clients/aws.js';
 
 // Environment variables
 const API_KEY = process.env.KMA_API_KEY;
+
+/**
+ * Validate API key by making a simple API call
+ * Uses AWS minutely data API as a lightweight validation endpoint
+ */
+async function validateApiKey(apiKey: string): Promise<boolean> {
+  if (!apiKey) {
+    console.error('API key is empty');
+    return false;
+  }
+
+  try {
+    const awsClient = new AWSClient({ authKey: apiKey });
+
+    // Get data from 10 minutes ago to ensure data availability
+    const testTime = new Date(Date.now() - 10 * 60 * 1000);
+    const timeStr = testTime.toISOString()
+      .replace(/[-:]/g, '')
+      .replace(/T/, '')
+      .slice(0, 12); // YYYYMMDDHHmm format
+
+    // Test with a single station (104 = Bukgangneung)
+    const result = await awsClient.getMinutelyData(timeStr, 104);
+
+    if (result) {
+      console.error('API key validation successful');
+      return true;
+    } else {
+      console.error('API key validation failed: No data returned');
+      return false;
+    }
+  } catch (error) {
+    console.error(`API key validation error: ${error instanceof Error ? error.message : String(error)}`);
+    return false;
+  }
+}
 
 if (!API_KEY) {
   console.error('Error: KMA_API_KEY environment variable is required');
@@ -224,8 +261,26 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 
 // Start server
 async function main() {
+  console.error('Starting KMA MCP server...');
+
+  // Validate API key on startup
+  if (!API_KEY) {
+    console.error('KMA_API_KEY environment variable not set');
+    console.error('Server will start but API calls will fail');
+  } else {
+    console.error('Validating API key...');
+    const isValid = await validateApiKey(API_KEY);
+    if (isValid) {
+      console.error('API key is valid and working');
+    } else {
+      console.error('API key validation failed - API calls may not work properly');
+      console.error('Please check your API key at https://apihub.kma.go.kr/');
+    }
+  }
+
   const transport = new StdioServerTransport();
   await server.connect(transport);
+  console.error('Server initialized successfully');
   console.error('KMA MCP Server running on stdio');
 }
 
