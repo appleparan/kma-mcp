@@ -7,8 +7,19 @@ import { Server } from '@modelcontextprotocol/sdk/server/index.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { CallToolRequestSchema, ListToolsRequestSchema } from '@modelcontextprotocol/sdk/types.js';
 import { z } from 'zod';
+import { config } from 'dotenv';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
 import { ASOSClient } from './clients/asos.js';
 import { AWSClient } from './clients/aws.js';
+
+// Load environment variables from .env file
+// When running from dist/index.js: typescript/dist/index.js -> go up 2 levels to project root
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const envPath = join(__dirname, '..', '..', '.env');
+config({ path: envPath });
+console.error(`Loading environment from: ${envPath}`);
 
 // Environment variables
 const API_KEY = process.env.KMA_API_KEY;

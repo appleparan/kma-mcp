@@ -41,9 +41,11 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # Load environment variables from .env file
-# Look for .env in project root (parent of parent of this file)
-env_path = Path(__file__).resolve().parent.parent.parent / '.env'
+# Look for .env in project root
+# Path structure: python/src/kma_mcp/mcp_server.py -> go up 4 levels to project root
+env_path = Path(__file__).resolve().parent.parent.parent.parent / '.env'
 load_dotenv(dotenv_path=env_path)
+logger.info('Loading environment from: %s', env_path)
 
 # Initialize FastMCP server
 mcp = FastMCP('KMA ASOS Weather Data')
