@@ -1666,7 +1666,10 @@ def get_satellite_imagery(
     except Exception as e:  # noqa: BLE001
         return f'Error fetching satellite imagery: {e!s}'
 
+def main():
+    # Initialize and run the server
+    mcp.run(transport='stdio')
 
 if __name__ == '__main__':
     # Run the MCP server
-    mcp.run()
+    main()

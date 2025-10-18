@@ -73,7 +73,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project.scripts]
-kma_mcp-cli = "kma_mcp.cli:main"
+weatherrun = "kma_mcp.mcp_server:main"
 
 [tool.hatch.metadata]
 allow-direct-references = true

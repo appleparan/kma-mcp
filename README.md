@@ -440,9 +440,9 @@ uv python install 3.13
 uv python pin 3.13
 ```
 
-### Install packages with PyTorch + CUDA 12.6 (Ubuntu)
+### Install packages with PyTorch
 ```shell
-uv sync --extra cu126
+uv sync
 ```
 
 ### Install packages without locking environments
