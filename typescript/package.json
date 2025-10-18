@@ -6,7 +6,7 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "bin": {
-    "kma-mcp-server": "./dist/index.js"
+    "weatherrun": "./dist/index.js"
   },
   "scripts": {
     "build": "bun build src/index.ts --outdir dist --target node",

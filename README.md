@@ -101,9 +101,9 @@ Tropical cyclone tracking and forecasting:
 weatherrun
 ```
 
-**Node.js:**
+**Node.js (TypeScript):**
 ```bash
-kma-mcp-server
+weatherrun
 ```
 
 ### Prerequisites
