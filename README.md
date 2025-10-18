@@ -98,12 +98,12 @@ Tropical cyclone tracking and forecasting:
 
 **Python:**
 ```bash
-weatherrun
+uv run weatherrun
 ```
 
 **Node.js (TypeScript):**
 ```bash
-weatherrun
+bun run start
 ```
 
 ### Prerequisites
