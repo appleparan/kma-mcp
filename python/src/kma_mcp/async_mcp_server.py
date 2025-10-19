@@ -44,8 +44,7 @@ from kma_mcp.upper_air.async_radiosonde_client import AsyncRadiosondeClient
 
 # Configure logging
 logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 )
 logger = logging.getLogger(__name__)
 
@@ -220,7 +219,9 @@ async def get_temperature_data(
     try:
         async with AsyncASOSClient(API_KEY) as client:
             # TA is the code for temperature (기온)
-            data = await client.get_element_data(tm1=start_time, tm2=end_time, obs='TA', stn=station_id)
+            data = await client.get_element_data(
+                tm1=start_time, tm2=end_time, obs='TA', stn=station_id
+            )
             return str(data)
     except Exception as e:  # noqa: BLE001
         return f'Error fetching temperature data: {e!s}'
@@ -251,7 +252,9 @@ async def get_precipitation_data(
     try:
         async with AsyncASOSClient(API_KEY) as client:
             # RN is the code for precipitation (강수량)
-            data = await client.get_element_data(tm1=start_time, tm2=end_time, obs='RN', stn=station_id)
+            data = await client.get_element_data(
+                tm1=start_time, tm2=end_time, obs='RN', stn=station_id
+            )
             return str(data)
     except Exception as e:  # noqa: BLE001
         return f'Error fetching precipitation data: {e!s}'
@@ -473,7 +476,9 @@ async def get_climate_daily_normals(
 
     try:
         async with AsyncClimateClient(API_KEY) as client:
-            data = await client.get_daily_normals(start_month, start_day, end_month, end_day, station_id)
+            data = await client.get_daily_normals(
+                start_month, start_day, end_month, end_day, station_id
+            )
             return str(data)
     except Exception as e:  # noqa: BLE001
         return f'Error fetching daily climate normals: {e!s}'
@@ -965,7 +970,9 @@ async def get_aws_oa_period(
 
     try:
         async with AsyncAWSOAClient(API_KEY) as client:
-            data = await client.get_analysis_period(tm1=start_time, tm2=end_time, x=longitude, y=latitude)
+            data = await client.get_analysis_period(
+                tm1=start_time, tm2=end_time, x=longitude, y=latitude
+            )
             return str(data)
     except Exception as e:  # noqa: BLE001
         return f'Error fetching AWS objective analysis data: {e!s}'
@@ -1336,7 +1343,9 @@ async def get_radar_image_sequence(
 
     try:
         async with AsyncRadarClient(API_KEY) as client:
-            data = await client.get_radar_image_sequence(tm1=start_time, tm2=end_time, radar_id=radar_id)
+            data = await client.get_radar_image_sequence(
+                tm1=start_time, tm2=end_time, radar_id=radar_id
+            )
             return str(data)
     except Exception as e:  # noqa: BLE001
         return f'Error fetching radar image sequence: {e!s}'
@@ -1562,14 +1571,18 @@ async def get_upper_air_data(
 
     try:
         async with AsyncRadiosondeClient(API_KEY) as client:
-            data = await client.get_upper_air_data(tm=observation_time, stn=station_id, pa=pressure_level)
+            data = await client.get_upper_air_data(
+                tm=observation_time, stn=station_id, pa=pressure_level
+            )
             return str(data)
     except Exception as e:  # noqa: BLE001
         return f'Error fetching upper-air data: {e!s}'
 
 
 @mcp.tool()
-async def get_atmospheric_stability_indices(start_time: str, end_time: str, station_id: int = 0) -> str:
+async def get_atmospheric_stability_indices(
+    start_time: str, end_time: str, station_id: int = 0
+) -> str:
     """Get atmospheric stability indices for convective forecasting.
 
     Provides stability indices including CAPE, K-index, lifted index,
@@ -1751,4 +1764,5 @@ async def main() -> None:
 if __name__ == '__main__':
     # Run the async MCP server
     import asyncio
+
     asyncio.run(main())

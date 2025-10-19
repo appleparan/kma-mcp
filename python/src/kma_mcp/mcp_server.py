@@ -35,8 +35,7 @@ from kma_mcp.upper_air.radiosonde_client import RadiosondeClient
 
 # Configure logging
 logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 )
 logger = logging.getLogger(__name__)
 
@@ -1712,6 +1711,7 @@ def get_satellite_imagery(
     except Exception as e:  # noqa: BLE001
         return f'Error fetching satellite imagery: {e!s}'
 
+
 def main() -> None:
     """Initialize and run the MCP server with API key validation."""
     logger.info('Starting KMA MCP server...')
@@ -1731,6 +1731,7 @@ def main() -> None:
     # Initialize and run the server
     logger.info('Server initialized successfully')
     mcp.run(transport='stdio')
+
 
 if __name__ == '__main__':
     # Run the MCP server
