@@ -54,95 +54,42 @@ class TestUVClientRequests:
     """Test UV client API request methods."""
 
     @patch('httpx.Client.get')
-    def test_get_hourly_data_with_string(
+    def test_get_observation_data_with_string(
         self,
         mock_get: Mock,
         uv_client: UVClient,
         mock_response_data: dict,
     ) -> None:
-        """Test getting hourly UV data with string time format."""
+        """Test getting UV observation data with string time format."""
         mock_response = Mock()
         mock_response.json.return_value = mock_response_data
         mock_response.raise_for_status = Mock()
         mock_get.return_value = mock_response
 
-        result = uv_client.get_hourly_data(tm='202501011200', stn=108)
+        result = uv_client.get_observation_data(tm='202203211500', stn=108)
 
         assert result == mock_response_data
-        assert 'kma_uv.php' in mock_get.call_args.args[0]
+        assert 'kma_sfctm_uv.php' in mock_get.call_args.args[0]
+        assert mock_get.call_args.kwargs['params']['help'] == '1'
 
     @patch('httpx.Client.get')
-    def test_get_hourly_data_with_datetime(
+    def test_get_observation_data_with_datetime(
         self,
         mock_get: Mock,
         uv_client: UVClient,
         mock_response_data: dict,
     ) -> None:
-        """Test getting hourly UV data with datetime object."""
+        """Test getting UV observation data with datetime object."""
         mock_response = Mock()
         mock_response.json.return_value = mock_response_data
         mock_response.raise_for_status = Mock()
         mock_get.return_value = mock_response
 
-        dt = datetime(2025, 1, 1, 12, 0, tzinfo=UTC)
-        result = uv_client.get_hourly_data(tm=dt, stn=108)
+        dt = datetime(2022, 3, 21, 15, 0, tzinfo=UTC)
+        result = uv_client.get_observation_data(tm=dt, stn=108)
 
         assert result == mock_response_data
-        assert mock_get.call_args.kwargs['params']['tm'] == '202501011200'
-
-    @patch('httpx.Client.get')
-    def test_get_hourly_period(
-        self,
-        mock_get: Mock,
-        uv_client: UVClient,
-        mock_response_data: dict,
-    ) -> None:
-        """Test getting hourly UV data for a period."""
-        mock_response = Mock()
-        mock_response.json.return_value = mock_response_data
-        mock_response.raise_for_status = Mock()
-        mock_get.return_value = mock_response
-
-        result = uv_client.get_hourly_period('202501010000', '202501020000', 108)
-
-        assert result == mock_response_data
-        assert 'kma_uv_2.php' in mock_get.call_args.args[0]
-
-    @patch('httpx.Client.get')
-    def test_get_daily_data(
-        self,
-        mock_get: Mock,
-        uv_client: UVClient,
-        mock_response_data: dict,
-    ) -> None:
-        """Test getting daily UV data."""
-        mock_response = Mock()
-        mock_response.json.return_value = mock_response_data
-        mock_response.raise_for_status = Mock()
-        mock_get.return_value = mock_response
-
-        result = uv_client.get_daily_data(tm='20250101', stn=108)
-
-        assert result == mock_response_data
-        assert 'kma_uv_day.php' in mock_get.call_args.args[0]
-
-    @patch('httpx.Client.get')
-    def test_get_daily_period(
-        self,
-        mock_get: Mock,
-        uv_client: UVClient,
-        mock_response_data: dict,
-    ) -> None:
-        """Test getting daily UV data for a period."""
-        mock_response = Mock()
-        mock_response.json.return_value = mock_response_data
-        mock_response.raise_for_status = Mock()
-        mock_get.return_value = mock_response
-
-        result = uv_client.get_daily_period('20250101', '20250131', 108)
-
-        assert result == mock_response_data
-        assert 'kma_uv_day2.php' in mock_get.call_args.args[0]
+        assert mock_get.call_args.kwargs['params']['tm'] == '202203211500'
 
     @patch('httpx.Client.get')
     def test_request_error_handling(
@@ -154,4 +101,37 @@ class TestUVClientRequests:
         mock_get.side_effect = httpx.HTTPError('Connection error')
 
         with pytest.raises(httpx.HTTPError):
+            uv_client.get_observation_data(tm='202203211500', stn=108)
+
+    # Test that legacy methods raise NotImplementedError
+    def test_get_hourly_data_raises_not_implemented(
+        self,
+        uv_client: UVClient,
+    ) -> None:
+        """Test that get_hourly_data raises NotImplementedError."""
+        with pytest.raises(NotImplementedError, match='not documented'):
             uv_client.get_hourly_data(tm='202501011200', stn=108)
+
+    def test_get_hourly_period_raises_not_implemented(
+        self,
+        uv_client: UVClient,
+    ) -> None:
+        """Test that get_hourly_period raises NotImplementedError."""
+        with pytest.raises(NotImplementedError, match='not documented'):
+            uv_client.get_hourly_period('202501010000', '202501020000', 108)
+
+    def test_get_daily_data_raises_not_implemented(
+        self,
+        uv_client: UVClient,
+    ) -> None:
+        """Test that get_daily_data raises NotImplementedError."""
+        with pytest.raises(NotImplementedError, match='not documented'):
+            uv_client.get_daily_data(tm='20250101', stn=108)
+
+    def test_get_daily_period_raises_not_implemented(
+        self,
+        uv_client: UVClient,
+    ) -> None:
+        """Test that get_daily_period raises NotImplementedError."""
+        with pytest.raises(NotImplementedError, match='not documented'):
+            uv_client.get_daily_period('20250101', '20250131', 108)

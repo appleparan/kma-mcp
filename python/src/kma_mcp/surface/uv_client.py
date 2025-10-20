@@ -65,32 +65,63 @@ class UVClient:
         response.raise_for_status()
         return response.json()
 
-    def get_hourly_data(
+    def get_observation_data(
         self,
         tm: str | datetime,
         stn: int | str = 0,
     ) -> dict[str, Any]:
-        """Get hourly UV radiation observation data for a single time.
+        """Get UV radiation observation data for a single time.
+
+        This is the only documented API endpoint for UV observations.
+        UV observations monitor ultraviolet A and erythema B radiation levels.
 
         Args:
             tm: Time in 'YYYYMMDDHHmm' format or datetime object
             stn: Station number (0 for all stations)
 
         Returns:
-            Hourly UV radiation observation data
+            UV radiation observation data
 
         Example:
             >>> client = UVClient('your_auth_key')
-            >>> data = client.get_hourly_data('202501011200')
+            >>> data = client.get_observation_data('202203211500')
             >>> # Or using datetime
             >>> from datetime import datetime
-            >>> data = client.get_hourly_data(datetime(2025, 1, 1, 12, 0))
+            >>> data = client.get_observation_data(datetime(2022, 3, 21, 15, 0))
+
+        Note:
+            - UV observation stations: Anmyeondo, Gosan, Ulleungdo, Seoul,
+              Pohang, Mokpo, Gangneung (7 stations)
+            - Measures UVA (320-400nm) and erythema UVB (280-320nm)
+            - Data available from January 1994 to present
         """
         if isinstance(tm, datetime):
             tm = tm.strftime('%Y%m%d%H%M')
 
-        params = {'tm': tm, 'stn': str(stn), 'help': '0'}
-        return self._make_request('kma_uv.php', params)
+        params = {'tm': tm, 'stn': str(stn), 'help': '1'}
+        return self._make_request('kma_sfctm_uv.php', params)
+
+    # Legacy methods - kept for backward compatibility but raise NotImplementedError
+    def get_hourly_data(
+        self,
+        tm: str | datetime,
+        stn: int | str = 0,
+    ) -> dict[str, Any]:
+        """Legacy method - not documented in official API.
+
+        Args:
+            tm: Time in 'YYYYMMDDHHmm' format or datetime object
+            stn: Station number (0 for all stations)
+
+        Raises:
+            NotImplementedError: This endpoint is not documented in the official KMA API.
+                Use get_observation_data() instead.
+        """
+        msg = (
+            'get_hourly_data() is not documented in the official KMA API. '
+            'Use get_observation_data(tm, stn) instead for UV observation data.'
+        )
+        raise NotImplementedError(msg)
 
     def get_hourly_period(
         self,
@@ -98,51 +129,39 @@ class UVClient:
         tm2: str | datetime,
         stn: int | str = 0,
     ) -> dict[str, Any]:
-        """Get hourly UV radiation observation data for a time period.
+        """Legacy method - not documented in official API.
 
         Args:
-            tm1: Start time in 'YYYYMMDDHHmm' format or datetime object
-            tm2: End time in 'YYYYMMDDHHmm' format or datetime object
-            stn: Station number (0 for all stations)
+            tm1: Start time
+            tm2: End time
+            stn: Station number
 
-        Returns:
-            Hourly UV radiation observation data for the period
-
-        Example:
-            >>> client = UVClient('your_auth_key')
-            >>> data = client.get_hourly_period('202501010000', '202501020000')
+        Raises:
+            NotImplementedError: This endpoint is not documented in the official KMA API.
         """
-        if isinstance(tm1, datetime):
-            tm1 = tm1.strftime('%Y%m%d%H%M')
-        if isinstance(tm2, datetime):
-            tm2 = tm2.strftime('%Y%m%d%H%M')
-
-        params = {'tm1': tm1, 'tm2': tm2, 'stn': str(stn), 'help': '0'}
-        return self._make_request('kma_uv_2.php', params)
+        msg = (
+            'get_hourly_period() is not documented in the official KMA API. '
+            'Period queries may need to be implemented using multiple calls to '
+            'get_observation_data().'
+        )
+        raise NotImplementedError(msg)
 
     def get_daily_data(
         self,
         tm: str | datetime,
         stn: int | str = 0,
     ) -> dict[str, Any]:
-        """Get daily UV radiation observation data for a single day.
+        """Legacy method - not documented in official API.
 
         Args:
-            tm: Date in 'YYYYMMDD' format or datetime object
-            stn: Station number (0 for all stations)
+            tm: Date
+            stn: Station number
 
-        Returns:
-            Daily UV radiation observation data
-
-        Example:
-            >>> client = UVClient('your_auth_key')
-            >>> data = client.get_daily_data('20250101')
+        Raises:
+            NotImplementedError: This endpoint is not documented in the official KMA API.
         """
-        if isinstance(tm, datetime):
-            tm = tm.strftime('%Y%m%d')
-
-        params = {'tm': tm, 'stn': str(stn), 'help': '0'}
-        return self._make_request('kma_uv_day.php', params)
+        msg = 'get_daily_data() is not documented in the official KMA API.'
+        raise NotImplementedError(msg)
 
     def get_daily_period(
         self,
@@ -150,24 +169,15 @@ class UVClient:
         tm2: str | datetime,
         stn: int | str = 0,
     ) -> dict[str, Any]:
-        """Get daily UV radiation observation data for a time period.
+        """Legacy method - not documented in official API.
 
         Args:
-            tm1: Start date in 'YYYYMMDD' format or datetime object
-            tm2: End date in 'YYYYMMDD' format or datetime object
-            stn: Station number (0 for all stations)
+            tm1: Start date
+            tm2: End date
+            stn: Station number
 
-        Returns:
-            Daily UV radiation observation data for the period
-
-        Example:
-            >>> client = UVClient('your_auth_key')
-            >>> data = client.get_daily_period('20250101', '20250131')
+        Raises:
+            NotImplementedError: This endpoint is not documented in the official KMA API.
         """
-        if isinstance(tm1, datetime):
-            tm1 = tm1.strftime('%Y%m%d')
-        if isinstance(tm2, datetime):
-            tm2 = tm2.strftime('%Y%m%d')
-
-        params = {'tm1': tm1, 'tm2': tm2, 'stn': str(stn), 'help': '0'}
-        return self._make_request('kma_uv_day2.php', params)
+        msg = 'get_daily_period() is not documented in the official KMA API.'
+        raise NotImplementedError(msg)
