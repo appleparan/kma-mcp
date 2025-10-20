@@ -163,7 +163,7 @@ class TestAsyncAWSClient:
         mock_get.side_effect = async_mock
 
         async with AsyncAWSClient('test_key') as client:
-            result = await client.get_minutely_data(tm='202501011200', stn=108)
+            result = await client.get_minutely_data(tm2='202501011200', stn=108)
 
         assert result == {'data': 'aws_test'}
 
@@ -241,7 +241,7 @@ class TestAsyncUVClient:
         mock_get.side_effect = async_mock
 
         async with AsyncUVClient('test_key') as client:
-            result = await client.get_hourly_data(tm='202501011200', stn=108)
+            result = await client.get_observation_data(tm='202501011200', stn=108)
 
         assert result == {'data': 'uv_test'}
 
