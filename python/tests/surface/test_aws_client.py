@@ -86,22 +86,22 @@ class TestAWSClientRequests:
         aws_client: AWSClient,
         mock_response_data: dict,
     ) -> None:
-        """Test getting minutely data with string time format."""
+        """Test getting minutely data with string time format (documented API)."""
         mock_response = Mock()
         mock_response.json.return_value = mock_response_data
         mock_response.raise_for_status = Mock()
         mock_get.return_value = mock_response
 
-        result = aws_client.get_minutely_data(tm='202501011200', stn=108)
+        result = aws_client.get_minutely_data(tm2='202302010900', stn=0)
 
         assert result == mock_response_data
         mock_get.assert_called_once()
         call_args = mock_get.call_args
-        assert 'tm' in call_args.kwargs['params']
-        assert call_args.kwargs['params']['tm'] == '202501011200'
-        assert call_args.kwargs['params']['stn'] == '108'
+        assert 'tm2' in call_args.kwargs['params']
+        assert call_args.kwargs['params']['tm2'] == '202302010900'
+        assert call_args.kwargs['params']['stn'] == '0'
         assert call_args.kwargs['params']['authKey'] == 'test_auth_key_12345'
-        assert 'kma_aws.php' in call_args.args[0]
+        assert 'nph-aws2_min' in call_args.args[0]
 
     @patch('httpx.Client.get')
     def test_get_minutely_data_with_datetime(
@@ -110,18 +110,18 @@ class TestAWSClientRequests:
         aws_client: AWSClient,
         mock_response_data: dict,
     ) -> None:
-        """Test getting minutely data with datetime object."""
+        """Test getting minutely data with datetime object (documented API)."""
         mock_response = Mock()
         mock_response.json.return_value = mock_response_data
         mock_response.raise_for_status = Mock()
         mock_get.return_value = mock_response
 
-        dt = datetime(2025, 1, 1, 12, 0, tzinfo=UTC)
-        result = aws_client.get_minutely_data(tm=dt, stn=108)
+        dt = datetime(2023, 2, 1, 9, 0, tzinfo=UTC)
+        result = aws_client.get_minutely_data(tm2=dt, stn=0)
 
         assert result == mock_response_data
         call_args = mock_get.call_args
-        assert call_args.kwargs['params']['tm'] == '202501011200'
+        assert call_args.kwargs['params']['tm2'] == '202302010900'
 
     @patch('httpx.Client.get')
     def test_get_minutely_period(
@@ -248,7 +248,7 @@ class TestAWSClientRequests:
         mock_get.side_effect = httpx.HTTPError('Connection error')
 
         with pytest.raises(httpx.HTTPError):
-            aws_client.get_minutely_data(tm='202501011200', stn=108)
+            aws_client.get_minutely_data(tm2='202501011200', stn=108)
 
     @patch('httpx.Client.get')
     def test_all_stations_query(
@@ -263,7 +263,7 @@ class TestAWSClientRequests:
         mock_response.raise_for_status = Mock()
         mock_get.return_value = mock_response
 
-        result = aws_client.get_minutely_data(tm='202501011200', stn=0)
+        result = aws_client.get_minutely_data(tm2='202501011200', stn=0)
 
         assert result == mock_response_data
         call_args = mock_get.call_args
@@ -287,10 +287,10 @@ class TestAWSClientDateTimeConversion:
         mock_get.return_value = mock_response
 
         dt = datetime(2025, 10, 18, 15, 30, tzinfo=UTC)
-        aws_client.get_minutely_data(tm=dt)
+        aws_client.get_minutely_data(tm2=dt)
 
         call_args = mock_get.call_args
-        assert call_args.kwargs['params']['tm'] == '202510181530'
+        assert call_args.kwargs['params']['tm2'] == '202510181530'
 
     @patch('httpx.Client.get')
     def test_datetime_to_daily_format(
