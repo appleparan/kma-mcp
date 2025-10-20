@@ -5,7 +5,7 @@ ASOS (종관기상관측) API for surface weather observations.
 """
 
 from datetime import datetime
-from typing import Any
+from typing import Any, Literal
 
 import httpx
 
@@ -213,3 +213,64 @@ class AsyncASOSClient:
 
         params = {'tm1': tm1, 'tm2': tm2, 'obs': obs, 'stn': str(stn), 'help': '0'}
         return await self._make_request('kma_sfctm5.php', params)
+
+    async def get_normals(
+        self,
+        norm: Literal['D', 'S', 'M', 'Y'],
+        tmst: Literal[1991, 2001, 2011, 2021],
+        mm1: int,
+        dd1: int,
+        mm2: int | None = None,
+        dd2: int | None = None,
+        stn: int | str = 0,
+    ) -> dict[str, Any]:
+        """Get climate normal values for a period.
+
+        Documented endpoint: sfc_norm1.php
+        Reference: API_ENDPOINT_Surface.md line 91-106
+
+        Args:
+            norm: Normal period type:
+                - 'D': Daily (일)
+                - 'S': 10-day period (순)
+                - 'M': Monthly (월)
+                - 'Y': Yearly (연)
+            tmst: Climate normal period:
+                - 1991: 1961-1990
+                - 2001: 1971-2000
+                - 2011: 1981-2010
+                - 2021: 1991-2020
+            mm1: Start month
+            dd1: Start day (for 'S' type: 100=early, 200=middle, 300=late)
+            mm2: End month (optional, defaults to mm1)
+            dd2: End day (optional, defaults to dd1)
+            stn: Station number (0 for all stations)
+
+        Returns:
+            Climate normal values for the period
+
+        Example:
+            >>> async with AsyncASOSClient('your_auth_key') as client:
+            ...     # Get daily normals for May 1-2
+            ...     data = await client.get_normals('D', 2021, mm1=5, dd1=1, mm2=5, dd2=2)
+            ...     # Get monthly normals for May
+            ...     data = await client.get_normals('M', 2021, mm1=5, dd1=1)
+            ...     # Get 10-day period normals (early May)
+            ...     data = await client.get_normals('S', 2021, mm1=5, dd1=100)
+        """
+        if mm2 is None:
+            mm2 = mm1
+        if dd2 is None:
+            dd2 = dd1
+
+        params = {
+            'norm': norm,
+            'tmst': str(tmst),
+            'stn': str(stn),
+            'MM1': str(mm1),
+            'DD1': str(dd1),
+            'MM2': str(mm2),
+            'DD2': str(dd2),
+            'help': '1',
+        }
+        return await self._make_request('sfc_norm1.php', params)

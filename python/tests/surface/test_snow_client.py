@@ -54,13 +54,89 @@ class TestSnowClientRequests:
     """Test Snow client API request methods."""
 
     @patch('httpx.Client.get')
+    def test_get_snow_depth_with_string(
+        self,
+        mock_get: Mock,
+        snow_client: SnowClient,
+        mock_response_data: dict,
+    ) -> None:
+        """Test getting snow depth with string time format (documented API)."""
+        mock_response = Mock()
+        mock_response.json.return_value = mock_response_data
+        mock_response.raise_for_status = Mock()
+        mock_get.return_value = mock_response
+
+        result = snow_client.get_snow_depth(tm='201412051800', sd_type='tot')
+
+        assert result == mock_response_data
+        assert 'kma_snow1.php' in mock_get.call_args.args[0]
+        assert mock_get.call_args.kwargs['params']['sd'] == 'tot'
+
+    @patch('httpx.Client.get')
+    def test_get_snow_depth_with_datetime(
+        self,
+        mock_get: Mock,
+        snow_client: SnowClient,
+        mock_response_data: dict,
+    ) -> None:
+        """Test getting snow depth with datetime object (documented API)."""
+        mock_response = Mock()
+        mock_response.json.return_value = mock_response_data
+        mock_response.raise_for_status = Mock()
+        mock_get.return_value = mock_response
+
+        dt = datetime(2014, 12, 5, 18, 0, tzinfo=UTC)
+        result = snow_client.get_snow_depth(tm=dt, sd_type='day')
+
+        assert result == mock_response_data
+        assert mock_get.call_args.kwargs['params']['tm'] == '201412051800'
+        assert mock_get.call_args.kwargs['params']['sd'] == 'day'
+
+    @patch('httpx.Client.get')
+    def test_get_snow_period(
+        self,
+        mock_get: Mock,
+        snow_client: SnowClient,
+        mock_response_data: dict,
+    ) -> None:
+        """Test getting snow depth for a period (documented API)."""
+        mock_response = Mock()
+        mock_response.json.return_value = mock_response_data
+        mock_response.raise_for_status = Mock()
+        mock_get.return_value = mock_response
+
+        result = snow_client.get_snow_period('201412051800', '201412040100', snow=0)
+
+        assert result == mock_response_data
+        assert 'kma_snow2.php' in mock_get.call_args.args[0]
+
+    @patch('httpx.Client.get')
+    def test_get_max_snow_depth(
+        self,
+        mock_get: Mock,
+        snow_client: SnowClient,
+        mock_response_data: dict,
+    ) -> None:
+        """Test getting maximum snow depth for a period (documented API)."""
+        mock_response = Mock()
+        mock_response.json.return_value = mock_response_data
+        mock_response.raise_for_status = Mock()
+        mock_get.return_value = mock_response
+
+        result = snow_client.get_max_snow_depth('20150131', '20150125', sd_type='tot', stn=0)
+
+        assert result == mock_response_data
+        assert 'kma_snow_day.php' in mock_get.call_args.args[0]
+        assert mock_get.call_args.kwargs['params']['sd'] == 'tot'
+
+    @patch('httpx.Client.get')
     def test_get_hourly_data_with_string(
         self,
         mock_get: Mock,
         snow_client: SnowClient,
         mock_response_data: dict,
     ) -> None:
-        """Test getting hourly snow depth with string time format."""
+        """Test getting hourly snow depth with string time format (legacy/undocumented)."""
         mock_response = Mock()
         mock_response.json.return_value = mock_response_data
         mock_response.raise_for_status = Mock()

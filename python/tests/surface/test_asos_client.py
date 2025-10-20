@@ -246,6 +246,39 @@ class TestASOSClientRequests:
         call_args = mock_get.call_args
         assert call_args.kwargs['params']['stn'] == '0'
 
+    @patch('httpx.Client.get')
+    def test_get_normals(
+        self,
+        mock_get: Mock,
+        asos_client: ASOSClient,
+        mock_response_data: dict,
+    ) -> None:
+        """Test getting climate normal values."""
+        mock_response = Mock()
+        mock_response.json.return_value = mock_response_data
+        mock_response.raise_for_status = Mock()
+        mock_get.return_value = mock_response
+
+        result = asos_client.get_normals(
+            norm='D',
+            tmst=2021,
+            mm1=5,
+            dd1=1,
+            mm2=5,
+            dd2=2,
+            stn=0,
+        )
+
+        assert result == mock_response_data
+        call_args = mock_get.call_args
+        assert 'sfc_norm1.php' in call_args.args[0]
+        assert call_args.kwargs['params']['norm'] == 'D'
+        assert call_args.kwargs['params']['tmst'] == '2021'
+        assert call_args.kwargs['params']['MM1'] == '5'
+        assert call_args.kwargs['params']['DD1'] == '1'
+        assert call_args.kwargs['params']['MM2'] == '5'
+        assert call_args.kwargs['params']['DD2'] == '2'
+
 
 class TestASOSClientDateTimeConversion:
     """Test datetime conversion in ASOS client."""
