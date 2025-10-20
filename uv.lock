@@ -674,6 +674,7 @@ source = { editable = "." }
 dependencies = [
     { name = "fastmcp" },
     { name = "httpx" },
+    { name = "pydantic" },
     { name = "python-dotenv" },
 ]
 
@@ -712,6 +713,7 @@ docs = [
 requires-dist = [
     { name = "fastmcp", specifier = "~=2.12.5" },
     { name = "httpx", specifier = "~=0.28.1" },
+    { name = "pydantic", specifier = ">=2.0.0" },
     { name = "python-dotenv", specifier = "~=1.1.1" },
 ]
 
