@@ -90,8 +90,8 @@ https://apihub.kma.go.kr/api/typ01/url/{endpoint}?authKey={YOUR_API_KEY}&{parame
 
 ### 지상 평년값 조회
 
-* Endpoint: `kma_norm1.php`
-* Method: ??
+* Endpoint: `sfc_norm1.php`
+* Method: `ASOSClient.get_normals()` / `AsyncASOSClient.get_normals()`
 
 * Example URL:
     ```text
@@ -239,7 +239,8 @@ Not yet implemented
 ### AWS 매분자료 조회
 
 #### AWS 매분자료
-* Endpoint: `nph-aws2_min`
+* Endpoint: `nph-aws2_min` (CGI)
+* Method: `AWSClient.get_minutely_data()` / `AsyncAWSClient.get_minutely_data()`
 * Example URL:
     ```text
     https://apihub.kma.go.kr/api/typ01/cgi-bin/url/nph-aws2_min?tm2=202302010900&stn=0&disp=0&help=1&authKey=Pi8YfpSBTPivGH6Ugaz4Kg
@@ -252,7 +253,8 @@ Not yet implemented
     * `help`: 도움말. 0 : 시작과 종료표시 + 변수명 (default)1 : 0 + 변수에 대한 설명2 : 전혀 표시않음 (값만 표시)
 
 #### AWS 초상온도
-* Endpoint: `nph-aws2_min_lst`
+* Endpoint: `nph-aws2_min_lst` (CGI)
+* Method: `AWSClient.get_land_surface_temperature()` / `AsyncAWSClient.get_land_surface_temperature()`
 * Example URL:
     ```text
     https://apihub.kma.go.kr/api/typ01/cgi-bin/url/nph-aws2_min_lst?tm2=202302010900&stn=0&disp=0&help=1&authKey=Pi8YfpSBTPivGH6Ugaz4Kg
@@ -267,6 +269,7 @@ Not yet implemented
 
 #### AWS 운고 운량
 * Endpoint: `nph-aws2_min_cloud`
+* Method: `AWSClient.get_cloud_data()` / `AsyncAWSClient.get_cloud_data()`
 * Example URL:
     ```text
     https://apihub.kma.go.kr/api/typ01/cgi-bin/url/nph-aws2_min_cloud?tm2=202302010900&stn=0&disp=0&help=1&authKey=R_zkyTnBQfy85Mk5wWH8Ow
@@ -283,6 +286,7 @@ Not yet implemented
 #### AWS 운고 운량(특정기간 평균 값)
 
 * Endpoint: `nph-aws2_min_ca2`
+* Method: `AWSClient.get_cloud_average()` / `AsyncAWSClient.get_cloud_average()`
 * Example URL:
     ```text
     https://apihub.kma.go.kr/api/typ01/cgi-bin/url/nph-aws2_min_ca2?tm2=201503221200&itv=10&range=10&stn=0&disp=0&help=1&authKey=R_zkyTnBQfy85Mk5wWH8Ow
@@ -298,6 +302,7 @@ Not yet implemented
 
 #### AWS 운고 운량(특정기간 최소/최고 값)
 * Endpoint: `nph-aws2_min_ca3`
+* Method: `AWSClient.get_cloud_min_max()` / `AsyncAWSClient.get_cloud_min_max()`
 * Example URL:
     ```text
     https://apihub.kma.go.kr/api/typ01/cgi-bin/url/nph-aws2_min_ca3?tm2=201503221200&itv=10&range=10&stn=0&disp=0&help=1&authKey=R_zkyTnBQfy85Mk5wWH8Ow
@@ -1360,64 +1365,70 @@ Not yet implemented
 * 생산주기 : 일, 3시간, 6시간, 24시간(관측방법에 따라 상이함)
 
 ### 적설관측자료 조회
-Not yet implemented
+
 #### 적설관측지점
 Not yet implemented
 * Example URL:
     ```text
     https://apihub.kma.go.kr/api/typ01/url/stn_snow.php?stn=&tm=201601051200&mode=0&help=1&authKey=Qesc6Lz3Tz6rHOi89w8-QQ
     ```
-#### 적설
-Not yet implemented
+
+#### 적설 (kma_snow1.php)
+* Endpoint: `kma_snow1.php`
+* Method: `SnowClient.get_snow_depth()` / `AsyncSnowClient.get_snow_depth()`
+* Supports: 적설 (tot), 일신적설 (day), 3시간 신적설 (3hr), 24시간 신적설 (24h)
+
+##### 적설
 * Example URL:
     ```text
     https://apihub.kma.go.kr/api/typ01/url/kma_snow1.php?sd=tot&tm=201412051800&help=1&authKey=Qesc6Lz3Tz6rHOi89w8-QQ
     ```
-#### 일신적설
-Not yet implemented
+##### 일신적설
 * Example URL:
     ```text
     https://apihub.kma.go.kr/api/typ01/url/kma_snow1.php?sd=day&tm=201412051800&help=1&authKey=Qesc6Lz3Tz6rHOi89w8-QQ
     ```
-#### 3시간 신적설
-Not yet implemented
+##### 3시간 신적설
 * Example URL:
     ```text
     https://apihub.kma.go.kr/api/typ01/url/kma_snow1.php?sd=3hr&tm=201412051800&help=1&authKey=Qesc6Lz3Tz6rHOi89w8-QQ
     ```
-#### 24시간 신적설
-Not yet implemented
+##### 24시간 신적설
 * Example URL:
     ```text
     https://apihub.kma.go.kr/api/typ01/url/kma_snow1.php?sd=24h&tm=201412051800&help=1&authKey=Qesc6Lz3Tz6rHOi89w8-QQ
     ```
-### 기간
-Not yet implemented
+
+#### 기간 (kma_snow2.php)
+* Endpoint: `kma_snow2.php`
+* Method: `SnowClient.get_snow_period()` / `AsyncSnowClient.get_snow_period()`
 * Example URL:
     ```text
     https://apihub.kma.go.kr/api/typ01/url/kma_snow2.php?tm=201412051800&tm_st=201412040100&snow=0&help=1&authKey=Qesc6Lz3Tz6rHOi89w8-QQ
     ```
-#### 최심적설,최심
-Not yet implemented신적설
+
+#### 최심적설, 최심신적설 (kma_snow_day.php)
+* Endpoint: `kma_snow_day.php`
+* Method: `SnowClient.get_max_snow_depth()` / `AsyncSnowClient.get_max_snow_depth()`
+* Supports: 최심적설 (tot), 최심신적설 (day)
+
+##### 최심적설,최심신적설
 * Example URL:
     ```text
     https://apihub.kma.go.kr/api/typ01/url/kma_snow_day.php?sd=tot&tm=20150131&tm_st=20150125&stn=0&snow=0&help=1&authKey=Qesc6Lz3Tz6rHOi89w8-QQ
     ```
-#### 최심적설
-Not yet implemented
+##### 최심적설
 * Example URL:
     ```text
     https://apihub.kma.go.kr/api/typ01/url/kma_snow_day.php?sd=tot&tm=20150131&tm_st=20150125&help=1&authKey=Qesc6Lz3Tz6rHOi89w8-QQ
     ```
-#### 최심신적설
-Not yet implemented
+##### 최심신적설
 * Example URL:
     ```text
     https://apihub.kma.go.kr/api/typ01/url/kma_snow_day.php?sd=day&tm=20150131&tm_st=20150125&help=1&authKey=Qesc6Lz3Tz6rHOi89w8-QQ
     ```
 
 ## 자외선관측
-Not yet implemented
 * 개요 : 자외선 복사는 일반적으로 자외선A(315~400nm), 자외선B(280~315nm), 자외선C(100~280nm)로 나뉘며, 이 중 자외선A와 자외선B는 오존층에 일부가 흡수되고 그 나머지가 지표에 도달합니다. 지표에 도달하는 자외선은 적은 양이지만 인간과 동 · 식물에게 큰 피해를 줄 뿐만 아니라 광화학 반응에도 영향을 미치면서 대기 환경을 변화시킵니다.
 기상청은 자외선 복사 중 자외선A(320~400nm)와 자외선B 영역 중 인체에 홍반을 발생시키는 홍반자외선B(280~320nm)를 관측합니다.
 * 요소 : 자외선A, 홍반자외선B
@@ -1426,6 +1437,7 @@ Not yet implemented
 * 생산주기 : 일, 월, 연 자료
 ### 자외선관측자료 조회
 * Endpoint: `kma_sfctm_uv.php`
+* Method: `UVClient.get_observation_data()` / `AsyncUVClient.get_observation_data()`
 * Example URL:
     ```text
     https://apihub.kma.go.kr/api/typ01/url/kma_sfctm_uv.php?tm=202203211500&stn=0&help=1&authKey=kkB1a-YrSriAdWvmK4q4Jg
