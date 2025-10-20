@@ -42,7 +42,8 @@ async function validateApiKey(apiKey: string): Promise<boolean> {
     const timeStr = testTime.toISOString().replace(/[-:]/g, '').replace(/T/, '').slice(0, 12); // YYYYMMDDHHmm format
 
     // Test with a single station (104 = Bukgangneung)
-    const result = await awsClient.getMinutelyData(timeStr, 104);
+    // getMinutelyData(tm1?, tm2?, stn, disp) - pass undefined for tm1, timeStr for tm2
+    const result = await awsClient.getMinutelyData(undefined, timeStr, 104);
 
     if (result) {
       console.error('API key validation successful');
