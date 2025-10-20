@@ -40,13 +40,19 @@ describe('AWSClient', () => {
       const mockMakeRequest = mock(() => Promise.resolve([mockObservation]));
       client['makeRequest'] = mockMakeRequest;
 
-      const result = await client.getMinutelyData('202501011200', 108);
+      const result = await client.getMinutelyData(undefined, '202501011200', 108);
 
       expect(result).toEqual([mockObservation]);
-      expect(mockMakeRequest).toHaveBeenCalledWith('kma_aws.php', {
-        tm: '202501011200',
-        stn: '108',
-      });
+      expect(mockMakeRequest).toHaveBeenCalledWith(
+        'nph-aws2_min',
+        {
+          tm2: '202501011200',
+          stn: '108',
+          disp: '0',
+          help: '1',
+        },
+        true
+      );
     });
 
     test('should get minutely data with Date object', async () => {
@@ -54,12 +60,18 @@ describe('AWSClient', () => {
       client['makeRequest'] = mockMakeRequest;
 
       const date = new Date('2025-01-01T12:00:00');
-      await client.getMinutelyData(date, 108);
+      await client.getMinutelyData(undefined, date, 108);
 
-      expect(mockMakeRequest).toHaveBeenCalledWith('kma_aws.php', {
-        tm: '202501011200',
-        stn: '108',
-      });
+      expect(mockMakeRequest).toHaveBeenCalledWith(
+        'nph-aws2_min',
+        {
+          tm2: '202501011200',
+          stn: '108',
+          disp: '0',
+          help: '1',
+        },
+        true
+      );
     });
   });
 
