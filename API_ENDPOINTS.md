@@ -6,10 +6,14 @@ Complete reference of all KMA API endpoints with example URLs and parameters.
 
 ## Base URL Structure
 
-All APIs use the same base URL pattern:
+대부분의 API들은 다음과 같은 base URL 패턴이 있다. 일부 다를 수 있으나, Example URL을 참고하면 된다. 
+
 ```
 https://apihub.kma.go.kr/api/typ01/url/{endpoint}?authKey={YOUR_API_KEY}&{parameters}
 ```
+### 공통 파라미터 
+* `help`: 도움말추가. 1 이면 필드에 대한 약간의 도움말 추가 (0 이거나 없으면 없음)
+* `authKey`: 인증키. 발급된 API 인증키
 
 **Note**: All examples below require `authKey` parameter which is automatically added by the client.
 
@@ -19,7 +23,14 @@ https://apihub.kma.go.kr/api/typ01/url/{endpoint}?authKey={YOUR_API_KEY}&{parame
 
 ### ASOS - Automated Synoptic Observing System (종관기상관측)
 
-#### 1. Hourly Data - Single Time
+* 개요 : 종관기상관측이란 정해진 시각의 대기 상태를 파악하기 위해 모든 관측소에서 같은 시각에 실시하는 지상관측을 말합니다. 시정, 구름, 증발량, 일기현상 등 일부 목측 요소를 제외하고 관기상관측장비(ASOS, Automated Synoptic Observing System)를 이용해 자동으로 관측합니다.
+* 요소 : 기온, 강수, 기압, 습도, 풍향, 풍속, 일사, 일조, 적설, 구름, 시정, 지면 · 초상온도 등
+* 지점	: 96지점 (2020. 4. 1. 기준)
+* 보유기간 : 1904년 4월 ~ 현재(지점별 상이함)
+* 생산주기 : 분, 시간, 일, 월, 연 자료
+
+#### 지상 관측자료 조회
+##### 시간자료
 **Endpoint**: `kma_sfctm2.php`
 **Method**: `get_hourly_data(tm, stn=0)`
 **Example URL**:
@@ -27,11 +38,11 @@ https://apihub.kma.go.kr/api/typ01/url/{endpoint}?authKey={YOUR_API_KEY}&{parame
 https://apihub.kma.go.kr/api/typ01/url/kma_sfctm2.php?authKey=YOUR_KEY&tm=202501011200&stn=108&help=0
 ```
 **Parameters**:
-- `tm`: Time in YYYYMMDDHHmm format (e.g., 202501011200 = 2025-01-01 12:00)
+- `tm`: YYYYMMDDHHmm(KST), YYYYMMDD(KST). 해당 시간 (없으면 현재시간)
 - `stn`: Station number (0=all, 108=Seoul)
 - `help`: Always 0
 
-#### 2. Hourly Data - Period
+##### 시간자료(기간 조회)
 **Endpoint**: `kma_sfctm3.php`
 **Method**: `get_hourly_period(tm1, tm2, stn=0)`
 **Example URL**:
@@ -39,11 +50,11 @@ https://apihub.kma.go.kr/api/typ01/url/kma_sfctm2.php?authKey=YOUR_KEY&tm=202501
 https://apihub.kma.go.kr/api/typ01/url/kma_sfctm3.php?authKey=YOUR_KEY&tm1=202501010000&tm2=202501020000&stn=108&help=0
 ```
 **Parameters**:
-- `tm1`: Start time (YYYYMMDDHHmm)
-- `tm2`: End time (YYYYMMDDHHmm, max 31 days from tm1)
-- `stn`: Station number
+- `tm1`: YYYYMMDDHHmm(KST), YYYYMMDD(KST). 기간: 시작시간 또는 시작일 (없으면 현재시간)
+- `tm2`: YYYYMMDDHHmm(KST), YYYYMMDD(KST). 기간: 종료시간 또는 종료일 (없으면 현재시간), 최대 31일 조회 가능
+- `stn`: 지점번호. 해당 지점들(:로 구분)의 정보 표출 (0 이거나 없으면 전체지점)
 
-#### 3. Daily Data - Single Day
+##### 일자료
 **Endpoint**: `kma_sfcdd.php`
 **Method**: `get_daily_data(tm, stn=0, disp=0)`
 **Example URL**:
@@ -51,11 +62,11 @@ https://apihub.kma.go.kr/api/typ01/url/kma_sfctm3.php?authKey=YOUR_KEY&tm1=20250
 https://apihub.kma.go.kr/api/typ01/url/kma_sfcdd.php?authKey=YOUR_KEY&tm=20250101&stn=108&disp=0&help=0
 ```
 **Parameters**:
-- `tm`: Date in YYYYMMDD format
-- `stn`: Station number
-- `disp`: Display option (0=default)
+- `tm`: YYYYMMDDHHmm(KST), YYYYMMDD(KST). 해당 시간 (없으면 현재시간)
+- `stn`: 지점번호. 해당 지점들(:로 구분)의 정보 표출 (0 이거나 없으면 전체지점)
+- `disp`: 표출. 0(빈칸없는 CSV파일), 1(일정 간격)
 
-#### 4. Daily Data - Period
+##### 일자료(기간 조회)
 **Endpoint**: `kma_sfcdd3.php`
 **Method**: `get_daily_period(tm1, tm2, stn=0, obs='', mode=0)`
 **Example URL**:
@@ -63,13 +74,14 @@ https://apihub.kma.go.kr/api/typ01/url/kma_sfcdd.php?authKey=YOUR_KEY&tm=2025010
 https://apihub.kma.go.kr/api/typ01/url/kma_sfcdd3.php?authKey=YOUR_KEY&tm1=20250101&tm2=20250131&stn=108&obs=&mode=0&help=0
 ```
 **Parameters**:
-- `tm1`: Start date (YYYYMMDD)
-- `tm2`: End date (YYYYMMDD)
-- `stn`: Station number
-- `obs`: Observation element code (empty for all)
-- `mode`: Mode option (0=default)
+- `tm`: YYYYMMDDHHmm(KST), YYYYMMDD(KST). 해당 시간 (없으면 현재시간)
+- `tm1`: YYYYMMDDHHmm(KST), YYYYMMDD(KST). 기간: 시작시간 또는 시작일 (없으면 현재시간)
+- `tm2`: YYYYMMDDHHmm(KST), YYYYMMDD(KST). 기간: 종료시간 또는 종료일 (없으면 현재시간), 최대 31일 조회 가능
+- `obs`: 관측종류. TA(기온), TD(이슬점온도), HM(습도), PV(증기압), PA(현지기압), PS(해면기압), CA_TOT(전운량), CA_MID(중하층운량), CH_MIN(최저온고(100m)),CT(운형(통계표)), VS(시정(10m)), TS(지면온도)
+- `stn`: 지점번호. 해당 지점들(:로 구분)의 정보 표출 (0 이거나 없으면 전체지점)
+- `mode`: 기타. 0:해독결과만 표출, 1:기사도 표출, 2:기사만 표출
 
-#### 5. Element-Specific Data
+##### 요소별 조회
 **Endpoint**: `kma_sfctm5.php`
 **Method**: `get_element_data(tm1, tm2, obs, stn=0)`
 **Example URL**:
@@ -77,57 +89,207 @@ https://apihub.kma.go.kr/api/typ01/url/kma_sfcdd3.php?authKey=YOUR_KEY&tm1=20250
 https://apihub.kma.go.kr/api/typ01/url/kma_sfctm5.php?authKey=YOUR_KEY&tm1=202501010000&tm2=202501020000&obs=TA&stn=108&help=0
 ```
 **Parameters**:
-- `tm1`: Start time (YYYYMMDDHHmm)
-- `tm2`: End time (YYYYMMDDHHmm)
-- `obs`: Element code (TA=temperature, RN=precipitation, etc.)
-- `stn`: Station number
+- `tm1`: YYYYMMDDHHmm(KST), YYYYMMDD(KST). 기간: 시작시간 또는 시작일 (없으면 현재시간)
+- `tm2`: YYYYMMDDHHmm(KST), YYYYMMDD(KST). 기간: 종료시간 또는 종료일 (없으면 현재시간), 최대 31일 조회 가능
+- `obs`: 관측종류. TA(기온), TD(이슬점온도), HM(습도), PV(증기압), PA(현지기압), PS(해면기압), CA_TOT(전운량), CA_MID(중하층운량), CH_MIN(최저온고(100m)),CT(운형(통계표)), VS(시정(10m)), TS(지면온도)
+- `stn`: 지점번호. 해당 지점들(:로 구분)의 정보 표출 (0 이거나 없으면 전체지점)
 
+####  지상 평년값 조회
+
+**Endpoint**: `kma_norm1.php`
+**Method**: 
+
+**Example URL**:
+```
+https://apihub.kma.go.kr/api/typ01/url/sfc_norm1.php?norm=D&tmst=2021&stn=0&MM1=5&DD1=1&MM2=5&DD2=2&authKey=lY2IAXPgQdCNiAFz4BHQbQ
+```
+**Parameters**:
+- `norm`: 평년종류. D(일), S(순), M(월), Y(연)
+- `tmst`: 평년기간. 1991(1961~1990년), 2001(1971~2000년), 2011(1981~2010년), 2021(1991~2020년)
+- `stn`: 지점번호, 0이면 전체지점
+- `MM1`: 시작 월, 기간 : MM1월 DD1일 ~ MM2월 DD2일
+- `DD1`: 시작 일, 순별 평년값인 경우, 100(상순), 200(중순), 300(하순)
+
+#### 지상기상연보 조회
+
+Not yet implemented
+
+##### 연요약자료조회
+
+Not yet implemented
+**Example URL**: https://apihub.kma.go.kr/api/typ02/openApi/SfcYearlyInfoService/getYearSumry?pageNo=1&numOfRows=10&dataType=XML&year=2016&authKey=lY2IAXPgQdCNiAFz4BHQbQ
+
+##### 연요약자료(2)조회
+
+Not yet implemented
+**Example URL**: https://apihub.kma.go.kr/api/typ02/openApi/SfcYearlyInfoService/getYearSumry2?pageNo=1&numOfRows=10&dataType=XML&year=2016&authKey=lY2IAXPgQdCNiAFz4BHQbQ
+
+
+##### 평균기온평년차조회
+
+Not yet implemented
+**Example URL**: https://apihub.kma.go.kr/api/typ02/openApi/SfcYearlyInfoService/getAvgTaAnamaly?pageNo=1&numOfRows=10&dataType=XML&year=2016&authKey=lY2IAXPgQdCNiAFz4BHQbQ
+
+##### 강수량평년차
+
+Not yet implemented
+**Example URL**: https://apihub.kma.go.kr/api/typ02/openApi/SfcYearlyInfoService/getRnAnamaly?pageNo=1&numOfRows=10&dataType=XML&year=2016&authKey=lY2IAXPgQdCNiAFz4BHQbQ
+
+##### 지점별현상데이터조회
+
+Not yet implemented
+**Example URL**: https://apihub.kma.go.kr/api/typ02/openApi/SfcYearlyInfoService/getStnPhnmnData?pageNo=1&numOfRows=10&dataType=XML&year=2016&station=140&authKey=lY2IAXPgQdCNiAFz4BHQbQ
+
+##### 지점별현상데이터(2)조회
+
+Not yet implemented
+**Example URL**: https://apihub.kma.go.kr/api/typ02/openApi/SfcYearlyInfoService/getStnPhnmnData2?pageNo=1&numOfRows=10&dataType=XML&year=2016&station=140&authKey=lY2IAXPgQdCNiAFz4BHQbQ
+
+##### 지점별현상데이터(3)조회
+
+Not yet implemented
+**Example URL**: https://apihub.kma.go.kr/api/typ02/openApi/SfcYearlyInfoService/getStnPhnmnData3?pageNo=1&numOfRows=10&dataType=XML&year=2016&station=140&authKey=lY2IAXPgQdCNiAFz4BHQbQ
+
+####  지상기상월보 조회
+
+Not yet implemented
+
+##### 일러두기조회
+
+Not yet implemented
+**Example URL**: https://apihub.kma.go.kr/api/typ02/openApi/SfcMtlyInfoService/getNote?pageNo=1&numOfRows=10&dataType=XML&year=2016&month=09&authKey=lY2IAXPgQdCNiAFz4BHQbQ
+
+##### 지상관측지점일람표조회
+
+Not yet implemented
+**Example URL**: https://apihub.kma.go.kr/api/typ02/openApi/SfcMtlyInfoService/getSfcStnLstTbl?pageNo=1&numOfRows=10&dataType=XML&year=2016&month=09&authKey=lY2IAXPgQdCNiAFz4BHQbQ
+
+##### 월요약자료조회
+
+Not yet implemented
+**Example URL**: https://apihub.kma.go.kr/api/typ02/openApi/SfcMtlyInfoService/getMmSumry?pageNo=1&numOfRows=10&dataType=XML&year=2016&month=09&authKey=lY2IAXPgQdCNiAFz4BHQbQ
+
+##### 월요약자료(2)조회
+
+Not yet implemented
+**Example URL**: https://apihub.kma.go.kr/api/typ02/openApi/SfcMtlyInfoService/getMmSumry2?pageNo=1&numOfRows=10&dataType=XML&year=2016&month=09&authKey=lY2IAXPgQdCNiAFz4BHQbQ
+
+##### 해당월의일별기상자료조회
+
+Not yet implemented
+**Example URL**: https://apihub.kma.go.kr/api/typ02/openApi/SfcMtlyInfoService/getDailyWthrData?pageNo=1&numOfRows=10&dataType=XML&year=2016&month=09&station=90&authKey=lY2IAXPgQdCNiAFz4BHQbQ
+
+#### (그래픽) 지상기상현상(관서) 조회
+
+Not yet implemented
+##### 현상(관서)
+Not yet implemented
+**Example URL**: https://apihub.kma.go.kr/api/typ03/php/alw/sfc/sfc_ww_pnt.php?obs=ww_sfc&tm=202212221120&val=1&stn=1&obj=mq&map=HR&grid=2&legend=1&size=600&itv=5&zoom_level=0&zoom_x=0000000&zoom_y=0000000&gov=&authKey=lY2IAXPgQdCNiAFz4BHQbQ
+
+#### 연도별 특정일 기후통계 조회
+
+Not yet implemented
+**Example URL**: https://apihub.kma.go.kr/api/typ01/url/sfc_day_year.php?stn=108&mm=8&dd=15&authKey=lY2IAXPgQdCNiAFz4BHQbQ
 ---
 
-### AWS - Automated Weather Station (방재기상관측)
+### 방재기상관측(AWS)
 
-#### 1. Minutely Data - Single Time
-**Endpoint**: `kma_aws.php`
+* 개요 : 방재기상관측이란 지진 · 태풍 · 홍수 · 가뭄 등 기상현상에 따른 자연재해를 막기 위해 실시하는 지상관측을 말합니다. 관측 공백 해소 및 국지적인 기상 현상을 파악하기 위하여 전국 약 510여 지점에 자동기상관측장비(AWS, Automatic Weather System)를 설치하여 자동으로 관측합니다.
+* 요소 : 기온, 강수, 풍향, 풍속 등
+* 지점	: 510지점 (2020. 4. 1. 기준)
+* 보유기간 : 1997년 1월 ~ 현재(지점별 상이함)
+* 생산주기 : 분, 시간, 일, 월, 연 자료
+#### AWS 매분자료 조회
+
+##### AWS 매분자료
+**Endpoint**: `nph-aws2_min`
 **Example URL**:
 ```
-https://apihub.kma.go.kr/api/typ01/url/kma_aws.php?authKey=YOUR_KEY&tm=202501011200&stn=104&help=0
+https://apihub.kma.go.kr/api/typ01/cgi-bin/url/nph-aws2_min?tm2=202302010900&stn=0&disp=0&help=1&authKey=Pi8YfpSBTPivGH6Ugaz4Kg
 ```
+**Parameters**:
+- `tm1`: YYYYMMDDHHmm(KST). 조회할 시간구간의 시작시간 (없으면 종료시간과 같음)기간은 전체지점이면 10분, 1개 지점이면 하루이내로 처리
+- `tm2`: YYYYMMDDHHmm(KST), 조회할 시간구간의 종료시간 (없으면 현재시간)
+- `stn`: 지점번호, 해당 지점의 정보 표출 (0 이거나 없으면 전체지점)
+- `disp`: 표출형태. 0 : 변수별로 일정한 길이 유지, 포트란에 적합 (default)1 : 구분자(,)로 구분, 엑셀에 적합
+- `help`: 도움말. 0 : 시작과 종료표시 + 변수명 (default)1 : 0 + 변수에 대한 설명2 : 전혀 표시않음 (값만 표시)
 
-#### 2. Minutely Data - Period
-**Endpoint**: `kma_aws2.php`
+#### AWS 초상온도
+**Endpoint**: `nph-aws2_min_lst`
 **Example URL**:
 ```
-https://apihub.kma.go.kr/api/typ01/url/kma_aws2.php?authKey=YOUR_KEY&tm1=202501011200&tm2=202501011300&stn=0&help=0
+https://apihub.kma.go.kr/api/typ01/cgi-bin/url/nph-aws2_min_lst?tm2=202302010900&stn=0&disp=0&help=1&authKey=Pi8YfpSBTPivGH6Ugaz4Kg
 ```
+**Parameters**:
+- `tm`: YYYYMMDDHHmm(KST). 조회할 시간 (없으면 현재시간)
+- `tm1`: YYYYMMDDHHmm(KST). 기조회할 시간구간의 시작시간 (없으면 종료시간과 같음)기간은 전체지점이면 10분, 1개 지점이면 하루이내로 처리
+- `tm2`: YYYYMMDDHHmm(KST). 조회할 시간구간의 종료시간 (없으면 현재시간)
+- `stn`: 지점번호, 해당 지점의 정보 표출 (0 이거나 없으면 전체지점)
+- `disp`: 표출형태. 0 : 변수별로 일정한 길이 유지, 포트란에 적합 (default)1 : 구분자(,)로 구분, 엑셀에 적합
+- `help`: 도움말. 0 : 시작과 종료표시 + 변수명 (default)1 : 0 + 변수에 대한 설명2 : 전혀 표시않음 (값만 표시)
 
-#### 3. Hourly Data - Single Time
-**Endpoint**: `kma_aws3.php`
+#### AWS 운고 운량
+**Endpoint**: `nph-aws2_min_cloud`
 **Example URL**:
 ```
-https://apihub.kma.go.kr/api/typ01/url/kma_aws3.php?authKey=YOUR_KEY&tm=202501011200&stn=0&help=0
+https://apihub.kma.go.kr/api/typ01/cgi-bin/url/nph-aws2_min_cloud?tm2=202302010900&stn=0&disp=0&help=1&authKey=R_zkyTnBQfy85Mk5wWH8Ow
 ```
+**Parameters**:
+- `tm1`: YYYYMMDDHHmm(KST). 기조회할 시간구간의 시작시간 (없으면 종료시간과 같음)기간은 전체지점이면 10분, 1개 지점이면 하루이내로 처리
+- `tm2`: YYYYMMDDHHmm(KST). 조회할 시간구간의 종료시간 (없으면 현재시간)
+- `stn`: 지점번호, 해당 지점의 정보 표출 (0 이거나 없으면 전체지점)
+- `itv`: 시간간격. (분)
+- `sms`: 평활화여부. 0 or 1
+- `disp`: 표출형태. 0 : 변수별로 일정한 길이 유지, 포트란에 적합 (default)1 : 구분자(,)로 구분, 엑셀에 적합
+- `help`: 도움말. 0 : 시작과 종료표시 + 변수명 (default)1 : 0 + 변수에 대한 설명2 : 전혀 표시않음 (값만 표시)
 
-#### 4. Hourly Data - Period
-**Endpoint**: `kma_aws4.php`
+#### AWS 운고 운량(특정기간 평균 값)
+**Endpoint**: `nph-aws2_min_ca2`
 **Example URL**:
 ```
-https://apihub.kma.go.kr/api/typ01/url/kma_aws4.php?authKey=YOUR_KEY&tm1=202501011200&tm2=202501020000&stn=0&help=0
+https://apihub.kma.go.kr/api/typ01/cgi-bin/url/nph-aws2_min_ca2?tm2=201503221200&itv=10&range=10&stn=0&disp=0&help=1&authKey=R_zkyTnBQfy85Mk5wWH8Ow
 ```
+**Parameters**:
+- `tm1`: YYYYMMDDHHmm(KST). 기조회할 시간구간의 시작시간 (없으면 종료시간과 같음)기간은 전체지점이면 10분, 1개 지점이면 하루이내로 처리
+- `tm2`: YYYYMMDDHHmm(KST). 조회할 시간구간의 종료시간 (없으면 현재시간)
+- `stn`: 지점번호, 해당 지점의 정보 표출 (0 이거나 없으면 전체지점)
+- `range`: 평균을 위한 누적기간(분)
+- `itv`: 시간간격. (분)
+- `disp`: 표출형태. 0 : 변수별로 일정한 길이 유지, 포트란에 적합 (default)1 : 구분자(,)로 구분, 엑셀에 적합
+- `help`: 도움말. 0 : 시작과 종료표시 + 변수명 (default)1 : 0 + 변수에 대한 설명2 : 전혀 표시않음 (값만 표시)
 
-#### 5. Daily Data - Single Day
-**Endpoint**: `kma_aws5.php`
+#### AWS 운고 운량(특정기간 최소/최고 값)
+**Endpoint**: `nph-aws2_min_ca3`
 **Example URL**:
 ```
-https://apihub.kma.go.kr/api/typ01/url/kma_aws5.php?authKey=YOUR_KEY&tm=20250101&stn=0&help=0
+https://apihub.kma.go.kr/api/typ01/cgi-bin/url/nph-aws2_min_ca3?tm2=201503221200&itv=10&range=10&stn=0&disp=0&help=1&authKey=R_zkyTnBQfy85Mk5wWH8Ow
 ```
+**Parameters**:
+- `tm1`: YYYYMMDDHHmm(KST). 기조회할 시간구간의 시작시간 (없으면 종료시간과 같음)기간은 전체지점이면 10분, 1개 지점이면 하루이내로 처리
+- `tm2`: YYYYMMDDHHmm(KST). 조회할 시간구간의 종료시간 (없으면 현재시간)
+- `stn`: 지점번호, 해당 지점의 정보 표출 (0 이거나 없으면 전체지점)
+- `range`: 평균을 위한 누적기간(분)
+- `itv`: 시간간격. (분)
+- `disp`: 표출형태. 0 : 변수별로 일정한 길이 유지, 포트란에 적합 (default)1 : 구분자(,)로 구분, 엑셀에 적합
+- `help`: 도움말. 0 : 시작과 종료표시 + 변수명 (default)1 : 0 + 변수에 대한 설명2 : 전혀 표시않음 (값만 표시)
 
-#### 6. Daily Data - Period
-**Endpoint**: `kma_aws6.php`
-**Example URL**:
-```
-https://apihub.kma.go.kr/api/typ01/url/kma_aws6.php?authKey=YOUR_KEY&tm1=20250101&tm2=20250131&stn=0&help=0
-```
+#### AWS2 시정자료
+Not yet implemented
+**Example URL**: https://apihub.kma.go.kr/api/typ01/cgi-bin/url/nph-aws2_min_vis?tm2=201507140812&stn=0&disp=0&help=1&authKey=R_zkyTnBQfy85Mk5wWH8Ow
 
+#### AWS2 시정자료(평균·최소·최고 시정)
+Not yet implemented
+**Example URL**: https://apihub.kma.go.kr/api/typ01/cgi-bin/url/nph-aws2_min_vis3?tm2=201503221200&itv=10&range=10&stn=0&disp=0&help=1&authKey=R_zkyTnBQfy85Mk5wWH8Ow
+
+#### AWS2 현천자료
+Not yet implemented
+**Example URL**: https://apihub.kma.go.kr/api/typ01/cgi-bin/url/nph-aws2_min_ww1?tm2=201503221200&itv=60&range=60&stn=0&help=1&authKey=R_zkyTnBQfy85Mk5wWH8Ow
+
+#### AWS2 현천, 분석
+Not yet implemented
+**Example URL**: https://apihub.kma.go.kr/api/typ01/cgi-bin/url/nph-aws2_min_ww2?tm2=201503221200&itv=10&range=10&stn=0&disp=0&help=1&authKey=R_zkyTnBQfy85Mk5wWH8Ow
+
+## 이동형 관측자료 조회
 ---
 
 ### AWS OA - AWS Objective Analysis
