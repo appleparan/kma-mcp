@@ -48,7 +48,7 @@ class AsyncAWSClient:
         await self._client.aclose()
 
     async def _make_request(
-        self, endpoint: str, params: dict[str, Any], use_cgi: bool = False
+        self, endpoint: str, params: dict[str, Any], *, use_cgi: bool = False
     ) -> dict[str, Any]:
         """Make HTTP request to AWS API.
 

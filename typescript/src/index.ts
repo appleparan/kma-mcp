@@ -39,10 +39,7 @@ async function validateApiKey(apiKey: string): Promise<boolean> {
 
     // Get data from 10 minutes ago to ensure data availability
     const testTime = new Date(Date.now() - 10 * 60 * 1000);
-    const timeStr = testTime.toISOString()
-      .replace(/[-:]/g, '')
-      .replace(/T/, '')
-      .slice(0, 12); // YYYYMMDDHHmm format
+    const timeStr = testTime.toISOString().replace(/[-:]/g, '').replace(/T/, '').slice(0, 12); // YYYYMMDDHHmm format
 
     // Test with a single station (104 = Bukgangneung)
     const result = await awsClient.getMinutelyData(timeStr, 104);
@@ -55,7 +52,9 @@ async function validateApiKey(apiKey: string): Promise<boolean> {
       return false;
     }
   } catch (error) {
-    console.error(`API key validation error: ${error instanceof Error ? error.message : String(error)}`);
+    console.error(
+      `API key validation error: ${error instanceof Error ? error.message : String(error)}`
+    );
     return false;
   }
 }

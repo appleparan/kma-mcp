@@ -6,6 +6,7 @@ import axios, { AxiosInstance, AxiosError } from 'axios';
 export interface KMAClientConfig {
   authKey: string;
   baseURL?: string;
+  cgiBaseURL?: string;
   timeout?: number;
 }
 
@@ -40,6 +41,7 @@ export class KMAAPIError extends Error {
 
 export abstract class BaseKMAClient {
   protected client: AxiosInstance;
+  protected cgiClient: AxiosInstance;
   protected authKey: string;
 
   constructor(config: KMAClientConfig) {
@@ -51,18 +53,27 @@ export abstract class BaseKMAClient {
         'Content-Type': 'application/json',
       },
     });
+    this.cgiClient = axios.create({
+      baseURL: config.cgiBaseURL || 'https://apihub.kma.go.kr/api/typ01/cgi-bin/url',
+      timeout: config.timeout || 30000,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
   }
 
   protected async makeRequest<T = unknown>(
     endpoint: string,
-    params: Record<string, unknown>
+    params: Record<string, unknown>,
+    useCgi = false
   ): Promise<T[]> {
     try {
-      const response = await this.client.get<KMAResponse<T>>(endpoint, {
+      const client = useCgi ? this.cgiClient : this.client;
+      const response = await client.get<KMAResponse<T>>(endpoint, {
         params: {
           ...params,
           authKey: this.authKey,
-          help: '0',
+          help: params.help !== undefined ? params.help : '0',
         },
       });
 

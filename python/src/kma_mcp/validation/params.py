@@ -31,16 +31,19 @@ class DateParam(BaseModel):
     def validate_date(cls, v: str) -> str:
         """Validate that the date string represents a valid date."""
         if len(v) != 8 or not v.isdigit():
-            raise InvalidDateError(f'Date must be 8 digits in YYYYMMDD format, got: {v}')
+            msg = f'Date must be 8 digits in YYYYMMDD format, got: {v}'
+            raise InvalidDateError(msg)
 
         try:
-            datetime.strptime(v, '%Y%m%d')
+            datetime.strptime(v, '%Y%m%d')  # noqa: DTZ007
         except ValueError as e:
-            raise InvalidDateError(f'Invalid date: {v}') from e
+            msg = f'Invalid date: {v}'
+            raise InvalidDateError(msg) from e
 
         return v
 
     def __str__(self) -> str:
+        """Return string representation of the date."""
         return self.value
 
 
@@ -62,18 +65,19 @@ class DateTimeParam(BaseModel):
     def validate_datetime(cls, v: str) -> str:
         """Validate that the datetime string represents a valid datetime."""
         if len(v) != 12 or not v.isdigit():
-            raise InvalidTimeError(
-                f'Datetime must be 12 digits in YYYYMMDDHHmm format, got: {v}'
-            )
+            msg = f'Datetime must be 12 digits in YYYYMMDDHHmm format, got: {v}'
+            raise InvalidTimeError(msg)
 
         try:
-            datetime.strptime(v, '%Y%m%d%H%M')
+            datetime.strptime(v, '%Y%m%d%H%M')  # noqa: DTZ007
         except ValueError as e:
-            raise InvalidTimeError(f'Invalid datetime: {v}') from e
+            msg = f'Invalid datetime: {v}'
+            raise InvalidTimeError(msg) from e
 
         return v
 
     def __str__(self) -> str:
+        """Return string representation of the datetime."""
         return self.value
 
 
@@ -91,6 +95,7 @@ class YearParam(BaseModel):
     value: Annotated[int, Field(ge=1900, le=2100, examples=[2025])]
 
     def __str__(self) -> str:
+        """Return string representation of the year."""
         return str(self.value)
 
 
@@ -118,12 +123,12 @@ class StationParam(BaseModel):
     def validate_station(cls, v: int) -> int:
         """Validate station ID range."""
         if v < 0 or v > 99999:
-            raise InvalidStationError(
-                f'Station ID must be between 0 and 99999, got: {v}'
-            )
+            msg = f'Station ID must be between 0 and 99999, got: {v}'
+            raise InvalidStationError(msg)
         return v
 
     def __str__(self) -> str:
+        """Return string representation of the station ID."""
         return str(self.value)
 
 
@@ -153,12 +158,12 @@ class LatitudeParam(BaseModel):
     def validate_latitude(cls, v: float) -> float:
         """Validate latitude is within Korea region."""
         if not (33.0 <= v <= 43.0):
-            raise InvalidCoordinateError(
-                f'Latitude must be between 33.0 and 43.0 for Korea region, got: {v}'
-            )
+            msg = f'Latitude must be between 33.0 and 43.0 for Korea region, got: {v}'
+            raise InvalidCoordinateError(msg)
         return v
 
     def __str__(self) -> str:
+        """Return string representation of the latitude."""
         return str(self.value)
 
 
@@ -188,10 +193,10 @@ class LongitudeParam(BaseModel):
     def validate_longitude(cls, v: float) -> float:
         """Validate longitude is within Korea region."""
         if not (124.0 <= v <= 132.0):
-            raise InvalidCoordinateError(
-                f'Longitude must be between 124.0 and 132.0 for Korea region, got: {v}'
-            )
+            msg = f'Longitude must be between 124.0 and 132.0 for Korea region, got: {v}'
+            raise InvalidCoordinateError(msg)
         return v
 
     def __str__(self) -> str:
+        """Return string representation of the longitude."""
         return str(self.value)
