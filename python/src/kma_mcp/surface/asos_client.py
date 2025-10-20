@@ -274,3 +274,276 @@ class ASOSClient:
             'help': '1',
         }
         return self._make_request('sfc_norm1.php', params)
+
+    # Not yet implemented stubs - these will raise NotImplementedError
+    def get_yearly_summary(self, year: int, page_no: int = 1, num_of_rows: int = 10) -> None:
+        """Get yearly summary data (not yet implemented).
+
+        Reference: API_ENDPOINT_Surface.md line 111-117
+
+        Args:
+            year: Year to query
+            page_no: Page number (default: 1)
+            num_of_rows: Number of rows per page (default: 10)
+
+        Raises:
+            NotImplementedError: This API endpoint is not yet implemented
+        """
+        msg = (
+            'get_yearly_summary() is not yet implemented in the KMA API. '
+            'Endpoint: SfcYearlyInfoService/getYearSumry'
+        )
+        raise NotImplementedError(msg)
+
+    def get_yearly_summary2(self, year: int, page_no: int = 1, num_of_rows: int = 10) -> None:
+        """Get yearly summary data (version 2) (not yet implemented).
+
+        Reference: API_ENDPOINT_Surface.md line 119-125
+
+        Args:
+            year: Year to query
+            page_no: Page number (default: 1)
+            num_of_rows: Number of rows per page (default: 10)
+
+        Raises:
+            NotImplementedError: This API endpoint is not yet implemented
+        """
+        msg = (
+            'get_yearly_summary2() is not yet implemented in the KMA API. '
+            'Endpoint: SfcYearlyInfoService/getYearSumry2'
+        )
+        raise NotImplementedError(msg)
+
+    def get_avg_temp_anomaly(self, year: int, page_no: int = 1, num_of_rows: int = 10) -> None:
+        """Get average temperature anomaly data (not yet implemented).
+
+        Reference: API_ENDPOINT_Surface.md line 127-133
+
+        Args:
+            year: Year to query
+            page_no: Page number (default: 1)
+            num_of_rows: Number of rows per page (default: 10)
+
+        Raises:
+            NotImplementedError: This API endpoint is not yet implemented
+        """
+        msg = (
+            'get_avg_temp_anomaly() is not yet implemented in the KMA API. '
+            'Endpoint: SfcYearlyInfoService/getAvgTaAnamaly'
+        )
+        raise NotImplementedError(msg)
+
+    def get_precipitation_anomaly(self, year: int, page_no: int = 1, num_of_rows: int = 10) -> None:
+        """Get precipitation anomaly data (not yet implemented).
+
+        Reference: API_ENDPOINT_Surface.md line 135-141
+
+        Args:
+            year: Year to query
+            page_no: Page number (default: 1)
+            num_of_rows: Number of rows per page (default: 10)
+
+        Raises:
+            NotImplementedError: This API endpoint is not yet implemented
+        """
+        msg = (
+            'get_precipitation_anomaly() is not yet implemented in the KMA API. '
+            'Endpoint: SfcYearlyInfoService/getRnAnamaly'
+        )
+        raise NotImplementedError(msg)
+
+    def get_station_phenomenon_data(
+        self, year: int, station: int, page_no: int = 1, num_of_rows: int = 10
+    ) -> None:
+        """Get station phenomenon data (not yet implemented).
+
+        Reference: API_ENDPOINT_Surface.md line 143-149
+
+        Args:
+            year: Year to query
+            station: Station number
+            page_no: Page number (default: 1)
+            num_of_rows: Number of rows per page (default: 10)
+
+        Raises:
+            NotImplementedError: This API endpoint is not yet implemented
+        """
+        msg = (
+            'get_station_phenomenon_data() is not yet implemented in the KMA API. '
+            'Endpoint: SfcYearlyInfoService/getStnPhnmnData'
+        )
+        raise NotImplementedError(msg)
+
+    def get_station_phenomenon_data2(
+        self, year: int, station: int, page_no: int = 1, num_of_rows: int = 10
+    ) -> None:
+        """Get station phenomenon data (version 2) (not yet implemented).
+
+        Reference: API_ENDPOINT_Surface.md line 151-157
+
+        Args:
+            year: Year to query
+            station: Station number
+            page_no: Page number (default: 1)
+            num_of_rows: Number of rows per page (default: 10)
+
+        Raises:
+            NotImplementedError: This API endpoint is not yet implemented
+        """
+        msg = (
+            'get_station_phenomenon_data2() is not yet implemented in the KMA API. '
+            'Endpoint: SfcYearlyInfoService/getStnPhnmnData2'
+        )
+        raise NotImplementedError(msg)
+
+    def get_station_phenomenon_data3(
+        self, year: int, station: int, page_no: int = 1, num_of_rows: int = 10
+    ) -> None:
+        """Get station phenomenon data (version 3) (not yet implemented).
+
+        Reference: API_ENDPOINT_Surface.md line 159-165
+
+        Args:
+            year: Year to query
+            station: Station number
+            page_no: Page number (default: 1)
+            num_of_rows: Number of rows per page (default: 10)
+
+        Raises:
+            NotImplementedError: This API endpoint is not yet implemented
+        """
+        msg = (
+            'get_station_phenomenon_data3() is not yet implemented in the KMA API. '
+            'Endpoint: SfcYearlyInfoService/getStnPhnmnData3'
+        )
+        raise NotImplementedError(msg)
+
+    def get_monthly_note(
+        self, year: int, month: int, page_no: int = 1, num_of_rows: int = 10
+    ) -> None:
+        """Get monthly notes/remarks (not yet implemented).
+
+        Reference: API_ENDPOINT_Surface.md line 171-177
+
+        Args:
+            year: Year to query
+            month: Month to query
+            page_no: Page number (default: 1)
+            num_of_rows: Number of rows per page (default: 10)
+
+        Raises:
+            NotImplementedError: This API endpoint is not yet implemented
+        """
+        msg = (
+            'get_monthly_note() is not yet implemented in the KMA API. '
+            'Endpoint: SfcMtlyInfoService/getNote'
+        )
+        raise NotImplementedError(msg)
+
+    def get_station_list_table(
+        self, year: int, month: int, page_no: int = 1, num_of_rows: int = 10
+    ) -> None:
+        """Get surface observation station list table (not yet implemented).
+
+        Reference: API_ENDPOINT_Surface.md line 179-185
+
+        Args:
+            year: Year to query
+            month: Month to query
+            page_no: Page number (default: 1)
+            num_of_rows: Number of rows per page (default: 10)
+
+        Raises:
+            NotImplementedError: This API endpoint is not yet implemented
+        """
+        msg = (
+            'get_station_list_table() is not yet implemented in the KMA API. '
+            'Endpoint: SfcMtlyInfoService/getSfcStnLstTbl'
+        )
+        raise NotImplementedError(msg)
+
+    def get_monthly_summary(
+        self, year: int, month: int, page_no: int = 1, num_of_rows: int = 10
+    ) -> None:
+        """Get monthly summary data (not yet implemented).
+
+        Reference: API_ENDPOINT_Surface.md line 187-194
+
+        Args:
+            year: Year to query
+            month: Month to query
+            page_no: Page number (default: 1)
+            num_of_rows: Number of rows per page (default: 10)
+
+        Raises:
+            NotImplementedError: This API endpoint is not yet implemented
+        """
+        msg = (
+            'get_monthly_summary() is not yet implemented in the KMA API. '
+            'Endpoint: SfcMtlyInfoService/getMmSumry'
+        )
+        raise NotImplementedError(msg)
+
+    def get_monthly_summary2(
+        self, year: int, month: int, page_no: int = 1, num_of_rows: int = 10
+    ) -> None:
+        """Get monthly summary data (version 2) (not yet implemented).
+
+        Reference: API_ENDPOINT_Surface.md line 196-202
+
+        Args:
+            year: Year to query
+            month: Month to query
+            page_no: Page number (default: 1)
+            num_of_rows: Number of rows per page (default: 10)
+
+        Raises:
+            NotImplementedError: This API endpoint is not yet implemented
+        """
+        msg = (
+            'get_monthly_summary2() is not yet implemented in the KMA API. '
+            'Endpoint: SfcMtlyInfoService/getMmSumry2'
+        )
+        raise NotImplementedError(msg)
+
+    def get_daily_weather_data(
+        self, year: int, month: int, station: int, page_no: int = 1, num_of_rows: int = 10
+    ) -> None:
+        """Get daily weather data for a month (not yet implemented).
+
+        Reference: API_ENDPOINT_Surface.md line 204-211
+
+        Args:
+            year: Year to query
+            month: Month to query
+            station: Station number
+            page_no: Page number (default: 1)
+            num_of_rows: Number of rows per page (default: 10)
+
+        Raises:
+            NotImplementedError: This API endpoint is not yet implemented
+        """
+        msg = (
+            'get_daily_weather_data() is not yet implemented in the KMA API. '
+            'Endpoint: SfcMtlyInfoService/getDailyWthrData'
+        )
+        raise NotImplementedError(msg)
+
+    def get_yearly_climate_stats(self, stn: int, mm: int, dd: int) -> None:
+        """Get yearly climate statistics for a specific date (not yet implemented).
+
+        Reference: API_ENDPOINT_Surface.md line 224-229
+
+        Args:
+            stn: Station number
+            mm: Month (1-12)
+            dd: Day (1-31)
+
+        Raises:
+            NotImplementedError: This API endpoint is not yet implemented
+        """
+        msg = (
+            'get_yearly_climate_stats() is not yet implemented in the KMA API. '
+            'Endpoint: sfc_day_year.php'
+        )
+        raise NotImplementedError(msg)

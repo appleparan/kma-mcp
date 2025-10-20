@@ -436,3 +436,173 @@ class AWSClient:
 
         params = {'tm1': tm1, 'tm2': tm2, 'stn': str(stn), 'help': '0'}
         return self._make_request('kma_aws6.php', params)
+
+    # Not yet implemented stubs - these will raise NotImplementedError
+    def get_visibility_data(
+        self,
+        tm2: str | datetime | None = None,
+        stn: int | str = 0,
+        disp: int = 0,
+    ) -> None:
+        """Get AWS visibility data (not yet implemented).
+
+        Reference: API_ENDPOINT_Surface.md line 314-320
+
+        Args:
+            tm2: End time (optional, defaults to current time)
+            stn: Station number (0 for all stations)
+            disp: Display format (0=Fortran, 1=Excel)
+
+        Raises:
+            NotImplementedError: This API endpoint is not yet implemented
+        """
+        msg = (
+            'get_visibility_data() is not yet implemented in the KMA API. '
+            'Endpoint: nph-aws2_min_vis'
+        )
+        raise NotImplementedError(msg)
+
+    def get_visibility_stats(
+        self,
+        tm2: str | datetime | None = None,
+        stn: int | str = 0,
+        itv: int = 10,
+        range_minutes: int = 10,
+        disp: int = 0,
+    ) -> None:
+        """Get AWS visibility statistics (avg/min/max) (not yet implemented).
+
+        Reference: API_ENDPOINT_Surface.md line 322-327
+
+        Args:
+            tm2: End time (optional, defaults to current time)
+            stn: Station number (0 for all stations)
+            itv: Time interval in minutes (default: 10)
+            range_minutes: Accumulation period in minutes (default: 10)
+            disp: Display format (0=Fortran, 1=Excel)
+
+        Raises:
+            NotImplementedError: This API endpoint is not yet implemented
+        """
+        msg = (
+            'get_visibility_stats() is not yet implemented in the KMA API. '
+            'Endpoint: nph-aws2_min_vis3'
+        )
+        raise NotImplementedError(msg)
+
+    def get_present_weather_data(
+        self,
+        tm2: str | datetime | None = None,
+        stn: int | str = 0,
+        itv: int = 60,
+        range_minutes: int = 60,
+    ) -> None:
+        """Get AWS present weather data (not yet implemented).
+
+        Reference: API_ENDPOINT_Surface.md line 329-334
+
+        Args:
+            tm2: End time (optional, defaults to current time)
+            stn: Station number (0 for all stations)
+            itv: Time interval in minutes (default: 60)
+            range_minutes: Accumulation period in minutes (default: 60)
+
+        Raises:
+            NotImplementedError: This API endpoint is not yet implemented
+        """
+        msg = (
+            'get_present_weather_data() is not yet implemented in the KMA API. '
+            'Endpoint: nph-aws2_min_ww1'
+        )
+        raise NotImplementedError(msg)
+
+    def get_present_weather_analysis(
+        self,
+        tm2: str | datetime | None = None,
+        stn: int | str = 0,
+        itv: int = 10,
+        range_minutes: int = 10,
+        disp: int = 0,
+    ) -> None:
+        """Get AWS present weather analysis data (not yet implemented).
+
+        Reference: API_ENDPOINT_Surface.md line 335-340
+
+        Args:
+            tm2: End time (optional, defaults to current time)
+            stn: Station number (0 for all stations)
+            itv: Time interval in minutes (default: 10)
+            range_minutes: Accumulation period in minutes (default: 10)
+            disp: Display format (0=Fortran, 1=Excel)
+
+        Raises:
+            NotImplementedError: This API endpoint is not yet implemented
+        """
+        msg = (
+            'get_present_weather_analysis() is not yet implemented in the KMA API. '
+            'Endpoint: nph-aws2_min_ww2'
+        )
+        raise NotImplementedError(msg)
+
+    def get_mobile_observation_data(
+        self,
+        tm1: str | datetime | None = None,
+        tm2: str | datetime | None = None,
+        stn: str = '',
+        disp: int = 0,
+    ) -> None:
+        """Get mobile observation data (not yet implemented).
+
+        Reference: API_ENDPOINT_Surface.md line 342-349
+
+        Args:
+            tm1: Start time (optional)
+            tm2: End time (optional)
+            stn: Station code (empty for all stations)
+            disp: Display format (0=Fortran, 1=Excel)
+
+        Raises:
+            NotImplementedError: This API endpoint is not yet implemented
+        """
+        msg = (
+            'get_mobile_observation_data() is not yet implemented in the KMA API. '
+            'Endpoint: nph-aws3_min_mob'
+        )
+        raise NotImplementedError(msg)
+
+    def get_hourly_stats(self, var: str, tm: str | datetime) -> None:
+        """Get AWS hourly statistics data (not yet implemented).
+
+        Reference: API_ENDPOINT_Surface.md line 351-391
+
+        Args:
+            var: Variable code (TA=temperature, WD=wind direction, HM=humidity, PS=pressure)
+            tm: Time in 'YYYYMMDDHHmm' format or datetime object
+
+        Raises:
+            NotImplementedError: This API endpoint is not yet implemented
+        """
+        msg = 'get_hourly_stats() is not yet implemented in the KMA API. Endpoint: awsh.php'
+        raise NotImplementedError(msg)
+
+    def get_daily_element_stats(
+        self, tm2: str | datetime, obs: str, stn: int | str = 0, disp: int = 0
+    ) -> None:
+        """Get surface and AWS daily element statistics (not yet implemented).
+
+        Reference: API_ENDPOINT_Surface.md line 393-401
+
+        Args:
+            tm2: End date in 'YYYYMMDD' format or datetime object
+            obs: Observation element code (e.g., 'ta_max')
+            stn: Station number (0 for all stations)
+            disp: Display format (0=Fortran, 1=Excel)
+
+        Raises:
+            NotImplementedError: This API endpoint is not yet implemented
+        """
+        msg = (
+            'get_daily_element_stats() is not yet implemented in the KMA API. '
+            'Endpoint: sfc_aws_day.php'
+        )
+        raise NotImplementedError(msg)
