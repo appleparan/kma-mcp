@@ -278,4 +278,91 @@ describe('ForecastClient', () => {
       true
     );
   });
+
+  // Category 4: Village Forecast API Tests
+  test('should get ultra short-term observation data', async () => {
+    const mockMakeRequest = mock(() => Promise.resolve([mockForecast]));
+    client['makeRequest'] = mockMakeRequest;
+
+    await client.getUltraShortTermObservation('20210628', '0600', 55, 127);
+
+    expect(mockMakeRequest).toHaveBeenCalledWith(
+      'VilageFcstInfoService_2.0/getUltraSrtNcst',
+      {
+        pageNo: '1',
+        numOfRows: '1000',
+        dataType: 'JSON',
+        base_date: '20210628',
+        base_time: '0600',
+        nx: '55',
+        ny: '127',
+      },
+      false,
+      true
+    );
+  });
+
+  test('should get ultra short-term forecast data', async () => {
+    const mockMakeRequest = mock(() => Promise.resolve([mockForecast]));
+    client['makeRequest'] = mockMakeRequest;
+
+    await client.getUltraShortTermForecast('20210628', '0630', 55, 127);
+
+    expect(mockMakeRequest).toHaveBeenCalledWith(
+      'VilageFcstInfoService_2.0/getUltraSrtFcst',
+      {
+        pageNo: '1',
+        numOfRows: '1000',
+        dataType: 'JSON',
+        base_date: '20210628',
+        base_time: '0630',
+        nx: '55',
+        ny: '127',
+      },
+      false,
+      true
+    );
+  });
+
+  test('should get village forecast data', async () => {
+    const mockMakeRequest = mock(() => Promise.resolve([mockForecast]));
+    client['makeRequest'] = mockMakeRequest;
+
+    await client.getVillageForecast('20210628', '0500', 55, 127);
+
+    expect(mockMakeRequest).toHaveBeenCalledWith(
+      'VilageFcstInfoService_2.0/getVilageFcst',
+      {
+        pageNo: '1',
+        numOfRows: '1000',
+        dataType: 'JSON',
+        base_date: '20210628',
+        base_time: '0500',
+        nx: '55',
+        ny: '127',
+      },
+      false,
+      true
+    );
+  });
+
+  test('should get forecast version information', async () => {
+    const mockMakeRequest = mock(() => Promise.resolve([mockForecast]));
+    client['makeRequest'] = mockMakeRequest;
+
+    await client.getForecastVersion('SHRT', '202106280800');
+
+    expect(mockMakeRequest).toHaveBeenCalledWith(
+      'VilageFcstInfoService_2.0/getFcstVersion',
+      {
+        pageNo: '1',
+        numOfRows: '1000',
+        dataType: 'JSON',
+        ftype: 'SHRT',
+        basedatetime: '202106280800',
+      },
+      false,
+      true
+    );
+  });
 });

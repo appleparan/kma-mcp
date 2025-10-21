@@ -734,6 +734,225 @@ export class ForecastClient extends BaseKMAClient {
   }
 
   // ============================================================================
+  // Category 4: Village Forecast API (동네예보 API)
+  // ============================================================================
+
+  /**
+   * Get ultra short-term observation data (documented endpoint)
+   *
+   * Documented endpoint: VilageFcstInfoService_2.0/getUltraSrtNcst (OpenAPI)
+   *
+   * Retrieves current weather observation data for village forecast grid points.
+   * Issued every hour on the hour.
+   *
+   * @param baseDate - Issue date in YYYYMMDD format (e.g., '20210628')
+   * @param baseTime - Issue time in HHmm format (e.g., '0600')
+   * @param nx - Forecast grid X coordinate (1~149)
+   * @param ny - Forecast grid Y coordinate (1~253)
+   * @param params - Optional query parameters
+   * @param params.pageNo - Page number (default: 1)
+   * @param params.numOfRows - Number of results per page (default: 1000)
+   * @param params.dataType - Response data format: 'XML' or 'JSON' (default: 'JSON')
+   * @returns Ultra short-term observation data
+   *
+   * @example
+   * ```typescript
+   * const client = new ForecastClient({ authKey: 'your_key' });
+   * const data = await client.getUltraShortTermObservation('20210628', '0600', 55, 127);
+   * ```
+   *
+   * Reference: API_ENDPOINT_Forecast.md - Category 4: Village Forecast API
+   */
+  async getUltraShortTermObservation(
+    baseDate: string,
+    baseTime: string,
+    nx: number,
+    ny: number,
+    params?: {
+      pageNo?: number;
+      numOfRows?: number;
+      dataType?: string;
+    }
+  ): Promise<ForecastData[]> {
+    const requestParams: Record<string, unknown> = {
+      pageNo: String(params?.pageNo ?? 1),
+      numOfRows: String(params?.numOfRows ?? 1000),
+      dataType: params?.dataType ?? 'JSON',
+      base_date: baseDate,
+      base_time: baseTime,
+      nx: String(nx),
+      ny: String(ny),
+    };
+
+    return this.makeRequest<ForecastData>(
+      'VilageFcstInfoService_2.0/getUltraSrtNcst',
+      requestParams,
+      false,
+      true
+    );
+  }
+
+  /**
+   * Get ultra short-term forecast data (documented endpoint)
+   *
+   * Documented endpoint: VilageFcstInfoService_2.0/getUltraSrtFcst (OpenAPI)
+   *
+   * Retrieves ultra short-term forecast data for village forecast grid points.
+   * Issued every 30 minutes. Provides hourly forecasts up to 6 hours ahead.
+   *
+   * @param baseDate - Issue date in YYYYMMDD format (e.g., '20210628')
+   * @param baseTime - Issue time in HHmm format (e.g., '0630')
+   * @param nx - Forecast grid X coordinate (1~149)
+   * @param ny - Forecast grid Y coordinate (1~253)
+   * @param params - Optional query parameters
+   * @param params.pageNo - Page number (default: 1)
+   * @param params.numOfRows - Number of results per page (default: 1000)
+   * @param params.dataType - Response data format: 'XML' or 'JSON' (default: 'JSON')
+   * @returns Ultra short-term forecast data
+   *
+   * @example
+   * ```typescript
+   * const client = new ForecastClient({ authKey: 'your_key' });
+   * const data = await client.getUltraShortTermForecast('20210628', '0630', 55, 127);
+   * ```
+   *
+   * Reference: API_ENDPOINT_Forecast.md - Category 4: Village Forecast API
+   */
+  async getUltraShortTermForecast(
+    baseDate: string,
+    baseTime: string,
+    nx: number,
+    ny: number,
+    params?: {
+      pageNo?: number;
+      numOfRows?: number;
+      dataType?: string;
+    }
+  ): Promise<ForecastData[]> {
+    const requestParams: Record<string, unknown> = {
+      pageNo: String(params?.pageNo ?? 1),
+      numOfRows: String(params?.numOfRows ?? 1000),
+      dataType: params?.dataType ?? 'JSON',
+      base_date: baseDate,
+      base_time: baseTime,
+      nx: String(nx),
+      ny: String(ny),
+    };
+
+    return this.makeRequest<ForecastData>(
+      'VilageFcstInfoService_2.0/getUltraSrtFcst',
+      requestParams,
+      false,
+      true
+    );
+  }
+
+  /**
+   * Get village short-term forecast data (documented endpoint)
+   *
+   * Documented endpoint: VilageFcstInfoService_2.0/getVilageFcst (OpenAPI)
+   *
+   * Retrieves short-term forecast data for village forecast grid points.
+   * Issued 8 times daily (02, 05, 08, 11, 14, 17, 20, 23 KST).
+   * Provides forecasts up to 3 days ahead.
+   *
+   * @param baseDate - Issue date in YYYYMMDD format (e.g., '20210628')
+   * @param baseTime - Issue time in HHmm format (e.g., '0500')
+   * @param nx - Forecast grid X coordinate (1~149)
+   * @param ny - Forecast grid Y coordinate (1~253)
+   * @param params - Optional query parameters
+   * @param params.pageNo - Page number (default: 1)
+   * @param params.numOfRows - Number of results per page (default: 1000)
+   * @param params.dataType - Response data format: 'XML' or 'JSON' (default: 'JSON')
+   * @returns Village short-term forecast data
+   *
+   * @example
+   * ```typescript
+   * const client = new ForecastClient({ authKey: 'your_key' });
+   * const data = await client.getVillageForecast('20210628', '0500', 55, 127);
+   * ```
+   *
+   * Reference: API_ENDPOINT_Forecast.md - Category 4: Village Forecast API
+   */
+  async getVillageForecast(
+    baseDate: string,
+    baseTime: string,
+    nx: number,
+    ny: number,
+    params?: {
+      pageNo?: number;
+      numOfRows?: number;
+      dataType?: string;
+    }
+  ): Promise<ForecastData[]> {
+    const requestParams: Record<string, unknown> = {
+      pageNo: String(params?.pageNo ?? 1),
+      numOfRows: String(params?.numOfRows ?? 1000),
+      dataType: params?.dataType ?? 'JSON',
+      base_date: baseDate,
+      base_time: baseTime,
+      nx: String(nx),
+      ny: String(ny),
+    };
+
+    return this.makeRequest<ForecastData>(
+      'VilageFcstInfoService_2.0/getVilageFcst',
+      requestParams,
+      false,
+      true
+    );
+  }
+
+  /**
+   * Get forecast version information (documented endpoint)
+   *
+   * Documented endpoint: VilageFcstInfoService_2.0/getFcstVersion (OpenAPI)
+   *
+   * Retrieves version information for village forecast data files.
+   * Useful for tracking data updates and changes.
+   *
+   * @param ftype - File type: 'ODAM' (observation), 'VSRT' (ultra short-term), 'SHRT' (short-term)
+   * @param basedatetime - Issue date/time in YYYYMMDDHHmm format (e.g., '202106280800')
+   * @param params - Optional query parameters
+   * @param params.pageNo - Page number (default: 1)
+   * @param params.numOfRows - Number of results per page (default: 1000)
+   * @param params.dataType - Response data format: 'XML' or 'JSON' (default: 'JSON')
+   * @returns Forecast version information
+   *
+   * @example
+   * ```typescript
+   * const client = new ForecastClient({ authKey: 'your_key' });
+   * const data = await client.getForecastVersion('SHRT', '202106280800');
+   * ```
+   *
+   * Reference: API_ENDPOINT_Forecast.md - Category 4: Village Forecast API
+   */
+  async getForecastVersion(
+    ftype: string,
+    basedatetime: string,
+    params?: {
+      pageNo?: number;
+      numOfRows?: number;
+      dataType?: string;
+    }
+  ): Promise<ForecastData[]> {
+    const requestParams: Record<string, unknown> = {
+      pageNo: String(params?.pageNo ?? 1),
+      numOfRows: String(params?.numOfRows ?? 1000),
+      dataType: params?.dataType ?? 'JSON',
+      ftype: ftype,
+      basedatetime: basedatetime,
+    };
+
+    return this.makeRequest<ForecastData>(
+      'VilageFcstInfoService_2.0/getFcstVersion',
+      requestParams,
+      false,
+      true
+    );
+  }
+
+  // ============================================================================
   // Legacy methods - marked as undocumented
   // ============================================================================
 

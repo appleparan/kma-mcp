@@ -769,6 +769,216 @@ class ForecastClient:
         return self._make_request('VilageFcstMsgService/getSeaFcst', params, use_openapi=True)
 
     # ============================================================================
+    # Category 4: Village Forecast API (동네예보 API)
+    # ============================================================================
+
+    def get_ultra_short_term_observation(
+        self,
+        base_date: str,
+        base_time: str,
+        nx: int,
+        ny: int,
+        page_no: int = 1,
+        num_of_rows: int = 1000,
+        data_type: str = 'JSON',
+    ) -> dict[str, Any]:
+        """Get ultra short-term observation data (documented endpoint).
+
+        Documented endpoint: VilageFcstInfoService_2.0/getUltraSrtNcst (OpenAPI)
+
+        Retrieves current weather observation data for village forecast grid points.
+        Issued every hour on the hour.
+
+        Args:
+            base_date: Issue date in YYYYMMDD format (e.g., '20210628')
+            base_time: Issue time in HHmm format (e.g., '0600')
+            nx: Forecast grid X coordinate (1~149)
+            ny: Forecast grid Y coordinate (1~253)
+            page_no: Page number (default: 1)
+            num_of_rows: Number of results per page (default: 1000)
+            data_type: Response data format - 'XML' or 'JSON' (default: 'JSON')
+
+        Returns:
+            Ultra short-term observation data
+
+        Example:
+            >>> client = ForecastClient(auth_key='your_key')
+            >>> data = client.get_ultra_short_term_observation(
+            ...     base_date='20210628',
+            ...     base_time='0600',
+            ...     nx=55,
+            ...     ny=127
+            ... )
+
+        Reference: API_ENDPOINT_Forecast.md - Category 4: Village Forecast API
+        """
+        params = {
+            'pageNo': str(page_no),
+            'numOfRows': str(num_of_rows),
+            'dataType': data_type,
+            'base_date': base_date,
+            'base_time': base_time,
+            'nx': str(nx),
+            'ny': str(ny),
+        }
+        return self._make_request(
+            'VilageFcstInfoService_2.0/getUltraSrtNcst', params, use_openapi=True
+        )
+
+    def get_ultra_short_term_forecast(
+        self,
+        base_date: str,
+        base_time: str,
+        nx: int,
+        ny: int,
+        page_no: int = 1,
+        num_of_rows: int = 1000,
+        data_type: str = 'JSON',
+    ) -> dict[str, Any]:
+        """Get ultra short-term forecast data (documented endpoint).
+
+        Documented endpoint: VilageFcstInfoService_2.0/getUltraSrtFcst (OpenAPI)
+
+        Retrieves ultra short-term forecast data for village forecast grid points.
+        Issued every 30 minutes. Provides hourly forecasts up to 6 hours ahead.
+
+        Args:
+            base_date: Issue date in YYYYMMDD format (e.g., '20210628')
+            base_time: Issue time in HHmm format (e.g., '0630')
+            nx: Forecast grid X coordinate (1~149)
+            ny: Forecast grid Y coordinate (1~253)
+            page_no: Page number (default: 1)
+            num_of_rows: Number of results per page (default: 1000)
+            data_type: Response data format - 'XML' or 'JSON' (default: 'JSON')
+
+        Returns:
+            Ultra short-term forecast data
+
+        Example:
+            >>> client = ForecastClient(auth_key='your_key')
+            >>> data = client.get_ultra_short_term_forecast(
+            ...     base_date='20210628',
+            ...     base_time='0630',
+            ...     nx=55,
+            ...     ny=127
+            ... )
+
+        Reference: API_ENDPOINT_Forecast.md - Category 4: Village Forecast API
+        """
+        params = {
+            'pageNo': str(page_no),
+            'numOfRows': str(num_of_rows),
+            'dataType': data_type,
+            'base_date': base_date,
+            'base_time': base_time,
+            'nx': str(nx),
+            'ny': str(ny),
+        }
+        return self._make_request(
+            'VilageFcstInfoService_2.0/getUltraSrtFcst', params, use_openapi=True
+        )
+
+    def get_village_forecast(
+        self,
+        base_date: str,
+        base_time: str,
+        nx: int,
+        ny: int,
+        page_no: int = 1,
+        num_of_rows: int = 1000,
+        data_type: str = 'JSON',
+    ) -> dict[str, Any]:
+        """Get village short-term forecast data (documented endpoint).
+
+        Documented endpoint: VilageFcstInfoService_2.0/getVilageFcst (OpenAPI)
+
+        Retrieves short-term forecast data for village forecast grid points.
+        Issued 8 times daily (02, 05, 08, 11, 14, 17, 20, 23 KST).
+        Provides forecasts up to 3 days ahead.
+
+        Args:
+            base_date: Issue date in YYYYMMDD format (e.g., '20210628')
+            base_time: Issue time in HHmm format (e.g., '0500')
+            nx: Forecast grid X coordinate (1~149)
+            ny: Forecast grid Y coordinate (1~253)
+            page_no: Page number (default: 1)
+            num_of_rows: Number of results per page (default: 1000)
+            data_type: Response data format - 'XML' or 'JSON' (default: 'JSON')
+
+        Returns:
+            Village short-term forecast data
+
+        Example:
+            >>> client = ForecastClient(auth_key='your_key')
+            >>> data = client.get_village_forecast(
+            ...     base_date='20210628',
+            ...     base_time='0500',
+            ...     nx=55,
+            ...     ny=127
+            ... )
+
+        Reference: API_ENDPOINT_Forecast.md - Category 4: Village Forecast API
+        """
+        params = {
+            'pageNo': str(page_no),
+            'numOfRows': str(num_of_rows),
+            'dataType': data_type,
+            'base_date': base_date,
+            'base_time': base_time,
+            'nx': str(nx),
+            'ny': str(ny),
+        }
+        return self._make_request(
+            'VilageFcstInfoService_2.0/getVilageFcst', params, use_openapi=True
+        )
+
+    def get_forecast_version(
+        self,
+        ftype: str,
+        basedatetime: str,
+        page_no: int = 1,
+        num_of_rows: int = 1000,
+        data_type: str = 'JSON',
+    ) -> dict[str, Any]:
+        """Get forecast version information (documented endpoint).
+
+        Documented endpoint: VilageFcstInfoService_2.0/getFcstVersion (OpenAPI)
+
+        Retrieves version information for village forecast data files.
+        Useful for tracking data updates and changes.
+
+        Args:
+            ftype: File type - 'ODAM' (observation), 'VSRT' (ultra short-term),
+                   'SHRT' (short-term)
+            basedatetime: Issue date/time in YYYYMMDDHHmm format (e.g., '202106280800')
+            page_no: Page number (default: 1)
+            num_of_rows: Number of results per page (default: 1000)
+            data_type: Response data format - 'XML' or 'JSON' (default: 'JSON')
+
+        Returns:
+            Forecast version information
+
+        Example:
+            >>> client = ForecastClient(auth_key='your_key')
+            >>> data = client.get_forecast_version(
+            ...     ftype='SHRT',
+            ...     basedatetime='202106280800'
+            ... )
+
+        Reference: API_ENDPOINT_Forecast.md - Category 4: Village Forecast API
+        """
+        params = {
+            'pageNo': str(page_no),
+            'numOfRows': str(num_of_rows),
+            'dataType': data_type,
+            'ftype': ftype,
+            'basedatetime': basedatetime,
+        }
+        return self._make_request(
+            'VilageFcstInfoService_2.0/getFcstVersion', params, use_openapi=True
+        )
+
+    # ============================================================================
     # Legacy methods - marked as deprecated
     # ============================================================================
 

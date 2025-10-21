@@ -371,3 +371,82 @@ class TestForecastClientRequests:
         assert result == mock_response_data
         assert 'VilageFcstMsgService/getSeaFcst' in mock_get.call_args.args[0]
         assert mock_get.call_args.kwargs['params']['regId'] == '12A20100'
+
+    # Category 4: Village Forecast API Tests
+    @patch('httpx.Client.get')
+    def test_get_ultra_short_term_observation(
+        self,
+        mock_get: Mock,
+        forecast_client: ForecastClient,
+        mock_response_data: dict,
+    ) -> None:
+        """Test getting ultra short-term observation data."""
+        mock_response = Mock()
+        mock_response.json.return_value = mock_response_data
+        mock_response.raise_for_status = Mock()
+        mock_get.return_value = mock_response
+
+        result = forecast_client.get_ultra_short_term_observation(
+            base_date='20210628', base_time='0600', nx=55, ny=127
+        )
+
+        assert result == mock_response_data
+        assert 'VilageFcstInfoService_2.0/getUltraSrtNcst' in mock_get.call_args.args[0]
+
+    @patch('httpx.Client.get')
+    def test_get_ultra_short_term_forecast(
+        self,
+        mock_get: Mock,
+        forecast_client: ForecastClient,
+        mock_response_data: dict,
+    ) -> None:
+        """Test getting ultra short-term forecast data."""
+        mock_response = Mock()
+        mock_response.json.return_value = mock_response_data
+        mock_response.raise_for_status = Mock()
+        mock_get.return_value = mock_response
+
+        result = forecast_client.get_ultra_short_term_forecast(
+            base_date='20210628', base_time='0630', nx=55, ny=127
+        )
+
+        assert result == mock_response_data
+        assert 'VilageFcstInfoService_2.0/getUltraSrtFcst' in mock_get.call_args.args[0]
+
+    @patch('httpx.Client.get')
+    def test_get_village_forecast(
+        self,
+        mock_get: Mock,
+        forecast_client: ForecastClient,
+        mock_response_data: dict,
+    ) -> None:
+        """Test getting village short-term forecast data."""
+        mock_response = Mock()
+        mock_response.json.return_value = mock_response_data
+        mock_response.raise_for_status = Mock()
+        mock_get.return_value = mock_response
+
+        result = forecast_client.get_village_forecast(
+            base_date='20210628', base_time='0500', nx=55, ny=127
+        )
+
+        assert result == mock_response_data
+        assert 'VilageFcstInfoService_2.0/getVilageFcst' in mock_get.call_args.args[0]
+
+    @patch('httpx.Client.get')
+    def test_get_forecast_version(
+        self,
+        mock_get: Mock,
+        forecast_client: ForecastClient,
+        mock_response_data: dict,
+    ) -> None:
+        """Test getting forecast version information."""
+        mock_response = Mock()
+        mock_response.json.return_value = mock_response_data
+        mock_response.raise_for_status = Mock()
+        mock_get.return_value = mock_response
+
+        result = forecast_client.get_forecast_version(ftype='SHRT', basedatetime='202106280800')
+
+        assert result == mock_response_data
+        assert 'VilageFcstInfoService_2.0/getFcstVersion' in mock_get.call_args.args[0]
