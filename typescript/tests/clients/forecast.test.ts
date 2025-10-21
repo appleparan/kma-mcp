@@ -55,4 +55,73 @@ describe('ForecastClient', () => {
       stn: '0',
     });
   });
+
+  // Category 1: Short-term Forecast Tests
+  test('should get short-term forecast by region', async () => {
+    const mockMakeRequest = mock(() => Promise.resolve([mockForecast]));
+    client['makeRequest'] = mockMakeRequest;
+
+    const result = await client.getShortTermRegion({ tmfc: '202501011200' });
+
+    expect(result).toEqual([mockForecast]);
+    expect(mockMakeRequest).toHaveBeenCalledWith('fct_shrt_reg.php', {
+      disp: '0',
+      help: '1',
+      tmfc: '202501011200',
+    });
+  });
+
+  test('should get short-term forecast overview', async () => {
+    const mockMakeRequest = mock(() => Promise.resolve([mockForecast]));
+    client['makeRequest'] = mockMakeRequest;
+
+    await client.getShortTermOverview({ tmfc: '202501011200' });
+
+    expect(mockMakeRequest).toHaveBeenCalledWith('fct_afs_ds.php', {
+      disp: '0',
+      tmfc: '202501011200',
+    });
+  });
+
+  test('should get short-term land forecast', async () => {
+    const mockMakeRequest = mock(() => Promise.resolve([mockForecast]));
+    client['makeRequest'] = mockMakeRequest;
+
+    await client.getShortTermLand({ tmfc: '202501011200', reg: '11B00000' });
+
+    expect(mockMakeRequest).toHaveBeenCalledWith('fct_afs_dl.php', {
+      disp: '0',
+      help: '1',
+      tmfc: '202501011200',
+      reg: '11B00000',
+    });
+  });
+
+  test('should get short-term land forecast v2', async () => {
+    const mockMakeRequest = mock(() => Promise.resolve([mockForecast]));
+    client['makeRequest'] = mockMakeRequest;
+
+    await client.getShortTermLandV2({ tmfc1: '202501010000', tmfc2: '202501020000' });
+
+    expect(mockMakeRequest).toHaveBeenCalledWith('fct_afs_dl2.php', {
+      disp: '0',
+      help: '1',
+      tmfc1: '202501010000',
+      tmfc2: '202501020000',
+    });
+  });
+
+  test('should get short-term sea forecast', async () => {
+    const mockMakeRequest = mock(() => Promise.resolve([mockForecast]));
+    client['makeRequest'] = mockMakeRequest;
+
+    await client.getShortTermSea({ tmef1: '202501011200', tmef2: '202501021200' });
+
+    expect(mockMakeRequest).toHaveBeenCalledWith('fct_afs_do.php', {
+      disp: '0',
+      help: '1',
+      tmef1: '202501011200',
+      tmef2: '202501021200',
+    });
+  });
 });

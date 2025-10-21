@@ -117,3 +117,99 @@ class TestForecastClientRequests:
 
         with pytest.raises(httpx.HTTPError):
             forecast_client.get_short_term_forecast(tm_fc='202501011200', stn=108)
+
+    # Category 1: Short-term Forecast Tests
+    @patch('httpx.Client.get')
+    def test_get_short_term_region(
+        self,
+        mock_get: Mock,
+        forecast_client: ForecastClient,
+        mock_response_data: dict,
+    ) -> None:
+        """Test getting short-term forecast by region (documented endpoint)."""
+        mock_response = Mock()
+        mock_response.json.return_value = mock_response_data
+        mock_response.raise_for_status = Mock()
+        mock_get.return_value = mock_response
+
+        result = forecast_client.get_short_term_region(tmfc='202501011200')
+
+        assert result == mock_response_data
+        assert 'fct_shrt_reg.php' in mock_get.call_args.args[0]
+        assert mock_get.call_args.kwargs['params']['help'] == '1'
+
+    @patch('httpx.Client.get')
+    def test_get_short_term_overview(
+        self,
+        mock_get: Mock,
+        forecast_client: ForecastClient,
+        mock_response_data: dict,
+    ) -> None:
+        """Test getting short-term forecast overview (documented endpoint)."""
+        mock_response = Mock()
+        mock_response.json.return_value = mock_response_data
+        mock_response.raise_for_status = Mock()
+        mock_get.return_value = mock_response
+
+        result = forecast_client.get_short_term_overview(tmfc='202501011200')
+
+        assert result == mock_response_data
+        assert 'fct_afs_ds.php' in mock_get.call_args.args[0]
+        # Note: This endpoint does not use help parameter
+
+    @patch('httpx.Client.get')
+    def test_get_short_term_land(
+        self,
+        mock_get: Mock,
+        forecast_client: ForecastClient,
+        mock_response_data: dict,
+    ) -> None:
+        """Test getting short-term land forecast (documented endpoint)."""
+        mock_response = Mock()
+        mock_response.json.return_value = mock_response_data
+        mock_response.raise_for_status = Mock()
+        mock_get.return_value = mock_response
+
+        result = forecast_client.get_short_term_land(tmfc='202501011200', reg='11B00000')
+
+        assert result == mock_response_data
+        assert 'fct_afs_dl.php' in mock_get.call_args.args[0]
+        assert mock_get.call_args.kwargs['params']['help'] == '1'
+
+    @patch('httpx.Client.get')
+    def test_get_short_term_land_v2(
+        self,
+        mock_get: Mock,
+        forecast_client: ForecastClient,
+        mock_response_data: dict,
+    ) -> None:
+        """Test getting short-term land forecast v2 (documented endpoint)."""
+        mock_response = Mock()
+        mock_response.json.return_value = mock_response_data
+        mock_response.raise_for_status = Mock()
+        mock_get.return_value = mock_response
+
+        result = forecast_client.get_short_term_land_v2(tmfc1='202501010000', tmfc2='202501020000')
+
+        assert result == mock_response_data
+        assert 'fct_afs_dl2.php' in mock_get.call_args.args[0]
+        assert mock_get.call_args.kwargs['params']['help'] == '1'
+
+    @patch('httpx.Client.get')
+    def test_get_short_term_sea(
+        self,
+        mock_get: Mock,
+        forecast_client: ForecastClient,
+        mock_response_data: dict,
+    ) -> None:
+        """Test getting short-term sea forecast (documented endpoint)."""
+        mock_response = Mock()
+        mock_response.json.return_value = mock_response_data
+        mock_response.raise_for_status = Mock()
+        mock_get.return_value = mock_response
+
+        result = forecast_client.get_short_term_sea(tmef1='202501011200', tmef2='202501021200')
+
+        assert result == mock_response_data
+        assert 'fct_afs_do.php' in mock_get.call_args.args[0]
+        assert mock_get.call_args.kwargs['params']['help'] == '1'
