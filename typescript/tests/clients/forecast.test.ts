@@ -124,4 +124,100 @@ describe('ForecastClient', () => {
       tmef2: '202501021200',
     });
   });
+
+  // Category 2: Village Forecast Grid Data Tests
+  test('should get village short-term forecast grid data', async () => {
+    const mockMakeRequest = mock(() => Promise.resolve([mockForecast]));
+    client['makeRequest'] = mockMakeRequest;
+
+    await client.getVillageShortTermGrid({
+      tmfc: '202402250500',
+      tmef: '202402250600',
+      vars: 'TMP,SKY',
+    });
+
+    expect(mockMakeRequest).toHaveBeenCalledWith(
+      'nph-dfs_shrt_grd',
+      {
+        help: '1',
+        tmfc: '202402250500',
+        tmef: '202402250600',
+        vars: 'TMP,SKY',
+      },
+      true
+    );
+  });
+
+  test('should get village very short-term forecast grid data', async () => {
+    const mockMakeRequest = mock(() => Promise.resolve([mockForecast]));
+    client['makeRequest'] = mockMakeRequest;
+
+    await client.getVillageVeryShortTermGrid({
+      tmfc: '202403011010',
+      tmef: '202403011100',
+      vars: 'T1H,SKY',
+    });
+
+    expect(mockMakeRequest).toHaveBeenCalledWith(
+      'nph-dfs_vsrt_grd',
+      {
+        help: '1',
+        tmfc: '202403011010',
+        tmef: '202403011100',
+        vars: 'T1H,SKY',
+      },
+      true
+    );
+  });
+
+  test('should get village observation grid data', async () => {
+    const mockMakeRequest = mock(() => Promise.resolve([mockForecast]));
+    client['makeRequest'] = mockMakeRequest;
+
+    await client.getVillageObservationGrid({ tmfc: '202403051010', vars: 'T1H,RN1' });
+
+    expect(mockMakeRequest).toHaveBeenCalledWith(
+      'nph-dfs_odam_grd',
+      {
+        help: '1',
+        tmfc: '202403051010',
+        vars: 'T1H,RN1',
+      },
+      true
+    );
+  });
+
+  test('should convert grid numbers to coordinates', async () => {
+    const mockMakeRequest = mock(() => Promise.resolve([mockForecast]));
+    client['makeRequest'] = mockMakeRequest;
+
+    await client.convertGridToCoords(60, 127);
+
+    expect(mockMakeRequest).toHaveBeenCalledWith(
+      'nph-dfs_xy_lonlat',
+      {
+        x: '60',
+        y: '127',
+        help: '1',
+      },
+      true
+    );
+  });
+
+  test('should convert coordinates to grid numbers', async () => {
+    const mockMakeRequest = mock(() => Promise.resolve([mockForecast]));
+    client['makeRequest'] = mockMakeRequest;
+
+    await client.convertCoordsToGrid(127.5, 36.5);
+
+    expect(mockMakeRequest).toHaveBeenCalledWith(
+      'nph-dfs_xy_lonlat',
+      {
+        lon: '127.5',
+        lat: '36.5',
+        help: '1',
+      },
+      true
+    );
+  });
 });

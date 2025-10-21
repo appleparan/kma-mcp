@@ -371,6 +371,224 @@ export class ForecastClient extends BaseKMAClient {
   }
 
   // ============================================================================
+  // Category 2: Village Forecast Grid Data (동네예보 격자자료)
+  // ============================================================================
+
+  /**
+   * Get short-term village forecast grid data (documented endpoint)
+   *
+   * Documented endpoint: nph-dfs_shrt_grd (CGI)
+   *
+   * Provides short-term forecast grid data for village-level forecasts.
+   * Issued 8 times daily (02, 05, 08, 11, 14, 17, 20, 23 KST).
+   * Provides hourly forecasts up to 3 days.
+   *
+   * @param params - Query parameters
+   * @param params.tmfc - Forecast issue time in YYYYMMDDHHmm format or Date object.
+   *                      If undefined, returns all data. If '0', returns most recent.
+   * @param params.tmef - Forecast valid time in YYYYMMDDHHmm format or Date object.
+   *                      Hourly data provided up to 3 days ahead.
+   * @param params.vars - Forecast variables (comma-separated).
+   *                      TMP, TMX, TMN, UUU, VVV, VEC, WSD, SKY, PTY, POP, PCP, SNO, REH, WAV
+   * @returns Village short-term forecast grid data
+   *
+   * @example
+   * ```typescript
+   * const client = new ForecastClient({ authKey: 'your_key' });
+   * const data = await client.getVillageShortTermGrid({
+   *   tmfc: '202402250500',
+   *   tmef: '202402250600',
+   *   vars: 'TMP,SKY,PTY'
+   * });
+   * ```
+   *
+   * Reference: API_ENDPOINT_Forecast.md - Category 2: Village Forecast Grid Data
+   */
+  async getVillageShortTermGrid(params?: {
+    tmfc?: string | Date;
+    tmef?: string | Date;
+    vars?: string;
+  }): Promise<ForecastData[]> {
+    const requestParams: Record<string, unknown> = {
+      help: '1',
+    };
+
+    if (params?.tmfc) {
+      requestParams.tmfc =
+        typeof params.tmfc === 'string' ? params.tmfc : this.formatDateTime(params.tmfc);
+    }
+    if (params?.tmef) {
+      requestParams.tmef =
+        typeof params.tmef === 'string' ? params.tmef : this.formatDateTime(params.tmef);
+    }
+    if (params?.vars) {
+      requestParams.vars = params.vars;
+    }
+
+    return this.makeRequest<ForecastData>('nph-dfs_shrt_grd', requestParams, true);
+  }
+
+  /**
+   * Get very short-term village forecast grid data (documented endpoint)
+   *
+   * Documented endpoint: nph-dfs_vsrt_grd (CGI)
+   *
+   * Provides ultra short-term forecast grid data for village-level forecasts.
+   * Issued every 10 minutes. Provides hourly forecasts up to 6 hours ahead.
+   *
+   * @param params - Query parameters
+   * @param params.tmfc - Forecast issue time in YYYYMMDDHHmm format or Date object.
+   *                      Issued every 10 minutes.
+   * @param params.tmef - Forecast valid time in YYYYMMDDHHmm format or Date object.
+   *                      Hourly data up to 6 hours from issue time.
+   * @param params.vars - Forecast variables (comma-separated).
+   *                      T1H, UUU, VVV, VEC, WSD, SKY, LGT, PTY, RN1, REH
+   * @returns Village very short-term forecast grid data
+   *
+   * @example
+   * ```typescript
+   * const client = new ForecastClient({ authKey: 'your_key' });
+   * const data = await client.getVillageVeryShortTermGrid({
+   *   tmfc: '202403011010',
+   *   tmef: '202403011100',
+   *   vars: 'T1H,SKY,PTY'
+   * });
+   * ```
+   *
+   * Reference: API_ENDPOINT_Forecast.md - Category 2: Village Forecast Grid Data
+   */
+  async getVillageVeryShortTermGrid(params?: {
+    tmfc?: string | Date;
+    tmef?: string | Date;
+    vars?: string;
+  }): Promise<ForecastData[]> {
+    const requestParams: Record<string, unknown> = {
+      help: '1',
+    };
+
+    if (params?.tmfc) {
+      requestParams.tmfc =
+        typeof params.tmfc === 'string' ? params.tmfc : this.formatDateTime(params.tmfc);
+    }
+    if (params?.tmef) {
+      requestParams.tmef =
+        typeof params.tmef === 'string' ? params.tmef : this.formatDateTime(params.tmef);
+    }
+    if (params?.vars) {
+      requestParams.vars = params.vars;
+    }
+
+    return this.makeRequest<ForecastData>('nph-dfs_vsrt_grd', requestParams, true);
+  }
+
+  /**
+   * Get village observation grid data (documented endpoint)
+   *
+   * Documented endpoint: nph-dfs_odam_grd (CGI)
+   *
+   * Provides current observation grid data for village-level analysis.
+   * Since 2024-03-04 10:00, issued every 10 minutes.
+   * Before that, issued every hour on the hour.
+   *
+   * @param params - Query parameters
+   * @param params.tmfc - Observation time in YYYYMMDDHHmm format or Date object.
+   * @param params.vars - Observation variables (comma-separated).
+   *                      T1H, UUU, VVV, VEC, WSD, PTY, RN1, REH
+   * @returns Village observation grid data
+   *
+   * @example
+   * ```typescript
+   * const client = new ForecastClient({ authKey: 'your_key' });
+   * const data = await client.getVillageObservationGrid({
+   *   tmfc: '202403051010',
+   *   vars: 'T1H,RN1,REH'
+   * });
+   * ```
+   *
+   * Reference: API_ENDPOINT_Forecast.md - Category 2: Village Forecast Grid Data
+   */
+  async getVillageObservationGrid(params?: {
+    tmfc?: string | Date;
+    vars?: string;
+  }): Promise<ForecastData[]> {
+    const requestParams: Record<string, unknown> = {
+      help: '1',
+    };
+
+    if (params?.tmfc) {
+      requestParams.tmfc =
+        typeof params.tmfc === 'string' ? params.tmfc : this.formatDateTime(params.tmfc);
+    }
+    if (params?.vars) {
+      requestParams.vars = params.vars;
+    }
+
+    return this.makeRequest<ForecastData>('nph-dfs_odam_grd', requestParams, true);
+  }
+
+  /**
+   * Convert village forecast grid numbers to latitude/longitude coordinates
+   *
+   * Documented endpoint: nph-dfs_xy_lonlat (CGI)
+   *
+   * Converts village forecast grid coordinates (x, y) to geographic coordinates
+   * (latitude, longitude).
+   *
+   * @param x - Grid number (east-west direction). Range: 1 ~ 149
+   * @param y - Grid number (north-south direction). Range: 1 ~ 253
+   * @param help - Show help information. 0=no help, 1=show help (default: 1)
+   * @returns Latitude and longitude coordinates for the grid point
+   *
+   * @example
+   * ```typescript
+   * const client = new ForecastClient({ authKey: 'your_key' });
+   * const coords = await client.convertGridToCoords(60, 127);
+   * ```
+   *
+   * Reference: API_ENDPOINT_Forecast.md - Category 2: Village Forecast Grid Data
+   */
+  async convertGridToCoords(x: number, y: number, help = 1): Promise<ForecastData[]> {
+    const requestParams = {
+      x: String(x),
+      y: String(y),
+      help: String(help),
+    };
+
+    return this.makeRequest<ForecastData>('nph-dfs_xy_lonlat', requestParams, true);
+  }
+
+  /**
+   * Convert latitude/longitude coordinates to village forecast grid numbers
+   *
+   * Documented endpoint: nph-dfs_xy_lonlat (CGI)
+   *
+   * Converts geographic coordinates (latitude, longitude) to the nearest
+   * village forecast grid coordinates (x, y).
+   *
+   * @param lon - Longitude. Range: 123.310165 ~ 132.774963
+   * @param lat - Latitude. Range: 31.651814 ~ 43.393490
+   * @param help - Show help information. 0=no help, 1=show help (default: 1)
+   * @returns Nearest village forecast grid numbers (x, y)
+   *
+   * @example
+   * ```typescript
+   * const client = new ForecastClient({ authKey: 'your_key' });
+   * const grid = await client.convertCoordsToGrid(127.5, 36.5);
+   * ```
+   *
+   * Reference: API_ENDPOINT_Forecast.md - Category 2: Village Forecast Grid Data
+   */
+  async convertCoordsToGrid(lon: number, lat: number, help = 1): Promise<ForecastData[]> {
+    const requestParams = {
+      lon: String(lon),
+      lat: String(lat),
+      help: String(help),
+    };
+
+    return this.makeRequest<ForecastData>('nph-dfs_xy_lonlat', requestParams, true);
+  }
+
+  // ============================================================================
   // Legacy methods - marked as undocumented
   // ============================================================================
 

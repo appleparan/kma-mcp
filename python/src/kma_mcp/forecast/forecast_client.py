@@ -25,6 +25,7 @@ class ForecastClient:
     """
 
     BASE_URL = 'https://apihub.kma.go.kr/api/typ01/url'
+    CGI_BASE_URL = 'https://apihub.kma.go.kr/api/typ01/cgi-bin/url'
 
     def __init__(self, auth_key: str, timeout: float = 30.0) -> None:
         """Initialize Weather Forecast client.
@@ -49,12 +50,15 @@ class ForecastClient:
         """Close the HTTP client."""
         self._client.close()
 
-    def _make_request(self, endpoint: str, params: dict[str, Any]) -> dict[str, Any]:
+    def _make_request(
+        self, endpoint: str, params: dict[str, Any], *, use_cgi: bool = False
+    ) -> dict[str, Any]:
         """Make HTTP request to Weather Forecast API.
 
         Args:
             endpoint: API endpoint path
             params: Query parameters
+            use_cgi: Whether to use CGI base URL (default: False)
 
         Returns:
             API response as dictionary
@@ -63,7 +67,8 @@ class ForecastClient:
             httpx.HTTPError: If request fails
         """
         params['authKey'] = self.auth_key
-        url = f'{self.BASE_URL}/{endpoint}'
+        base_url = self.CGI_BASE_URL if use_cgi else self.BASE_URL
+        url = f'{base_url}/{endpoint}'
         response = self._client.get(url, params=params)
         response.raise_for_status()
         return response.json()
@@ -419,8 +424,215 @@ class ForecastClient:
 
         return self._make_request('fct_afs_do.php', params)
 
-    # ==================== Legacy Methods (Deprecated) ====================
-    # These methods use undocumented endpoints and are kept for backward compatibility
+    # ============================================================================
+    # Category 2: Village Forecast Grid Data (동네예보 격자자료)
+    # ============================================================================
+
+    def get_village_short_term_grid(
+        self,
+        tmfc: str | datetime | None = None,
+        tmef: str | datetime | None = None,
+        vars: str | None = None,  # noqa: A002
+    ) -> dict[str, Any]:
+        """Get short-term village forecast grid data (documented endpoint).
+
+        Documented endpoint: nph-dfs_shrt_grd (CGI)
+
+        Provides short-term forecast grid data for village-level forecasts.
+        Issued 8 times daily (02, 05, 08, 11, 14, 17, 20, 23 KST).
+        Provides hourly forecasts up to 3 days.
+
+        Args:
+            tmfc: Forecast issue time in 'YYYYMMDDHHmm' format or datetime object.
+                  If None, returns all data. If '0', returns most recent.
+                  Issued at 3-hour intervals (02, 05, 08, 11, 14, 17, 20, 23 KST).
+            tmef: Forecast valid time in 'YYYYMMDDHHmm' format or datetime object.
+                  Hourly data provided up to 3 days ahead.
+            vars: Forecast variables (comma-separated).
+                  TMP(temperature), TMX(max temp), TMN(min temp),
+                  UUU(u-wind), VVV(v-wind), VEC(wind direction), WSD(wind speed),
+                  SKY(sky condition), PTY(precipitation type), POP(precipitation probability),
+                  PCP(1h precipitation), SNO(1h snowfall), REH(humidity), WAV(wave height)
+
+        Returns:
+            Village short-term forecast grid data
+
+        Example:
+            >>> client = ForecastClient(auth_key='your_key')
+            >>> data = client.get_village_short_term_grid(
+            ...     tmfc='202402250500',
+            ...     tmef='202402250600',
+            ...     vars='TMP,SKY,PTY'
+            ... )
+
+        Reference: API_ENDPOINT_Forecast.md - Category 2: Village Forecast Grid Data
+        """
+        params: dict[str, Any] = {'help': '1'}
+
+        if tmfc is not None:
+            params['tmfc'] = tmfc if isinstance(tmfc, str) else self._format_datetime(tmfc)
+        if tmef is not None:
+            params['tmef'] = tmef if isinstance(tmef, str) else self._format_datetime(tmef)
+        if vars is not None:
+            params['vars'] = vars
+
+        return self._make_request('nph-dfs_shrt_grd', params, use_cgi=True)
+
+    def get_village_very_short_term_grid(
+        self,
+        tmfc: str | datetime | None = None,
+        tmef: str | datetime | None = None,
+        vars: str | None = None,  # noqa: A002
+    ) -> dict[str, Any]:
+        """Get very short-term village forecast grid data (documented endpoint).
+
+        Documented endpoint: nph-dfs_vsrt_grd (CGI)
+
+        Provides ultra short-term forecast grid data for village-level forecasts.
+        Issued every 10 minutes. Provides hourly forecasts up to 6 hours ahead.
+
+        Args:
+            tmfc: Forecast issue time in 'YYYYMMDDHHmm' format or datetime object.
+                  Issued every 10 minutes.
+            tmef: Forecast valid time in 'YYYYMMDDHHmm' format or datetime object.
+                  Hourly data up to 6 hours from issue time.
+            vars: Forecast variables (comma-separated).
+                  T1H(temperature), UUU(u-wind), VVV(v-wind), VEC(wind direction),
+                  WSD(wind speed), SKY(sky condition), LGT(lightning),
+                  PTY(precipitation type), RN1(1h precipitation), REH(humidity)
+
+        Returns:
+            Village very short-term forecast grid data
+
+        Example:
+            >>> client = ForecastClient(auth_key='your_key')
+            >>> data = client.get_village_very_short_term_grid(
+            ...     tmfc='202403011010',
+            ...     tmef='202403011100',
+            ...     vars='T1H,SKY,PTY'
+            ... )
+
+        Reference: API_ENDPOINT_Forecast.md - Category 2: Village Forecast Grid Data
+        """
+        params: dict[str, Any] = {'help': '1'}
+
+        if tmfc is not None:
+            params['tmfc'] = tmfc if isinstance(tmfc, str) else self._format_datetime(tmfc)
+        if tmef is not None:
+            params['tmef'] = tmef if isinstance(tmef, str) else self._format_datetime(tmef)
+        if vars is not None:
+            params['vars'] = vars
+
+        return self._make_request('nph-dfs_vsrt_grd', params, use_cgi=True)
+
+    def get_village_observation_grid(
+        self,
+        tmfc: str | datetime | None = None,
+        vars: str | None = None,  # noqa: A002
+    ) -> dict[str, Any]:
+        """Get village observation grid data (documented endpoint).
+
+        Documented endpoint: nph-dfs_odam_grd (CGI)
+
+        Provides current observation grid data for village-level analysis.
+        Since 2024-03-04 10:00, issued every 10 minutes.
+        Before that, issued every hour on the hour.
+
+        Args:
+            tmfc: Observation time in 'YYYYMMDDHHmm' format or datetime object.
+                  Since 2024-03-04 10:00: issued every 10 minutes.
+                  Before: issued hourly.
+            vars: Observation variables (comma-separated).
+                  T1H(temperature), UUU(u-wind), VVV(v-wind), VEC(wind direction),
+                  WSD(wind speed), PTY(precipitation type),
+                  RN1(1h precipitation), REH(humidity)
+
+        Returns:
+            Village observation grid data
+
+        Example:
+            >>> client = ForecastClient(auth_key='your_key')
+            >>> data = client.get_village_observation_grid(
+            ...     tmfc='202403051010',
+            ...     vars='T1H,RN1,REH'
+            ... )
+
+        Reference: API_ENDPOINT_Forecast.md - Category 2: Village Forecast Grid Data
+        """
+        params: dict[str, Any] = {'help': '1'}
+
+        if tmfc is not None:
+            params['tmfc'] = tmfc if isinstance(tmfc, str) else self._format_datetime(tmfc)
+        if vars is not None:
+            params['vars'] = vars
+
+        return self._make_request('nph-dfs_odam_grd', params, use_cgi=True)
+
+    def convert_grid_to_coords(
+        self,
+        x: int,
+        y: int,
+        *,
+        help: int = 1,  # noqa: A002
+    ) -> dict[str, Any]:
+        """Convert village forecast grid numbers to latitude/longitude coordinates.
+
+        Documented endpoint: nph-dfs_xy_lonlat (CGI)
+
+        Converts village forecast grid coordinates (x, y) to geographic coordinates
+        (latitude, longitude).
+
+        Args:
+            x: Grid number (east-west direction). Range: 1 ~ 149
+            y: Grid number (north-south direction). Range: 1 ~ 253
+            help: Show help information. 0=no help, 1=show help (default: 1)
+
+        Returns:
+            Latitude and longitude coordinates for the grid point
+
+        Example:
+            >>> client = ForecastClient(auth_key='your_key')
+            >>> coords = client.convert_grid_to_coords(x=60, y=127)
+
+        Reference: API_ENDPOINT_Forecast.md - Category 2: Village Forecast Grid Data
+        """
+        params = {'x': str(x), 'y': str(y), 'help': str(help)}
+        return self._make_request('nph-dfs_xy_lonlat', params, use_cgi=True)
+
+    def convert_coords_to_grid(
+        self,
+        lon: float,
+        lat: float,
+        *,
+        help: int = 1,  # noqa: A002
+    ) -> dict[str, Any]:
+        """Convert latitude/longitude coordinates to village forecast grid numbers.
+
+        Documented endpoint: nph-dfs_xy_lonlat (CGI)
+
+        Converts geographic coordinates (latitude, longitude) to the nearest
+        village forecast grid coordinates (x, y).
+
+        Args:
+            lon: Longitude. Range: 123.310165 ~ 132.774963
+            lat: Latitude. Range: 31.651814 ~ 43.393490
+            help: Show help information. 0=no help, 1=show help (default: 1)
+
+        Returns:
+            Nearest village forecast grid numbers (x, y)
+
+        Example:
+            >>> client = ForecastClient(auth_key='your_key')
+            >>> grid = client.convert_coords_to_grid(lon=127.5, lat=36.5)
+
+        Reference: API_ENDPOINT_Forecast.md - Category 2: Village Forecast Grid Data
+        """
+        params = {'lon': str(lon), 'lat': str(lat), 'help': str(help)}
+        return self._make_request('nph-dfs_xy_lonlat', params, use_cgi=True)
+
+    # ============================================================================
+    # Legacy methods - marked as deprecated
+    # ============================================================================
 
     def get_short_term_forecast(
         self,

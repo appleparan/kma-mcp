@@ -213,3 +213,103 @@ class TestForecastClientRequests:
         assert result == mock_response_data
         assert 'fct_afs_do.php' in mock_get.call_args.args[0]
         assert mock_get.call_args.kwargs['params']['help'] == '1'
+
+    # Category 2: Village Forecast Grid Data Tests
+    @patch('httpx.Client.get')
+    def test_get_village_short_term_grid(
+        self,
+        mock_get: Mock,
+        forecast_client: ForecastClient,
+        mock_response_data: dict,
+    ) -> None:
+        """Test getting village short-term forecast grid data."""
+        mock_response = Mock()
+        mock_response.json.return_value = mock_response_data
+        mock_response.raise_for_status = Mock()
+        mock_get.return_value = mock_response
+
+        result = forecast_client.get_village_short_term_grid(
+            tmfc='202402250500', tmef='202402250600', vars='TMP,SKY'
+        )
+
+        assert result == mock_response_data
+        assert 'nph-dfs_shrt_grd' in mock_get.call_args.args[0]
+        assert mock_get.call_args.kwargs['params']['help'] == '1'
+
+    @patch('httpx.Client.get')
+    def test_get_village_very_short_term_grid(
+        self,
+        mock_get: Mock,
+        forecast_client: ForecastClient,
+        mock_response_data: dict,
+    ) -> None:
+        """Test getting village very short-term forecast grid data."""
+        mock_response = Mock()
+        mock_response.json.return_value = mock_response_data
+        mock_response.raise_for_status = Mock()
+        mock_get.return_value = mock_response
+
+        result = forecast_client.get_village_very_short_term_grid(
+            tmfc='202403011010', tmef='202403011100', vars='T1H,SKY'
+        )
+
+        assert result == mock_response_data
+        assert 'nph-dfs_vsrt_grd' in mock_get.call_args.args[0]
+
+    @patch('httpx.Client.get')
+    def test_get_village_observation_grid(
+        self,
+        mock_get: Mock,
+        forecast_client: ForecastClient,
+        mock_response_data: dict,
+    ) -> None:
+        """Test getting village observation grid data."""
+        mock_response = Mock()
+        mock_response.json.return_value = mock_response_data
+        mock_response.raise_for_status = Mock()
+        mock_get.return_value = mock_response
+
+        result = forecast_client.get_village_observation_grid(tmfc='202403051010', vars='T1H,RN1')
+
+        assert result == mock_response_data
+        assert 'nph-dfs_odam_grd' in mock_get.call_args.args[0]
+
+    @patch('httpx.Client.get')
+    def test_convert_grid_to_coords(
+        self,
+        mock_get: Mock,
+        forecast_client: ForecastClient,
+        mock_response_data: dict,
+    ) -> None:
+        """Test converting grid numbers to coordinates."""
+        mock_response = Mock()
+        mock_response.json.return_value = mock_response_data
+        mock_response.raise_for_status = Mock()
+        mock_get.return_value = mock_response
+
+        result = forecast_client.convert_grid_to_coords(x=60, y=127)
+
+        assert result == mock_response_data
+        assert 'nph-dfs_xy_lonlat' in mock_get.call_args.args[0]
+        assert mock_get.call_args.kwargs['params']['x'] == '60'
+        assert mock_get.call_args.kwargs['params']['y'] == '127'
+
+    @patch('httpx.Client.get')
+    def test_convert_coords_to_grid(
+        self,
+        mock_get: Mock,
+        forecast_client: ForecastClient,
+        mock_response_data: dict,
+    ) -> None:
+        """Test converting coordinates to grid numbers."""
+        mock_response = Mock()
+        mock_response.json.return_value = mock_response_data
+        mock_response.raise_for_status = Mock()
+        mock_get.return_value = mock_response
+
+        result = forecast_client.convert_coords_to_grid(lon=127.5, lat=36.5)
+
+        assert result == mock_response_data
+        assert 'nph-dfs_xy_lonlat' in mock_get.call_args.args[0]
+        assert mock_get.call_args.kwargs['params']['lon'] == '127.5'
+        assert mock_get.call_args.kwargs['params']['lat'] == '36.5'
