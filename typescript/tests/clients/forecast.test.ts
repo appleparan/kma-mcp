@@ -220,4 +220,62 @@ describe('ForecastClient', () => {
       true
     );
   });
+
+  // Category 3: Village Forecast Messages Tests
+  test('should get weather situation messages', async () => {
+    const mockMakeRequest = mock(() => Promise.resolve([mockForecast]));
+    client['makeRequest'] = mockMakeRequest;
+
+    await client.getWeatherSituation({ stnId: '108', numOfRows: 5 });
+
+    expect(mockMakeRequest).toHaveBeenCalledWith(
+      'VilageFcstMsgService/getWthrSituation',
+      {
+        pageNo: '1',
+        numOfRows: '5',
+        dataType: 'JSON',
+        stnId: '108',
+      },
+      false,
+      true
+    );
+  });
+
+  test('should get land forecast messages', async () => {
+    const mockMakeRequest = mock(() => Promise.resolve([mockForecast]));
+    client['makeRequest'] = mockMakeRequest;
+
+    await client.getLandForecastMessage({ regId: '11B10101', numOfRows: 5 });
+
+    expect(mockMakeRequest).toHaveBeenCalledWith(
+      'VilageFcstMsgService/getLandFcst',
+      {
+        pageNo: '1',
+        numOfRows: '5',
+        dataType: 'JSON',
+        regId: '11B10101',
+      },
+      false,
+      true
+    );
+  });
+
+  test('should get sea forecast messages', async () => {
+    const mockMakeRequest = mock(() => Promise.resolve([mockForecast]));
+    client['makeRequest'] = mockMakeRequest;
+
+    await client.getSeaForecastMessage({ regId: '12A20100', numOfRows: 5 });
+
+    expect(mockMakeRequest).toHaveBeenCalledWith(
+      'VilageFcstMsgService/getSeaFcst',
+      {
+        pageNo: '1',
+        numOfRows: '5',
+        dataType: 'JSON',
+        regId: '12A20100',
+      },
+      false,
+      true
+    );
+  });
 });

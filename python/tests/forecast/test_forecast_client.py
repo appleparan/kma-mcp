@@ -313,3 +313,61 @@ class TestForecastClientRequests:
         assert 'nph-dfs_xy_lonlat' in mock_get.call_args.args[0]
         assert mock_get.call_args.kwargs['params']['lon'] == '127.5'
         assert mock_get.call_args.kwargs['params']['lat'] == '36.5'
+
+    # Category 3: Village Forecast Messages Tests
+    @patch('httpx.Client.get')
+    def test_get_weather_situation(
+        self,
+        mock_get: Mock,
+        forecast_client: ForecastClient,
+        mock_response_data: dict,
+    ) -> None:
+        """Test getting weather situation messages."""
+        mock_response = Mock()
+        mock_response.json.return_value = mock_response_data
+        mock_response.raise_for_status = Mock()
+        mock_get.return_value = mock_response
+
+        result = forecast_client.get_weather_situation(stn_id='108', num_of_rows=5)
+
+        assert result == mock_response_data
+        assert 'VilageFcstMsgService/getWthrSituation' in mock_get.call_args.args[0]
+        assert mock_get.call_args.kwargs['params']['stnId'] == '108'
+
+    @patch('httpx.Client.get')
+    def test_get_land_forecast_message(
+        self,
+        mock_get: Mock,
+        forecast_client: ForecastClient,
+        mock_response_data: dict,
+    ) -> None:
+        """Test getting land forecast messages."""
+        mock_response = Mock()
+        mock_response.json.return_value = mock_response_data
+        mock_response.raise_for_status = Mock()
+        mock_get.return_value = mock_response
+
+        result = forecast_client.get_land_forecast_message(reg_id='11B10101', num_of_rows=5)
+
+        assert result == mock_response_data
+        assert 'VilageFcstMsgService/getLandFcst' in mock_get.call_args.args[0]
+        assert mock_get.call_args.kwargs['params']['regId'] == '11B10101'
+
+    @patch('httpx.Client.get')
+    def test_get_sea_forecast_message(
+        self,
+        mock_get: Mock,
+        forecast_client: ForecastClient,
+        mock_response_data: dict,
+    ) -> None:
+        """Test getting sea forecast messages."""
+        mock_response = Mock()
+        mock_response.json.return_value = mock_response_data
+        mock_response.raise_for_status = Mock()
+        mock_get.return_value = mock_response
+
+        result = forecast_client.get_sea_forecast_message(reg_id='12A20100', num_of_rows=5)
+
+        assert result == mock_response_data
+        assert 'VilageFcstMsgService/getSeaFcst' in mock_get.call_args.args[0]
+        assert mock_get.call_args.kwargs['params']['regId'] == '12A20100'

@@ -26,6 +26,7 @@ class ForecastClient:
 
     BASE_URL = 'https://apihub.kma.go.kr/api/typ01/url'
     CGI_BASE_URL = 'https://apihub.kma.go.kr/api/typ01/cgi-bin/url'
+    OPENAPI_BASE_URL = 'https://apihub.kma.go.kr/api/typ02/openApi'
 
     def __init__(self, auth_key: str, timeout: float = 30.0) -> None:
         """Initialize Weather Forecast client.
@@ -51,14 +52,20 @@ class ForecastClient:
         self._client.close()
 
     def _make_request(
-        self, endpoint: str, params: dict[str, Any], *, use_cgi: bool = False
+        self,
+        endpoint: str,
+        params: dict[str, Any],
+        *,
+        use_cgi: bool = False,
+        use_openapi: bool = False,
     ) -> dict[str, Any]:
         """Make HTTP request to Weather Forecast API.
 
         Args:
-            endpoint: API endpoint path
+            endpoint: API endpoint path (for OpenAPI, use format: 'ServiceName/methodName')
             params: Query parameters
             use_cgi: Whether to use CGI base URL (default: False)
+            use_openapi: Whether to use OpenAPI base URL (default: False)
 
         Returns:
             API response as dictionary
@@ -67,7 +74,12 @@ class ForecastClient:
             httpx.HTTPError: If request fails
         """
         params['authKey'] = self.auth_key
-        base_url = self.CGI_BASE_URL if use_cgi else self.BASE_URL
+        if use_openapi:
+            base_url = self.OPENAPI_BASE_URL
+        elif use_cgi:
+            base_url = self.CGI_BASE_URL
+        else:
+            base_url = self.BASE_URL
         url = f'{base_url}/{endpoint}'
         response = self._client.get(url, params=params)
         response.raise_for_status()
@@ -629,6 +641,132 @@ class ForecastClient:
         """
         params = {'lon': str(lon), 'lat': str(lat), 'help': str(help)}
         return self._make_request('nph-dfs_xy_lonlat', params, use_cgi=True)
+
+    # ============================================================================
+    # Category 3: Village Forecast Messages (동네예보 통보문)
+    # ============================================================================
+
+    def get_weather_situation(
+        self,
+        page_no: int = 1,
+        num_of_rows: int = 10,
+        data_type: str = 'JSON',
+        stn_id: str | None = None,
+    ) -> dict[str, Any]:
+        """Get weather situation overview messages (documented endpoint).
+
+        Documented endpoint: VilageFcstMsgService/getWthrSituation (OpenAPI)
+
+        Retrieves weather situation overview messages issued by regional offices.
+        These messages provide general weather conditions and forecasts.
+
+        Args:
+            page_no: Page number (default: 1)
+            num_of_rows: Number of results per page (default: 10)
+            data_type: Response data format - 'XML' or 'JSON' (default: 'JSON')
+            stn_id: Issuing office code. None for all offices.
+                    108=KMA HQ, 109=Seoul, etc. See reference documentation.
+
+        Returns:
+            Weather situation overview message data
+
+        Example:
+            >>> client = ForecastClient(auth_key='your_key')
+            >>> data = client.get_weather_situation(stn_id='108', num_of_rows=5)
+
+        Reference: API_ENDPOINT_Forecast.md - Category 3: Village Forecast Messages
+        """
+        params: dict[str, Any] = {
+            'pageNo': str(page_no),
+            'numOfRows': str(num_of_rows),
+            'dataType': data_type,
+        }
+        if stn_id is not None:
+            params['stnId'] = stn_id
+
+        return self._make_request('VilageFcstMsgService/getWthrSituation', params, use_openapi=True)
+
+    def get_land_forecast_message(
+        self,
+        page_no: int = 1,
+        num_of_rows: int = 10,
+        data_type: str = 'JSON',
+        reg_id: str | None = None,
+    ) -> dict[str, Any]:
+        """Get land forecast messages (documented endpoint).
+
+        Documented endpoint: VilageFcstMsgService/getLandFcst (OpenAPI)
+
+        Retrieves land forecast messages for specific regions.
+        Messages contain detailed weather forecasts for land areas.
+
+        Args:
+            page_no: Page number (default: 1)
+            num_of_rows: Number of results per page (default: 10)
+            data_type: Response data format - 'XML' or 'JSON' (default: 'JSON')
+            reg_id: Forecast region code. None for all regions.
+                    11A00101=Baengnyeong, 11B10101=Seoul, 11B20201=Incheon, etc.
+                    See reference documentation for full list.
+
+        Returns:
+            Land forecast message data
+
+        Example:
+            >>> client = ForecastClient(auth_key='your_key')
+            >>> data = client.get_land_forecast_message(reg_id='11B10101', num_of_rows=5)
+
+        Reference: API_ENDPOINT_Forecast.md - Category 3: Village Forecast Messages
+        """
+        params: dict[str, Any] = {
+            'pageNo': str(page_no),
+            'numOfRows': str(num_of_rows),
+            'dataType': data_type,
+        }
+        if reg_id is not None:
+            params['regId'] = reg_id
+
+        return self._make_request('VilageFcstMsgService/getLandFcst', params, use_openapi=True)
+
+    def get_sea_forecast_message(
+        self,
+        page_no: int = 1,
+        num_of_rows: int = 10,
+        data_type: str = 'JSON',
+        reg_id: str | None = None,
+    ) -> dict[str, Any]:
+        """Get sea forecast messages (documented endpoint).
+
+        Documented endpoint: VilageFcstMsgService/getSeaFcst (OpenAPI)
+
+        Retrieves sea/marine forecast messages for specific regions.
+        Messages contain detailed weather forecasts for sea areas.
+
+        Args:
+            page_no: Page number (default: 1)
+            num_of_rows: Number of results per page (default: 10)
+            data_type: Response data format - 'XML' or 'JSON' (default: 'JSON')
+            reg_id: Forecast region code. None for all regions.
+                    12A20100=West Sea Central, 12B20100=South Sea East, etc.
+                    See reference documentation for full list.
+
+        Returns:
+            Sea forecast message data
+
+        Example:
+            >>> client = ForecastClient(auth_key='your_key')
+            >>> data = client.get_sea_forecast_message(reg_id='12A20100', num_of_rows=5)
+
+        Reference: API_ENDPOINT_Forecast.md - Category 3: Village Forecast Messages
+        """
+        params: dict[str, Any] = {
+            'pageNo': str(page_no),
+            'numOfRows': str(num_of_rows),
+            'dataType': data_type,
+        }
+        if reg_id is not None:
+            params['regId'] = reg_id
+
+        return self._make_request('VilageFcstMsgService/getSeaFcst', params, use_openapi=True)
 
     # ============================================================================
     # Legacy methods - marked as deprecated

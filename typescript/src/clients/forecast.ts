@@ -589,6 +589,151 @@ export class ForecastClient extends BaseKMAClient {
   }
 
   // ============================================================================
+  // Category 3: Village Forecast Messages (동네예보 통보문)
+  // ============================================================================
+
+  /**
+   * Get weather situation overview messages (documented endpoint)
+   *
+   * Documented endpoint: VilageFcstMsgService/getWthrSituation (OpenAPI)
+   *
+   * Retrieves weather situation overview messages issued by regional offices.
+   * These messages provide general weather conditions and forecasts.
+   *
+   * @param params - Query parameters
+   * @param params.pageNo - Page number (default: 1)
+   * @param params.numOfRows - Number of results per page (default: 10)
+   * @param params.dataType - Response data format: 'XML' or 'JSON' (default: 'JSON')
+   * @param params.stnId - Issuing office code (108=KMA HQ, 109=Seoul, etc.)
+   * @returns Weather situation overview message data
+   *
+   * @example
+   * ```typescript
+   * const client = new ForecastClient({ authKey: 'your_key' });
+   * const data = await client.getWeatherSituation({ stnId: '108', numOfRows: 5 });
+   * ```
+   *
+   * Reference: API_ENDPOINT_Forecast.md - Category 3: Village Forecast Messages
+   */
+  async getWeatherSituation(params?: {
+    pageNo?: number;
+    numOfRows?: number;
+    dataType?: string;
+    stnId?: string;
+  }): Promise<ForecastData[]> {
+    const requestParams: Record<string, unknown> = {
+      pageNo: String(params?.pageNo ?? 1),
+      numOfRows: String(params?.numOfRows ?? 10),
+      dataType: params?.dataType ?? 'JSON',
+    };
+
+    if (params?.stnId) {
+      requestParams.stnId = params.stnId;
+    }
+
+    return this.makeRequest<ForecastData>(
+      'VilageFcstMsgService/getWthrSituation',
+      requestParams,
+      false,
+      true
+    );
+  }
+
+  /**
+   * Get land forecast messages (documented endpoint)
+   *
+   * Documented endpoint: VilageFcstMsgService/getLandFcst (OpenAPI)
+   *
+   * Retrieves land forecast messages for specific regions.
+   * Messages contain detailed weather forecasts for land areas.
+   *
+   * @param params - Query parameters
+   * @param params.pageNo - Page number (default: 1)
+   * @param params.numOfRows - Number of results per page (default: 10)
+   * @param params.dataType - Response data format: 'XML' or 'JSON' (default: 'JSON')
+   * @param params.regId - Forecast region code (11A00101=Baengnyeong, 11B10101=Seoul, etc.)
+   * @returns Land forecast message data
+   *
+   * @example
+   * ```typescript
+   * const client = new ForecastClient({ authKey: 'your_key' });
+   * const data = await client.getLandForecastMessage({ regId: '11B10101', numOfRows: 5 });
+   * ```
+   *
+   * Reference: API_ENDPOINT_Forecast.md - Category 3: Village Forecast Messages
+   */
+  async getLandForecastMessage(params?: {
+    pageNo?: number;
+    numOfRows?: number;
+    dataType?: string;
+    regId?: string;
+  }): Promise<ForecastData[]> {
+    const requestParams: Record<string, unknown> = {
+      pageNo: String(params?.pageNo ?? 1),
+      numOfRows: String(params?.numOfRows ?? 10),
+      dataType: params?.dataType ?? 'JSON',
+    };
+
+    if (params?.regId) {
+      requestParams.regId = params.regId;
+    }
+
+    return this.makeRequest<ForecastData>(
+      'VilageFcstMsgService/getLandFcst',
+      requestParams,
+      false,
+      true
+    );
+  }
+
+  /**
+   * Get sea forecast messages (documented endpoint)
+   *
+   * Documented endpoint: VilageFcstMsgService/getSeaFcst (OpenAPI)
+   *
+   * Retrieves sea/marine forecast messages for specific regions.
+   * Messages contain detailed weather forecasts for sea areas.
+   *
+   * @param params - Query parameters
+   * @param params.pageNo - Page number (default: 1)
+   * @param params.numOfRows - Number of results per page (default: 10)
+   * @param params.dataType - Response data format: 'XML' or 'JSON' (default: 'JSON')
+   * @param params.regId - Forecast region code (12A20100=West Sea Central, 12B20100=South Sea East, etc.)
+   * @returns Sea forecast message data
+   *
+   * @example
+   * ```typescript
+   * const client = new ForecastClient({ authKey: 'your_key' });
+   * const data = await client.getSeaForecastMessage({ regId: '12A20100', numOfRows: 5 });
+   * ```
+   *
+   * Reference: API_ENDPOINT_Forecast.md - Category 3: Village Forecast Messages
+   */
+  async getSeaForecastMessage(params?: {
+    pageNo?: number;
+    numOfRows?: number;
+    dataType?: string;
+    regId?: string;
+  }): Promise<ForecastData[]> {
+    const requestParams: Record<string, unknown> = {
+      pageNo: String(params?.pageNo ?? 1),
+      numOfRows: String(params?.numOfRows ?? 10),
+      dataType: params?.dataType ?? 'JSON',
+    };
+
+    if (params?.regId) {
+      requestParams.regId = params.regId;
+    }
+
+    return this.makeRequest<ForecastData>(
+      'VilageFcstMsgService/getSeaFcst',
+      requestParams,
+      false,
+      true
+    );
+  }
+
+  // ============================================================================
   // Legacy methods - marked as undocumented
   // ============================================================================
 
