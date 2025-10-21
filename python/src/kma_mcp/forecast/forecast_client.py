@@ -979,66 +979,16 @@ class ForecastClient:
         )
 
     # ============================================================================
-    # Legacy methods - marked as deprecated
+    # Helper methods
     # ============================================================================
 
-    def get_short_term_forecast(
-        self,
-        tm_fc: str,
-        stn: int | str = 0,
-    ) -> dict[str, Any]:
-        """Get short-term weather forecast (DEPRECATED - undocumented endpoint).
-
-        **DEPRECATED**: This method uses an undocumented endpoint (kma_sfcfct.php).
-        Use get_short_term_region(), get_short_term_land(), or get_short_term_sea()
-        instead for documented API endpoints.
+    def _format_datetime(self, dt: datetime) -> str:
+        """Format datetime object to YYYYMMDDHHmm string.
 
         Args:
-            tm_fc: Forecast time in 'YYYYMMDDHHmm' format
-            stn: Station/region code (0 for all regions)
+            dt: Datetime object to format
 
         Returns:
-            Short-term weather forecast data
+            Formatted datetime string in YYYYMMDDHHmm format
         """
-        params = {'tm_fc': tm_fc, 'stn': str(stn), 'help': '0'}
-        return self._make_request('kma_sfcfct.php', params)
-
-    def get_medium_term_forecast(
-        self,
-        tm_fc: str,
-        stn: int | str = 0,
-    ) -> dict[str, Any]:
-        """Get medium-term weather forecast (DEPRECATED - undocumented endpoint).
-
-        **DEPRECATED**: This method uses an undocumented endpoint (kma_mtfcst.php).
-        Medium-term forecast methods will be implemented in future updates.
-
-        Args:
-            tm_fc: Forecast time in 'YYYYMMDDHHmm' format
-            stn: Station/region code (0 for all regions)
-
-        Returns:
-            Medium-term weather forecast data
-        """
-        params = {'tm_fc': tm_fc, 'stn': str(stn), 'help': '0'}
-        return self._make_request('kma_mtfcst.php', params)
-
-    def get_weekly_forecast(
-        self,
-        tm_fc: str,
-        stn: int | str = 0,
-    ) -> dict[str, Any]:
-        """Get weekly weather forecast (DEPRECATED - undocumented endpoint).
-
-        **DEPRECATED**: This method uses an undocumented endpoint (kma_wkfcst.php).
-        Use documented medium-term forecast methods instead (to be implemented).
-
-        Args:
-            tm_fc: Forecast time in 'YYYYMMDDHHmm' format
-            stn: Station/region code (0 for all regions)
-
-        Returns:
-            Weekly weather forecast data
-        """
-        params = {'tm_fc': tm_fc, 'stn': str(stn), 'help': '0'}
-        return self._make_request('kma_wkfcst.php', params)
+        return dt.strftime('%Y%m%d%H%M')

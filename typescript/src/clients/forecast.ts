@@ -951,45 +951,4 @@ export class ForecastClient extends BaseKMAClient {
       true
     );
   }
-
-  // ============================================================================
-  // Legacy methods - marked as undocumented
-  // ============================================================================
-
-  /**
-   * @deprecated This endpoint (kma_sfcfct.php) is not documented in the official API.
-   * Consider using getShortTermRegion() with the documented fct_shrt_reg.php endpoint.
-   *
-   * Get short-term weather forecast (up to 3 days) - undocumented endpoint
-   */
-  async getShortTermForecast(tmFc: string, stn: number | string = 0): Promise<ForecastData[]> {
-    return this.makeRequest<ForecastData>('kma_sfcfct.php', {
-      tm_fc: tmFc,
-      stn: String(stn),
-    });
-  }
-
-  /**
-   * @deprecated This endpoint (kma_mtfcst.php) is not documented in the official API.
-   *
-   * Get medium-term weather forecast (3-10 days) - undocumented endpoint
-   */
-  async getMediumTermForecast(tmFc: string, stn: number | string = 0): Promise<ForecastData[]> {
-    return this.makeRequest<ForecastData>('kma_mtfcst.php', {
-      tm_fc: tmFc,
-      stn: String(stn),
-    });
-  }
-
-  /**
-   * @deprecated This endpoint (kma_wkfcst.php) is not documented in the official API.
-   *
-   * Get weekly weather forecast - undocumented endpoint
-   */
-  async getWeeklyForecast(tmFc: string, stn: number | string = 0): Promise<ForecastData[]> {
-    return this.makeRequest<ForecastData>('kma_wkfcst.php', {
-      tm_fc: tmFc,
-      stn: String(stn),
-    });
-  }
 }
