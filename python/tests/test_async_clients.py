@@ -392,8 +392,8 @@ class TestAsyncForecastClient:
 
     @pytest.mark.asyncio
     @patch('httpx.AsyncClient.get')
-    async def test_get_short_term_forecast(self, mock_get):
-        """Test getting short-term forecast."""
+    async def test_get_short_term_region(self, mock_get):
+        """Test getting short-term forecast by region."""
         mock_response = MagicMock()
         mock_response.json.return_value = {'data': 'forecast_test'}
         mock_response.raise_for_status = MagicMock()
@@ -402,9 +402,60 @@ class TestAsyncForecastClient:
         mock_get.side_effect = async_mock
 
         async with AsyncForecastClient('test_key') as client:
-            result = await client.get_short_term_forecast(tm_fc='202501011200', stn=0)
+            result = await client.get_short_term_region(tmfc='0')
 
         assert result == {'data': 'forecast_test'}
+
+    @pytest.mark.asyncio
+    @patch('httpx.AsyncClient.get')
+    async def test_get_village_forecast(self, mock_get):
+        """Test getting village forecast (OpenAPI)."""
+        mock_response = MagicMock()
+        mock_response.json.return_value = {'data': 'village_test'}
+        mock_response.raise_for_status = MagicMock()
+
+        async_mock = AsyncMock(return_value=mock_response)
+        mock_get.side_effect = async_mock
+
+        async with AsyncForecastClient('test_key') as client:
+            result = await client.get_village_forecast(
+                page_no=1, num_of_rows=10, data_type='JSON',
+                base_date='20210628', base_time='0500', nx=60, ny=127
+            )
+
+        assert result == {'data': 'village_test'}
+
+    @pytest.mark.asyncio
+    @patch('httpx.AsyncClient.get')
+    async def test_get_medium_term_region(self, mock_get):
+        """Test getting medium-term forecast region."""
+        mock_response = MagicMock()
+        mock_response.json.return_value = {'data': 'medium_test'}
+        mock_response.raise_for_status = MagicMock()
+
+        async_mock = AsyncMock(return_value=mock_response)
+        mock_get.side_effect = async_mock
+
+        async with AsyncForecastClient('test_key') as client:
+            result = await client.get_medium_term_region(tmfc='0')
+
+        assert result == {'data': 'medium_test'}
+
+    @pytest.mark.asyncio
+    @patch('httpx.AsyncClient.get')
+    async def test_get_warning_region(self, mock_get):
+        """Test getting weather warning region."""
+        mock_response = MagicMock()
+        mock_response.json.return_value = {'data': 'warning_test'}
+        mock_response.raise_for_status = MagicMock()
+
+        async_mock = AsyncMock(return_value=mock_response)
+        mock_get.side_effect = async_mock
+
+        async with AsyncForecastClient('test_key') as client:
+            result = await client.get_warning_region(wrn='W')
+
+        assert result == {'data': 'warning_test'}
 
 
 class TestAsyncWarningClient:
