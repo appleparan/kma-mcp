@@ -7,7 +7,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 from fastmcp import FastMCP
 
-from kma_mcp.tools import surface_tools
+from kma_mcp.tools import forecast_tools, surface_tools
 
 # Configure logging
 logging.basicConfig(
@@ -26,6 +26,7 @@ mcp = FastMCP('KMA Weather Data - Test')
 # Get API key and set it in tools modules
 API_KEY = os.getenv('KMA_API_KEY', '')
 surface_tools.set_api_key(API_KEY)
+forecast_tools.set_api_key(API_KEY)
 
 # Register surface tools
 # AWS
@@ -50,6 +51,16 @@ mcp.tool(surface_tools.get_season_period)
 # Station Info
 mcp.tool(surface_tools.get_asos_station_list)
 mcp.tool(surface_tools.get_aws_station_list)
+
+# Register forecast tools
+# Forecasts
+mcp.tool(forecast_tools.get_short_term_forecast)
+mcp.tool(forecast_tools.get_medium_term_forecast)
+mcp.tool(forecast_tools.get_weekly_forecast)
+# Weather Warnings
+mcp.tool(forecast_tools.get_current_weather_warnings)
+mcp.tool(forecast_tools.get_weather_warning_history)
+mcp.tool(forecast_tools.get_special_weather_report)
 
 if __name__ == '__main__':
     mcp.run()
