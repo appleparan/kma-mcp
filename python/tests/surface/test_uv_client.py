@@ -103,35 +103,3 @@ class TestUVClientRequests:
         with pytest.raises(httpx.HTTPError):
             uv_client.get_observation_data(tm='202203211500', stn=108)
 
-    # Test that legacy methods raise NotImplementedError
-    def test_get_hourly_data_raises_not_implemented(
-        self,
-        uv_client: UVClient,
-    ) -> None:
-        """Test that get_hourly_data raises NotImplementedError."""
-        with pytest.raises(NotImplementedError, match='not documented'):
-            uv_client.get_hourly_data(tm='202501011200', stn=108)
-
-    def test_get_hourly_period_raises_not_implemented(
-        self,
-        uv_client: UVClient,
-    ) -> None:
-        """Test that get_hourly_period raises NotImplementedError."""
-        with pytest.raises(NotImplementedError, match='not documented'):
-            uv_client.get_hourly_period('202501010000', '202501020000', 108)
-
-    def test_get_daily_data_raises_not_implemented(
-        self,
-        uv_client: UVClient,
-    ) -> None:
-        """Test that get_daily_data raises NotImplementedError."""
-        with pytest.raises(NotImplementedError, match='not documented'):
-            uv_client.get_daily_data(tm='20250101', stn=108)
-
-    def test_get_daily_period_raises_not_implemented(
-        self,
-        uv_client: UVClient,
-    ) -> None:
-        """Test that get_daily_period raises NotImplementedError."""
-        with pytest.raises(NotImplementedError, match='not documented'):
-            uv_client.get_daily_period('20250101', '20250131', 108)

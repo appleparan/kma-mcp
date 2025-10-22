@@ -124,121 +124,6 @@ class TestAWSClientRequests:
         assert call_args.kwargs['params']['tm2'] == '202302010900'
 
     @patch('httpx.Client.get')
-    def test_get_minutely_period(
-        self,
-        mock_get: Mock,
-        aws_client: AWSClient,
-        mock_response_data: dict,
-    ) -> None:
-        """Test getting minutely data for a period."""
-        mock_response = Mock()
-        mock_response.json.return_value = mock_response_data
-        mock_response.raise_for_status = Mock()
-        mock_get.return_value = mock_response
-
-        result = aws_client.get_minutely_period(
-            tm1='202501011200',
-            tm2='202501011300',
-            stn=108,
-        )
-
-        assert result == mock_response_data
-        call_args = mock_get.call_args
-        assert call_args.kwargs['params']['tm1'] == '202501011200'
-        assert call_args.kwargs['params']['tm2'] == '202501011300'
-        assert 'kma_aws2.php' in call_args.args[0]
-
-    @patch('httpx.Client.get')
-    def test_get_hourly_data(
-        self,
-        mock_get: Mock,
-        aws_client: AWSClient,
-        mock_response_data: dict,
-    ) -> None:
-        """Test getting hourly observation data."""
-        mock_response = Mock()
-        mock_response.json.return_value = mock_response_data
-        mock_response.raise_for_status = Mock()
-        mock_get.return_value = mock_response
-
-        result = aws_client.get_hourly_data(tm='202501011200', stn=108)
-
-        assert result == mock_response_data
-        call_args = mock_get.call_args
-        assert call_args.kwargs['params']['tm'] == '202501011200'
-        assert 'kma_aws3.php' in call_args.args[0]
-
-    @patch('httpx.Client.get')
-    def test_get_hourly_period(
-        self,
-        mock_get: Mock,
-        aws_client: AWSClient,
-        mock_response_data: dict,
-    ) -> None:
-        """Test getting hourly data for a period."""
-        mock_response = Mock()
-        mock_response.json.return_value = mock_response_data
-        mock_response.raise_for_status = Mock()
-        mock_get.return_value = mock_response
-
-        result = aws_client.get_hourly_period(
-            tm1='202501010000',
-            tm2='202501020000',
-            stn=108,
-        )
-
-        assert result == mock_response_data
-        call_args = mock_get.call_args
-        assert call_args.kwargs['params']['tm1'] == '202501010000'
-        assert call_args.kwargs['params']['tm2'] == '202501020000'
-        assert 'kma_aws4.php' in call_args.args[0]
-
-    @patch('httpx.Client.get')
-    def test_get_daily_data(
-        self,
-        mock_get: Mock,
-        aws_client: AWSClient,
-        mock_response_data: dict,
-    ) -> None:
-        """Test getting daily observation data."""
-        mock_response = Mock()
-        mock_response.json.return_value = mock_response_data
-        mock_response.raise_for_status = Mock()
-        mock_get.return_value = mock_response
-
-        result = aws_client.get_daily_data(tm='20250101', stn=108)
-
-        assert result == mock_response_data
-        call_args = mock_get.call_args
-        assert call_args.kwargs['params']['tm'] == '20250101'
-        assert 'kma_aws5.php' in call_args.args[0]
-
-    @patch('httpx.Client.get')
-    def test_get_daily_period(
-        self,
-        mock_get: Mock,
-        aws_client: AWSClient,
-        mock_response_data: dict,
-    ) -> None:
-        """Test getting daily data for a period."""
-        mock_response = Mock()
-        mock_response.json.return_value = mock_response_data
-        mock_response.raise_for_status = Mock()
-        mock_get.return_value = mock_response
-
-        result = aws_client.get_daily_period(
-            tm1='20250101',
-            tm2='20250131',
-            stn=108,
-        )
-
-        assert result == mock_response_data
-        call_args = mock_get.call_args
-        assert call_args.kwargs['params']['tm1'] == '20250101'
-        assert call_args.kwargs['params']['tm2'] == '20250131'
-        assert 'kma_aws6.php' in call_args.args[0]
-
-    @patch('httpx.Client.get')
     def test_request_error_handling(
         self,
         mock_get: Mock,
@@ -305,8 +190,8 @@ class TestAWSClientDateTimeConversion:
         mock_response.raise_for_status = Mock()
         mock_get.return_value = mock_response
 
-        dt = datetime(2025, 10, 18, tzinfo=UTC)
-        aws_client.get_daily_data(tm=dt)
+        dt = datetime(2025, 10, 18, 15, 30, tzinfo=UTC)
+        aws_client.get_minutely_data(tm1=dt, tm2=dt)
 
         call_args = mock_get.call_args
-        assert call_args.kwargs['params']['tm'] == '20251018'
+        assert call_args.kwargs['params']['tm1'] == '202510181530'
