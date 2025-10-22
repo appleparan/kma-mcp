@@ -326,7 +326,7 @@ def get_aws_current_weather(station_id: int = 0) -> str:
             now = datetime.now(UTC)
             current_minute = now.replace(second=0, microsecond=0)
 
-            data = client.get_minutely_data(tm=current_minute, stn=station_id)
+            data = client.get_minutely_data(tm1=current_minute, tm2=current_minute, stn=station_id)
             return str(data)
     except Exception as e:  # noqa: BLE001
         return f'Error fetching AWS weather data: {e!s}'
@@ -356,70 +356,10 @@ def get_aws_minutely_weather(
 
     try:
         with AWSClient(API_KEY) as client:
-            data = client.get_minutely_period(tm1=start_time, tm2=end_time, stn=station_id)
+            data = client.get_minutely_data(tm1=start_time, tm2=end_time, stn=station_id)
             return str(data)
     except Exception as e:  # noqa: BLE001
         return f'Error fetching AWS minutely weather data: {e!s}'
-
-
-@mcp.tool()
-def get_aws_hourly_weather(
-    start_time: str,
-    end_time: str,
-    station_id: int = 0,
-) -> str:
-    """Get AWS hourly weather observation data for a time period.
-
-    Args:
-        start_time: Start time in 'YYYYMMDDHHmm' format (e.g., '202501011200')
-        end_time: End time in 'YYYYMMDDHHmm' format
-        station_id: AWS station ID (0 for all stations)
-
-    Returns:
-        Hourly AWS weather observation data for the period in JSON format
-
-    Example:
-        get_aws_hourly_weather('202501011200', '202501020000', 108)
-    """
-    if not API_KEY:
-        return 'Error: KMA_API_KEY environment variable not set'
-
-    try:
-        with AWSClient(API_KEY) as client:
-            data = client.get_hourly_period(tm1=start_time, tm2=end_time, stn=station_id)
-            return str(data)
-    except Exception as e:  # noqa: BLE001
-        return f'Error fetching AWS hourly weather data: {e!s}'
-
-
-@mcp.tool()
-def get_aws_daily_weather(
-    start_date: str,
-    end_date: str,
-    station_id: int = 0,
-) -> str:
-    """Get AWS daily weather observation data for a date range.
-
-    Args:
-        start_date: Start date in 'YYYYMMDD' format (e.g., '20250101')
-        end_date: End date in 'YYYYMMDD' format
-        station_id: AWS station ID (0 for all stations)
-
-    Returns:
-        Daily AWS weather observation data for the period in JSON format
-
-    Example:
-        get_aws_daily_weather('20250101', '20250131', 108)
-    """
-    if not API_KEY:
-        return 'Error: KMA_API_KEY environment variable not set'
-
-    try:
-        with AWSClient(API_KEY) as client:
-            data = client.get_daily_period(tm1=start_date, tm2=end_date, stn=station_id)
-            return str(data)
-    except Exception as e:  # noqa: BLE001
-        return f'Error fetching AWS daily weather data: {e!s}'
 
 
 # ============================================================================
@@ -638,70 +578,10 @@ def get_uv_current_index(station_id: int = 0) -> str:
             now = datetime.now(UTC)
             current_hour = now.replace(minute=0, second=0, microsecond=0)
 
-            data = client.get_hourly_data(tm=current_hour, stn=station_id)
+            data = client.get_observation_data(tm=current_hour, stn=station_id)
             return str(data)
     except Exception as e:  # noqa: BLE001
         return f'Error fetching UV index data: {e!s}'
-
-
-@mcp.tool()
-def get_uv_hourly_index(
-    start_time: str,
-    end_time: str,
-    station_id: int = 0,
-) -> str:
-    """Get hourly UV radiation index data for a time period.
-
-    Args:
-        start_time: Start time in 'YYYYMMDDHHmm' format (e.g., '202501011200')
-        end_time: End time in 'YYYYMMDDHHmm' format
-        station_id: Weather station ID (0 for all stations)
-
-    Returns:
-        Hourly UV index data for the period in JSON format
-
-    Example:
-        get_uv_hourly_index('202501011200', '202501011800', 108)
-    """
-    if not API_KEY:
-        return 'Error: KMA_API_KEY environment variable not set'
-
-    try:
-        with UVClient(API_KEY) as client:
-            data = client.get_hourly_period(tm1=start_time, tm2=end_time, stn=station_id)
-            return str(data)
-    except Exception as e:  # noqa: BLE001
-        return f'Error fetching hourly UV index data: {e!s}'
-
-
-@mcp.tool()
-def get_uv_daily_index(
-    start_date: str,
-    end_date: str,
-    station_id: int = 0,
-) -> str:
-    """Get daily UV radiation index data for a date range.
-
-    Args:
-        start_date: Start date in 'YYYYMMDD' format (e.g., '20250101')
-        end_date: End date in 'YYYYMMDD' format
-        station_id: Weather station ID (0 for all stations)
-
-    Returns:
-        Daily UV index data for the period in JSON format
-
-    Example:
-        get_uv_daily_index('20250101', '20250131', 108)
-    """
-    if not API_KEY:
-        return 'Error: KMA_API_KEY environment variable not set'
-
-    try:
-        with UVClient(API_KEY) as client:
-            data = client.get_daily_period(tm1=start_date, tm2=end_date, stn=station_id)
-            return str(data)
-    except Exception as e:  # noqa: BLE001
-        return f'Error fetching daily UV index data: {e!s}'
 
 
 # ============================================================================
@@ -710,14 +590,11 @@ def get_uv_daily_index(
 
 
 @mcp.tool()
-def get_snow_current_depth(station_id: int = 0) -> str:
+def get_snow_current_depth() -> str:
     """Get current snow depth observation data.
 
     Snow depth observations monitor snow accumulation for winter
     weather analysis, transportation safety, and disaster prevention.
-
-    Args:
-        station_id: Weather station ID (0 for all stations, default: 0)
 
     Returns:
         Current snow depth observation data in JSON format
@@ -731,70 +608,38 @@ def get_snow_current_depth(station_id: int = 0) -> str:
             now = datetime.now(UTC)
             current_hour = now.replace(minute=0, second=0, microsecond=0)
 
-            data = client.get_hourly_data(tm=current_hour, stn=station_id)
+            data = client.get_snow_depth(tm=current_hour)
             return str(data)
     except Exception as e:  # noqa: BLE001
         return f'Error fetching snow depth data: {e!s}'
 
 
 @mcp.tool()
-def get_snow_hourly_depth(
+def get_snow_period_depth(
     start_time: str,
     end_time: str,
-    station_id: int = 0,
 ) -> str:
-    """Get hourly snow depth observation data for a time period.
+    """Get snow depth observation data for a time period.
 
     Args:
         start_time: Start time in 'YYYYMMDDHHmm' format (e.g., '202501011200')
         end_time: End time in 'YYYYMMDDHHmm' format
-        station_id: Weather station ID (0 for all stations)
 
     Returns:
-        Hourly snow depth data for the period in JSON format
+        Snow depth data for the period in JSON format
 
     Example:
-        get_snow_hourly_depth('202501011200', '202501011800', 108)
+        get_snow_period_depth('202501011200', '202501011800')
     """
     if not API_KEY:
         return 'Error: KMA_API_KEY environment variable not set'
 
     try:
         with SnowClient(API_KEY) as client:
-            data = client.get_hourly_period(tm1=start_time, tm2=end_time, stn=station_id)
+            data = client.get_snow_period(tm=end_time, tm_st=start_time)
             return str(data)
     except Exception as e:  # noqa: BLE001
-        return f'Error fetching hourly snow depth data: {e!s}'
-
-
-@mcp.tool()
-def get_snow_daily_depth(
-    start_date: str,
-    end_date: str,
-    station_id: int = 0,
-) -> str:
-    """Get daily snow depth observation data for a date range.
-
-    Args:
-        start_date: Start date in 'YYYYMMDD' format (e.g., '20250101')
-        end_date: End date in 'YYYYMMDD' format
-        station_id: Weather station ID (0 for all stations)
-
-    Returns:
-        Daily snow depth data for the period in JSON format
-
-    Example:
-        get_snow_daily_depth('20250101', '20250131', 108)
-    """
-    if not API_KEY:
-        return 'Error: KMA_API_KEY environment variable not set'
-
-    try:
-        with SnowClient(API_KEY) as client:
-            data = client.get_daily_period(tm1=start_date, tm2=end_date, stn=station_id)
-            return str(data)
-    except Exception as e:  # noqa: BLE001
-        return f'Error fetching daily snow depth data: {e!s}'
+        return f'Error fetching snow period depth data: {e!s}'
 
 
 # ============================================================================
