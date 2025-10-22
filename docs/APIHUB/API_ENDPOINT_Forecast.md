@@ -99,7 +99,7 @@ https://apihub.kma.go.kr/api/typ01/url/{endpoint}?authKey={YOUR_API_KEY}&{parame
 
 #### 단기 해상예보
 * Endpoint: `fct_afs_do.php`
-
+* Method: `ForecastClient.get_short_term_sea()` / `AsyncForecastClient.get_short_term_sea()`
 * Example URL:
     ```text
     https://apihub.kma.go.kr/api/typ01/url/fct_afs_do.php?reg=&tmfc1=2013121106&tmfc2=2013121118&disp=0&help=1&authKey=-oe-oHSOQSKHvqB0juEieQ
@@ -118,7 +118,7 @@ https://apihub.kma.go.kr/api/typ01/url/{endpoint}?authKey={YOUR_API_KEY}&{parame
 ### 동네예보(단기예보, 초단기예보, 실황) 격자자료
 #### 단기예보
 * Endpoint: `nph-dfs_shrt_grd`
-
+* Method: `ForecastClient.get_village_short_term_grid()` / `AsyncForecastClient.get_village_short_term_grid()`
 * Example URL:
     ```text
     https://apihub.kma.go.kr/api/typ01/cgi-bin/url/nph-dfs_shrt_grd?tmfc=2024022505&tmef=2024022506&vars=TMP&authKey=-oe-oHSOQSKHvqB0juEieQ
@@ -132,7 +132,7 @@ https://apihub.kma.go.kr/api/typ01/url/{endpoint}?authKey={YOUR_API_KEY}&{parame
 
 #### 초단기예보
 * Endpoint: `nph-dfs_vsrt_grd`
-
+* Method: `ForecastClient.get_village_very_short_term_grid()` / `AsyncForecastClient.get_village_very_short_term_grid()`
 * Example URL:
     ```text
     https://apihub.kma.go.kr/api/typ01/cgi-bin/url/nph-dfs_vsrt_grd?tmfc=202403011010&tmef=2024030111&vars=T1H&authKey=-oe-oHSOQSKHvqB0juEieQ
@@ -144,7 +144,7 @@ https://apihub.kma.go.kr/api/typ01/url/{endpoint}?authKey={YOUR_API_KEY}&{parame
 
 #### 실황
 * Endpoint: `nph-dfs_odam_grd`
-
+* Method: `ForecastClient.get_village_observation_grid()` / `AsyncForecastClient.get_village_observation_grid()`
 * Example URL:
     ```text
     https://apihub.kma.go.kr/api/typ01/cgi-bin/url/nph-dfs_odam_grd?tmfc=202403051010&vars=T1H&authKey=-oe-oHSOQSKHvqB0juEieQ
@@ -157,7 +157,7 @@ https://apihub.kma.go.kr/api/typ01/url/{endpoint}?authKey={YOUR_API_KEY}&{parame
 
 #### 동네예보 격자 번호 → 위·경도 변환
 * Endpoint: `nph-dfs_xy_lonlat`
-
+* Method: `ForecastClient.convert_grid_to_coords()` + `ForecastClient.convert_coords_to_grid()` (see docs)
 * Example URL:
     ```text
     https://apihub.kma.go.kr/api/typ01/cgi-bin/url/nph-dfs_xy_lonlat?x=60&y=127&help=1&authKey=-oe-oHSOQSKHvqB0juEieQ
@@ -168,7 +168,7 @@ https://apihub.kma.go.kr/api/typ01/url/{endpoint}?authKey={YOUR_API_KEY}&{parame
     * `help`: 도움말추가. 1(도움말 정보 표시)
 #### 임의 위·경도 → 인근 동네예보 격자 번호 변환
 * Endpoint: `nph-dfs_xy_lonlat`
-
+* Method: `ForecastClient.convert_grid_to_coords()` + `ForecastClient.convert_coords_to_grid()` (see docs)
 * Example URL:
     ```text
     https://apihub.kma.go.kr/api/typ01/cgi-bin/url/nph-dfs_xy_lonlat?lon=127.5&lat=36.5&help=0&authKey=-oe-oHSOQSKHvqB0juEieQ
@@ -185,7 +185,7 @@ https://apihub.kma.go.kr/api/typ01/url/{endpoint}?authKey={YOUR_API_KEY}&{parame
 #### 기상개황조회
 
 * Endpoint: `getWthrSituation`
-
+* Method: `ForecastClient.get_weather_situation()` / `AsyncForecastClient.get_weather_situation()`
 * Example URL:
     ```text
     https://apihub.kma.go.kr/api/typ02/openApi/VilageFcstMsgService/getWthrSituation?pageNo=1&numOfRows=10&dataType=XML&stnId=108&authKey=-oe-oHSOQSKHvqB0juEieQ
@@ -199,7 +199,7 @@ https://apihub.kma.go.kr/api/typ01/url/{endpoint}?authKey={YOUR_API_KEY}&{parame
 #### 육상예보조회
 
 * Endpoint: `getLandFcst`
-
+* Method: `ForecastClient.get_land_forecast_message()` / `AsyncForecastClient.get_land_forecast_message()`
 * Example URL:
     ```text
     https://apihub.kma.go.kr/api/typ02/openApi/VilageFcstMsgService/getLandFcst?pageNo=1&numOfRows=10&dataType=XML&regId=11A00101&authKey=-oe-oHSOQSKHvqB0juEieQ
@@ -212,7 +212,7 @@ https://apihub.kma.go.kr/api/typ01/url/{endpoint}?authKey={YOUR_API_KEY}&{parame
 
 #### 해상예보조회
 * Endpoint: `getSeaFcst`
-
+* Method: `ForecastClient.get_sea_forecast_message()` / `AsyncForecastClient.get_sea_forecast_message()`
 * Example URL:
     ```text
     https://apihub.kma.go.kr/api/typ02/openApi/VilageFcstMsgService/getSeaFcst?pageNo=1&numOfRows=10&dataType=XML&regId=12A20100&authKey=-oe-oHSOQSKHvqB0juEieQ
@@ -226,7 +226,7 @@ https://apihub.kma.go.kr/api/typ01/url/{endpoint}?authKey={YOUR_API_KEY}&{parame
 ### 동네예보(초단기실황·초단기예보·단기예보) 조회
 #### 초단기실황조회
 * Endpoint: `getUltraSrtNcst`
-
+* Method: `ForecastClient.get_ultra_short_term_observation()` / `AsyncForecastClient.get_ultra_short_term_observation()`
 * Example URL:
     ```text
     https://apihub.kma.go.kr/api/typ02/openApi/VilageFcstInfoService_2.0/getUltraSrtNcst?pageNo=1&numOfRows=1000&dataType=XML&base_date=20210628&base_time=0600&nx=55&ny=127&authKey=-oe-oHSOQSKHvqB0juEieQ
@@ -242,7 +242,7 @@ https://apihub.kma.go.kr/api/typ01/url/{endpoint}?authKey={YOUR_API_KEY}&{parame
 
 #### 초단기예보조회
 * Endpoint: `getUltraSrtFcst`
-
+* Method: `ForecastClient.get_ultra_short_term_forecast()` / `AsyncForecastClient.get_ultra_short_term_forecast()`
 * Example URL:
     ```text
     https://apihub.kma.go.kr/api/typ02/openApi/VilageFcstInfoService_2.0/getUltraSrtFcst?pageNo=1&numOfRows=1000&dataType=XML&base_date=20210628&base_time=0630&nx=55&ny=127&authKey=-oe-oHSOQSKHvqB0juEieQ
@@ -258,7 +258,7 @@ https://apihub.kma.go.kr/api/typ01/url/{endpoint}?authKey={YOUR_API_KEY}&{parame
 
 #### 단기예보조회
 * Endpoint: `getVilageFcst`
-
+* Method: `ForecastClient.get_village_forecast()` / `AsyncForecastClient.get_village_forecast()`
 * Example URL:
     ```text
     https://apihub.kma.go.kr/api/typ02/openApi/VilageFcstInfoService_2.0/getVilageFcst?pageNo=1&numOfRows=1000&dataType=XML&base_date=20210628&base_time=0500&nx=55&ny=127&authKey=-oe-oHSOQSKHvqB0juEieQ
@@ -274,7 +274,7 @@ https://apihub.kma.go.kr/api/typ01/url/{endpoint}?authKey={YOUR_API_KEY}&{parame
 
 #### 예보버전조회
 * Endpoint: `getFcstVersion`
-
+* Method: `ForecastClient.get_forecast_version()` / `AsyncForecastClient.get_forecast_version()`
 * Example URL:
     ```text
     https://apihub.kma.go.kr/api/typ02/openApi/VilageFcstInfoService_2.0/getFcstVersion?pageNo=1&numOfRows=1000&dataType=XML&ftype=ODAM&basedatetime=202106280800&authKey=-oe-oHSOQSKHvqB0juEieQ
@@ -288,7 +288,7 @@ https://apihub.kma.go.kr/api/typ01/url/{endpoint}?authKey={YOUR_API_KEY}&{parame
 
 ### (그래픽) 동네예보 분포도
 * Endpoint: `nph-dfs_shrt_ana_5d_test`
-
+* Method: `ForecastClient.get_short_term_distribution_map()` / `AsyncForecastClient.get_short_term_distribution_map()`
 * Example URL:
     ```text
     https://apihub.kma.go.kr/api/typ03/cgi/dfs/nph-dfs_shrt_ana_5d_test?data0=GEMD&data1=PTY&tm_ef=202212260000&tm_fc=202212221400&dtm=H0&map=G1&mask=M&color=E&size=600&effect=NTL&overlay=S&zoom_rate=2&zoom_level=0&zoom_x=0000000&zoom_y=0000000&auto_man=m&mode=I&interval=1&rand=1412&authKey=-oe-oHSOQSKHvqB0juEieQ
@@ -313,7 +313,7 @@ https://apihub.kma.go.kr/api/typ01/url/{endpoint}?authKey={YOUR_API_KEY}&{parame
 
 ### (그래픽) 초단기예보 분포도
 * Endpoint: `nph-nph-dfs_shrt_ana_5d_test`
-
+* Method: `ForecastClient.get_very_short_term_distribution_map()` / `AsyncForecastClient.get_very_short_term_distribution_map()`
 * Example URL:
     ```text
     https://apihub.kma.go.kr/api/typ03/cgi/dfs/nph-dfs_shrt_ana_5d_test?data0=GEMD&data1=PTY&tm_ef=202212260000&tm_fc=202212221400&dtm=H0&map=G1&mask=M&color=E&size=600&effect=NTL&overlay=S&zoom_rate=2&zoom_level=0&zoom_x=0000000&zoom_y=0000000&auto_man=m&mode=I&interval=1&rand=1412&authKey=-oe-oHSOQSKHvqB0juEieQ
@@ -339,7 +339,7 @@ https://apihub.kma.go.kr/api/typ01/url/{endpoint}?authKey={YOUR_API_KEY}&{parame
 ### 동네예보 격자데이터 위경도 조회
 #### 동네예보 격자데이터 위경도 조회
 * Endpoint: `dfs_latlon_api`
-
+* Method: `ForecastClient.get_grid_latlon_data()` + `ForecastClient.download_grid_latlon_netcdf()` (see docs)
 * Example URL:
     ```text
     https://apihub.kma.go.kr/api/typ01/cgi-bin/url/nph-dfs_latlon_api?fct=SHRT&latlon=lon&disp=A&authKey=-oe-oHSOQSKHvqB0juEieQ
@@ -353,7 +353,7 @@ https://apihub.kma.go.kr/api/typ01/url/{endpoint}?authKey={YOUR_API_KEY}&{parame
 
 #### 동네예보 격자데이터 위경도 파일(NetCDF) 다운로드
 * Endpoint: `dfs_latlon_api`
-
+* Method: `ForecastClient.get_grid_latlon_data()` + `ForecastClient.download_grid_latlon_netcdf()` (see docs)
 * Example URL:
     ```text
     https://apihub.kma.go.kr/api/typ01/cgi-bin/url/nph-dfs_latlon_api?fct=SHRT&latlon=lon&disp=A&authKey=-oe-oHSOQSKHvqB0juEieQ
@@ -370,7 +370,7 @@ https://apihub.kma.go.kr/api/typ01/url/{endpoint}?authKey={YOUR_API_KEY}&{parame
 ### 중기예보자료(2001년 2월 이후) 조회
 #### 중기 예보구역
 * Endpoint: `fct_medm_reg.php`
-
+* Method: `ForecastClient.get_medium_term_region()` / `AsyncForecastClient.get_medium_term_region()`
 * Example URL:
     ```text
     https://apihub.kma.go.kr/api/typ01/url/fct_medm_reg.php?tmfc=0&authKey=R_zkyTnBQfy85Mk5wWH8Ow
@@ -388,7 +388,7 @@ https://apihub.kma.go.kr/api/typ01/url/{endpoint}?authKey={YOUR_API_KEY}&{parame
     * `help`: 도움말추가. 1(도움말 정보 표시)
 #### 중기 개황, disp=1(JSON)
 * Endpoint: `fct_afs_ws.php`
-
+* Method: `ForecastClient.get_medium_term_overview()` / `AsyncForecastClient.get_medium_term_overview()`
 * Example URL:
     ```text
     https://apihub.kma.go.kr/api/typ01/url/fct_afs_ws.php?stn=&tmfc1=2013121106&tmfc2=2013121118&disp=0&help=1&authKey=R_zkyTnBQfy85Mk5wWH8Ow
@@ -406,7 +406,7 @@ https://apihub.kma.go.kr/api/typ01/url/{endpoint}?authKey={YOUR_API_KEY}&{parame
     * `help`: 도움말추가. 1(도움말 정보 표시)
 #### 중기 육상예보
 * Endpoint: `fct_afs_wl.php`
-
+* Method: `ForecastClient.get_medium_term_land()` / `AsyncForecastClient.get_medium_term_land()`
 * Example URL:
     ```text
     https://apihub.kma.go.kr/api/typ01/url/fct_afs_wl.php?reg=&tmfc1=2013121106&tmfc2=2013121118&tmef1=20131214&tmef2=20131219&disp=0&help=1&authKey=R_zkyTnBQfy85Mk5wWH8Ow
@@ -423,7 +423,7 @@ https://apihub.kma.go.kr/api/typ01/url/{endpoint}?authKey={YOUR_API_KEY}&{parame
     * `help`: 도움말추가. 1(도움말 정보 표시)
 #### 중기 기온예보
 * Endpoint: `fct_afs_wc.php`
-
+* Method: `ForecastClient.get_medium_term_temperature()` / `AsyncForecastClient.get_medium_term_temperature()`
 * Example URL:
     ```text
     https://apihub.kma.go.kr/api/typ01/url/fct_afs_wc.php?reg=&tmfc1=2013121106&tmfc2=2013121118&tmef1=20131214&tmef2=20131219&disp=0&help=1&authKey=R_zkyTnBQfy85Mk5wWH8Ow
@@ -440,7 +440,7 @@ https://apihub.kma.go.kr/api/typ01/url/{endpoint}?authKey={YOUR_API_KEY}&{parame
     * `help`: 도움말추가. 1(도움말 정보 표시)
 #### 중기 해상예보
 * Endpoint: `fct_afs_wo.php`
-
+* Method: `ForecastClient.get_medium_term_sea()` / `AsyncForecastClient.get_medium_term_sea()`
 * Example URL:
     ```text
     https://apihub.kma.go.kr/api/typ01/url/fct_afs_wo.php?reg=&tmfc1=2013121106&tmfc2=2013121118&tmef1=20131214&tmef2=20131219&disp=0&help=1&authKey=R_zkyTnBQfy85Mk5wWH8Ow
@@ -459,7 +459,7 @@ https://apihub.kma.go.kr/api/typ01/url/{endpoint}?authKey={YOUR_API_KEY}&{parame
 
 #### 중기해상예보조회
 * Endpoint: `getMidSeaFcst`
-
+* Method: `ForecastClient.get_medium_term_sea_forecast()` / `AsyncForecastClient.get_medium_term_sea_forecast()`
 * Example URL:
     ```text
     https://apihub.kma.go.kr/api/typ02/openApi/MidFcstInfoService/getMidSeaFcst?pageNo=1&numOfRows=10&dataType=XML&regId=12A20000&tmFc=201404080600&authKey=R_zkyTnBQfy85Mk5wWH8Ow
@@ -474,7 +474,7 @@ https://apihub.kma.go.kr/api/typ01/url/{endpoint}?authKey={YOUR_API_KEY}&{parame
         * YYYYMMDD0600(1800) 최근 24시간 자료만 제공
 #### 중기기온조회
 * Endpoint: `getMidTa`
-
+* Method: `ForecastClient.get_medium_term_temperature_forecast()` / `AsyncForecastClient.get_medium_term_temperature_forecast()`
 * Example URL:
     ```text
     https://apihub.kma.go.kr/api/typ02/openApi/MidFcstInfoService/getMidTa?pageNo=1&numOfRows=10&dataType=XML&regId=11B10101&tmFc=201309030600&authKey=R_zkyTnBQfy85Mk5wWH8Ow
@@ -489,7 +489,7 @@ https://apihub.kma.go.kr/api/typ01/url/{endpoint}?authKey={YOUR_API_KEY}&{parame
         * YYYYMMDD0600(1800) 최근 24시간 자료만 제공
 #### 중기육상예보조회
 * Endpoint: `getMidLandFcst`
-
+* Method: `ForecastClient.get_medium_term_land_forecast()` / `AsyncForecastClient.get_medium_term_land_forecast()`
 * Example URL:
     ```text
     https://apihub.kma.go.kr/api/typ02/openApi/MidFcstInfoService/getMidLandFcst?pageNo=1&numOfRows=10&dataType=XML&regId=11B00000&tmFc=202107300600&authKey=R_zkyTnBQfy85Mk5wWH8Ow
@@ -504,7 +504,7 @@ https://apihub.kma.go.kr/api/typ01/url/{endpoint}?authKey={YOUR_API_KEY}&{parame
         * YYYYMMDD0600(1800) 최근 24시간 자료만 제공
 #### 중기전망조회
 * Endpoint: `getMidFcst`
-
+* Method: `ForecastClient.get_medium_term_outlook()` / `AsyncForecastClient.get_medium_term_outlook()`
 * Example URL:
     ```text
     https://apihub.kma.go.kr/api/typ02/openApi/MidFcstInfoService/getMidFcst?pageNo=1&numOfRows=10&dataType=XML&stnId=108&tmFc=201310170600&authKey=R_zkyTnBQfy85Mk5wWH8Ow
@@ -526,7 +526,7 @@ https://apihub.kma.go.kr/api/typ01/url/{endpoint}?authKey={YOUR_API_KEY}&{parame
 ### 특.정보 자료 조회
 #### 특보구역
 * Endpoint: `wrn_reg.php`
-
+* Method: `ForecastClient.get_warning_region()` / `AsyncForecastClient.get_warning_region()`
 * Example URL:
     ```text
     https://apihub.kma.go.kr/api/typ01/url/wrn_reg.php?tmfc=0&authKey=3vOvAIAXRQKzrwCAF7UC2g
@@ -541,7 +541,7 @@ https://apihub.kma.go.kr/api/typ01/url/{endpoint}?authKey={YOUR_API_KEY}&{parame
     * `help`: 도움말추가. 1(도움말 정보 표시)
 #### 특보자료
 * Endpoint: `wrn_met_data.php`
-
+* Method: `ForecastClient.get_warning_data()` / `AsyncForecastClient.get_warning_data()`
 * Example URL:
     ```text
     https://apihub.kma.go.kr/api/typ01/url/wrn_met_data.php?reg=0&wrn=A&tmfc1=201501010000&tmfc2=201502010000&disp=0&help=1&authKey=3vOvAIAXRQKzrwCAF7UC2g
@@ -556,7 +556,7 @@ https://apihub.kma.go.kr/api/typ01/url/{endpoint}?authKey={YOUR_API_KEY}&{parame
     * `help`: 도움말추가. 1(도움말 정보 표시)
 #### 기상정보
 * Endpoint: `wrn_inf_rpt.php`
-
+* Method: `ForecastClient.get_weather_information()` / `AsyncForecastClient.get_weather_information()`
 * Example URL:
     ```text
     https://apihub.kma.go.kr/api/typ01/url/wrn_inf_rpt.php?tmfc1=201505010000&tmfc2=201506010000&stn=0&disp=0&help=1&authKey=3vOvAIAXRQKzrwCAF7UC2g
@@ -571,7 +571,7 @@ https://apihub.kma.go.kr/api/typ01/url/{endpoint}?authKey={YOUR_API_KEY}&{parame
     * `help`: 도움말추가. 1(도움말 정보 표시)
 #### 날씨해설
 * Endpoint: `wthr_cmt_rpt.php`
-
+* Method: `ForecastClient.get_weather_commentary()` / `AsyncForecastClient.get_weather_commentary()`
 * Example URL:
     ```text
     https://apihub.kma.go.kr/api/typ01/url/wthr_cmt_rpt.php?tmfc1=202004130000&tmfc2=202004140000&stn=0&subcd=0&disp=0&help=1&authKey=3vOvAIAXRQKzrwCAF7UC2g
@@ -588,7 +588,7 @@ https://apihub.kma.go.kr/api/typ01/url/{endpoint}?authKey={YOUR_API_KEY}&{parame
 
 #### 특보현황 조회(1)
 * Endpoint: `wrn_now_data.php`
-
+* Method: `ForecastClient.get_current_warning_status()` / `AsyncForecastClient.get_current_warning_status()`
 * Example URL:
     ```text
     https://apihub.kma.go.kr/api/typ01/url/wrn_now_data.php?fe=f&tm=&disp=0&help=1&authKey=3vOvAIAXRQKzrwCAF7UC2g
@@ -600,7 +600,7 @@ https://apihub.kma.go.kr/api/typ01/url/{endpoint}?authKey={YOUR_API_KEY}&{parame
 
 #### 특보현황 조회(1)
 * Endpoint: `wrn_now_data_new.php`
-
+* Method: `ForecastClient.get_current_warning_status_new()` / `AsyncForecastClient.get_current_warning_status_new()`
 * Example URL:
     ```text
     https://apihub.kma.go.kr/api/typ01/url/wrn_now_data_new.php?fe=f&tm=&disp=0&help=1&authKey=3vOvAIAXRQKzrwCAF7UC2g
@@ -614,7 +614,7 @@ https://apihub.kma.go.kr/api/typ01/url/{endpoint}?authKey={YOUR_API_KEY}&{parame
 
 #### 임의지역 특보이미지
 * Endpoint: `nph-wrn7`
-
+* Method: `ForecastClient.get_warning_image()` / `AsyncForecastClient.get_warning_image()`
 * Example URL:
     ```text
     https://apihub.kma.go.kr/api/typ03/cgi/wrn/nph-wrn7?out=0&tmef=1&city=1&name=0&tm=201611082300&lon=127.7&lat=36.1&range=300&size=685&wrn=W,R,C,D,O,V,T,S,Y,H,&authKey=3vOvAIAXRQKzrwCAF7UC2g
