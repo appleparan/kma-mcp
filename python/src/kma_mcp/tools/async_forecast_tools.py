@@ -26,15 +26,15 @@ def set_api_key(api_key: str) -> None:
 # ============================================================================
 
 
-async def get_short_term_forecast(forecast_time: str, region_id: int = 0) -> str:
-    """Get short-term weather forecast (up to 3 days).
+async def get_short_term_forecast(forecast_time: str, region_code: str | None = None) -> str:
+    """Get short-term weather forecast (up to 3 days) by region.
 
     Provides weather predictions for the next 3 days including
     temperature, precipitation probability, sky conditions, and wind.
 
     Args:
         forecast_time: Forecast time in 'YYYYMMDDHHmm' format (e.g., '202501011200')
-        region_id: Region code (0 for all regions, default: 0)
+        region_code: Forecast region code (None for all regions)
 
     Returns:
         Short-term weather forecast in JSON format
@@ -44,21 +44,21 @@ async def get_short_term_forecast(forecast_time: str, region_id: int = 0) -> str
 
     try:
         async with AsyncForecastClient(API_KEY) as client:
-            data = await client.get_short_term_forecast(tm_fc=forecast_time, stn=region_id)
+            data = await client.get_short_term_region(tmfc=forecast_time, reg=region_code)
             return str(data)
     except Exception as e:  # noqa: BLE001
         return f'Error fetching short-term forecast: {e!s}'
 
 
-async def get_medium_term_forecast(forecast_time: str, region_id: int = 0) -> str:
-    """Get medium-term weather forecast (3-10 days).
+async def get_medium_term_forecast(forecast_time: str, region_code: str | None = None) -> str:
+    """Get medium-term weather forecast (3-10 days) by region.
 
     Provides weather predictions for 3-10 days ahead including
     general weather trends and temperature ranges.
 
     Args:
         forecast_time: Forecast time in 'YYYYMMDDHHmm' format (e.g., '202501011200')
-        region_id: Region code (0 for all regions, default: 0)
+        region_code: Forecast region code (None for all regions)
 
     Returns:
         Medium-term weather forecast in JSON format
@@ -68,33 +68,33 @@ async def get_medium_term_forecast(forecast_time: str, region_id: int = 0) -> st
 
     try:
         async with AsyncForecastClient(API_KEY) as client:
-            data = await client.get_medium_term_forecast(tm_fc=forecast_time, stn=region_id)
+            data = await client.get_medium_term_region(tmfc=forecast_time, reg=region_code)
             return str(data)
     except Exception as e:  # noqa: BLE001
         return f'Error fetching medium-term forecast: {e!s}'
 
 
-async def get_weekly_forecast(forecast_time: str, region_id: int = 0) -> str:
-    """Get weekly weather forecast.
+async def get_short_term_overview(forecast_time: str, region_code: str | None = None) -> str:
+    """Get short-term weather overview.
 
-    Provides week-long weather predictions for planning purposes.
+    Provides overview of short-term weather forecast.
 
     Args:
         forecast_time: Forecast time in 'YYYYMMDDHHmm' format (e.g., '202501011200')
-        region_id: Region code (0 for all regions, default: 0)
+        region_code: Forecast region code (None for all regions)
 
     Returns:
-        Weekly weather forecast in JSON format
+        Short-term weather overview in JSON format
     """
     if not API_KEY:
         return 'Error: KMA_API_KEY environment variable not set'
 
     try:
         async with AsyncForecastClient(API_KEY) as client:
-            data = await client.get_weekly_forecast(tm_fc=forecast_time, stn=region_id)
+            data = await client.get_short_term_overview(tmfc=forecast_time, reg=region_code)
             return str(data)
     except Exception as e:  # noqa: BLE001
-        return f'Error fetching weekly forecast: {e!s}'
+        return f'Error fetching short-term overview: {e!s}'
 
 
 # ============================================================================

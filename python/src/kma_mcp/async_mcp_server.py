@@ -68,8 +68,8 @@ mcp.tool(async_surface_tools.get_aws_station_list)
 # Register forecast tools
 # Forecasts
 mcp.tool(async_forecast_tools.get_short_term_forecast)
+mcp.tool(async_forecast_tools.get_short_term_overview)
 mcp.tool(async_forecast_tools.get_medium_term_forecast)
-mcp.tool(async_forecast_tools.get_weekly_forecast)
 # Weather Warnings
 mcp.tool(async_forecast_tools.get_current_weather_warnings)
 mcp.tool(async_forecast_tools.get_weather_warning_history)
