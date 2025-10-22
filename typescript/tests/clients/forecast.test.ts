@@ -328,4 +328,406 @@ describe('ForecastClient', () => {
       true
     );
   });
+
+  // Category 5: Forecast Distribution Maps Tests
+  test('should get short-term distribution map', async () => {
+    const mockAxiosGet = mock(() =>
+      Promise.resolve({ data: { image: 'test_image_data' } })
+    );
+    const axios = await import('axios');
+    axios.default.get = mockAxiosGet;
+
+    await client.getShortTermDistributionMap(
+      'GEMD',
+      'PTY',
+      '202212221400',
+      '202212260000'
+    );
+
+    expect(mockAxiosGet).toHaveBeenCalled();
+    const callArgs = mockAxiosGet.mock.calls[0];
+    expect(callArgs[0]).toBe(
+      'https://apihub.kma.go.kr/api/typ03/cgi/dfs/nph-dfs_shrt_ana_5d_test'
+    );
+    expect(callArgs[1].params.data0).toBe('GEMD');
+    expect(callArgs[1].params.data1).toBe('PTY');
+  });
+
+  test('should get very short-term distribution map', async () => {
+    const mockAxiosGet = mock(() =>
+      Promise.resolve({ data: { image: 'test_image_data' } })
+    );
+    const axios = await import('axios');
+    axios.default.get = mockAxiosGet;
+
+    await client.getVeryShortTermDistributionMap(
+      'GEMD',
+      'TMP',
+      '202212221400',
+      '202212260000'
+    );
+
+    expect(mockAxiosGet).toHaveBeenCalled();
+  });
+
+  // Category 6: Grid Coordinate Data Tests
+  test('should get grid lat/lon data', async () => {
+    const mockAxiosGet = mock(() => Promise.resolve({ data: { grid: 'data' } }));
+    const axios = await import('axios');
+    axios.default.get = mockAxiosGet;
+
+    await client.getGridLatlonData();
+
+    expect(mockAxiosGet).toHaveBeenCalled();
+    const callArgs = mockAxiosGet.mock.calls[0];
+    expect(callArgs[0]).toBe(
+      'https://apihub.kma.go.kr/api/typ01/cgi-bin/dfs/nph-dfs_latlon_api'
+    );
+  });
+
+  test('should download grid lat/lon NetCDF', async () => {
+    const mockAxiosGet = mock(() => Promise.resolve({ data: { nc: 'data' } }));
+    const axios = await import('axios');
+    axios.default.get = mockAxiosGet;
+
+    await client.downloadGridLatlonNetcdf();
+
+    expect(mockAxiosGet).toHaveBeenCalled();
+    const callArgs = mockAxiosGet.mock.calls[0];
+    expect(callArgs[1].params.mode).toBe('NC');
+  });
+
+  // Category 7: Medium-term Forecast Tests
+  test('should get medium-term region', async () => {
+    const mockMakeRequest = mock(() => Promise.resolve([mockForecast]));
+    client['makeRequest'] = mockMakeRequest;
+
+    await client.getMediumTermRegion();
+
+    expect(mockMakeRequest).toHaveBeenCalledWith('fct_medm_reg.php', {
+      disp: '0',
+      help: '1',
+    });
+  });
+
+  test('should get medium-term overview', async () => {
+    const mockMakeRequest = mock(() => Promise.resolve([mockForecast]));
+    client['makeRequest'] = mockMakeRequest;
+
+    await client.getMediumTermOverview({ stn: '108', tmfc: '202501011200' });
+
+    expect(mockMakeRequest).toHaveBeenCalledWith('fct_afs_ws.php', {
+      help: '1',
+      stn: '108',
+      tmfc: '202501011200',
+    });
+  });
+
+  test('should get medium-term land forecast', async () => {
+    const mockMakeRequest = mock(() => Promise.resolve([mockForecast]));
+    client['makeRequest'] = mockMakeRequest;
+
+    await client.getMediumTermLand({ stn: '108' });
+
+    expect(mockMakeRequest).toHaveBeenCalledWith('fct_afs_wl.php', {
+      help: '1',
+      stn: '108',
+    });
+  });
+
+  test('should get medium-term temperature forecast', async () => {
+    const mockMakeRequest = mock(() => Promise.resolve([mockForecast]));
+    client['makeRequest'] = mockMakeRequest;
+
+    await client.getMediumTermTemperature({ stn: '108' });
+
+    expect(mockMakeRequest).toHaveBeenCalledWith('fct_afs_wc.php', {
+      help: '1',
+      stn: '108',
+    });
+  });
+
+  test('should get medium-term sea forecast', async () => {
+    const mockMakeRequest = mock(() => Promise.resolve([mockForecast]));
+    client['makeRequest'] = mockMakeRequest;
+
+    await client.getMediumTermSea({ stn: '108' });
+
+    expect(mockMakeRequest).toHaveBeenCalledWith('fct_afs_wo.php', {
+      help: '1',
+      stn: '108',
+    });
+  });
+
+  test('should get medium-term sea forecast (OpenAPI)', async () => {
+    const mockMakeRequest = mock(() => Promise.resolve([mockForecast]));
+    client['makeRequest'] = mockMakeRequest;
+
+    await client.getMediumTermSeaForecast('11B00000', '202501011800');
+
+    expect(mockMakeRequest).toHaveBeenCalledWith(
+      'MidFcstInfoService/getMidSeaFcst',
+      {
+        pageNo: '1',
+        numOfRows: '1000',
+        dataType: 'JSON',
+        regId: '11B00000',
+        tmFc: '202501011800',
+      },
+      false,
+      true
+    );
+  });
+
+  test('should get medium-term temperature forecast (OpenAPI)', async () => {
+    const mockMakeRequest = mock(() => Promise.resolve([mockForecast]));
+    client['makeRequest'] = mockMakeRequest;
+
+    await client.getMediumTermTemperatureForecast('11B10101', '202501011800');
+
+    expect(mockMakeRequest).toHaveBeenCalledWith(
+      'MidFcstInfoService/getMidTa',
+      {
+        pageNo: '1',
+        numOfRows: '1000',
+        dataType: 'JSON',
+        regId: '11B10101',
+        tmFc: '202501011800',
+      },
+      false,
+      true
+    );
+  });
+
+  test('should get medium-term land forecast (OpenAPI)', async () => {
+    const mockMakeRequest = mock(() => Promise.resolve([mockForecast]));
+    client['makeRequest'] = mockMakeRequest;
+
+    await client.getMediumTermLandForecast('11B00000', '202501011800');
+
+    expect(mockMakeRequest).toHaveBeenCalledWith(
+      'MidFcstInfoService/getMidLandFcst',
+      {
+        pageNo: '1',
+        numOfRows: '1000',
+        dataType: 'JSON',
+        regId: '11B00000',
+        tmFc: '202501011800',
+      },
+      false,
+      true
+    );
+  });
+
+  test('should get medium-term outlook', async () => {
+    const mockMakeRequest = mock(() => Promise.resolve([mockForecast]));
+    client['makeRequest'] = mockMakeRequest;
+
+    await client.getMediumTermOutlook('108', '202501011800');
+
+    expect(mockMakeRequest).toHaveBeenCalledWith(
+      'MidFcstInfoService/getMidFcst',
+      {
+        pageNo: '1',
+        numOfRows: '1000',
+        dataType: 'JSON',
+        stnId: '108',
+        tmFc: '202501011800',
+      },
+      false,
+      true
+    );
+  });
+
+  // Category 8: Weather Warnings Tests
+  test('should get warning region', async () => {
+    const mockMakeRequest = mock(() => Promise.resolve([mockForecast]));
+    client['makeRequest'] = mockMakeRequest;
+
+    await client.getWarningRegion();
+
+    expect(mockMakeRequest).toHaveBeenCalledWith('wrn_reg.php', {
+      disp: '0',
+      help: '1',
+    });
+  });
+
+  test('should get warning data', async () => {
+    const mockMakeRequest = mock(() => Promise.resolve([mockForecast]));
+    client['makeRequest'] = mockMakeRequest;
+
+    await client.getWarningData({ stn: '108', tm: '202501011200' });
+
+    expect(mockMakeRequest).toHaveBeenCalledWith('wrn_met_data.php', {
+      help: '1',
+      stn: '108',
+      tm: '202501011200',
+    });
+  });
+
+  test('should get weather information', async () => {
+    const mockMakeRequest = mock(() => Promise.resolve([mockForecast]));
+    client['makeRequest'] = mockMakeRequest;
+
+    await client.getWeatherInformation({ stn: '108', tmfc: '202501011200' });
+
+    expect(mockMakeRequest).toHaveBeenCalledWith('wrn_inf_rpt.php', {
+      help: '1',
+      stn: '108',
+      tmfc: '202501011200',
+    });
+  });
+
+  test('should get weather commentary', async () => {
+    const mockMakeRequest = mock(() => Promise.resolve([mockForecast]));
+    client['makeRequest'] = mockMakeRequest;
+
+    await client.getWeatherCommentary({ stn: '108' });
+
+    expect(mockMakeRequest).toHaveBeenCalledWith('wthr_cmt_rpt.php', {
+      help: '1',
+      stn: '108',
+    });
+  });
+
+  test('should get current warning status', async () => {
+    const mockMakeRequest = mock(() => Promise.resolve([mockForecast]));
+    client['makeRequest'] = mockMakeRequest;
+
+    await client.getCurrentWarningStatus({ tmfc: '202501011200' });
+
+    expect(mockMakeRequest).toHaveBeenCalledWith('wrn_now_data.php', {
+      disp: '0',
+      help: '1',
+      tmfc: '202501011200',
+    });
+  });
+
+  test('should get current warning status (new)', async () => {
+    const mockMakeRequest = mock(() => Promise.resolve([mockForecast]));
+    client['makeRequest'] = mockMakeRequest;
+
+    await client.getCurrentWarningStatusNew({ tmfc: '202501011200' });
+
+    expect(mockMakeRequest).toHaveBeenCalledWith('wrn_now_data_new.php', {
+      disp: '0',
+      help: '1',
+      tmfc: '202501011200',
+    });
+  });
+
+  test('should get warning image', async () => {
+    const mockAxiosGet = mock(() =>
+      Promise.resolve({ data: { image: 'warning_image' } })
+    );
+    const axios = await import('axios');
+    axios.default.get = mockAxiosGet;
+
+    await client.getWarningImage({ tm: '202501011200' });
+
+    expect(mockAxiosGet).toHaveBeenCalled();
+    const callArgs = mockAxiosGet.mock.calls[0];
+    expect(callArgs[0]).toBe(
+      'https://apihub.kma.go.kr/api/typ01/cgi-bin/wrn/nph-wrn7'
+    );
+  });
+
+  // Category 9: Impact Forecast Tests
+  test('should get impact forecast status', async () => {
+    const mockMakeRequest = mock(() => Promise.resolve([mockForecast]));
+    client['makeRequest'] = mockMakeRequest;
+
+    await client.getImpactForecastStatus();
+
+    expect(mockMakeRequest).toHaveBeenCalledWith('ifs_fct_pstt.php', {
+      disp: '0',
+      help: '1',
+    });
+  });
+
+  test('should get impact risk level zone count', async () => {
+    const mockMakeRequest = mock(() => Promise.resolve([mockForecast]));
+    client['makeRequest'] = mockMakeRequest;
+
+    await client.getImpactRiskLevelZoneCount({
+      tmfc: '202501011200',
+      tmef: '202501021200',
+      riskType: 'HEAT',
+    });
+
+    expect(mockMakeRequest).toHaveBeenCalledWith('ifs_ilvl_zone_cnt.php', {
+      help: '1',
+      tmfc: '202501011200',
+      tmef: '202501021200',
+      risk_type: 'HEAT',
+    });
+  });
+
+  test('should get impact risk level distribution map', async () => {
+    const mockAxiosGet = mock(() =>
+      Promise.resolve({ data: { map: 'impact_map' } })
+    );
+    const axios = await import('axios');
+    axios.default.get = mockAxiosGet;
+
+    await client.getImpactRiskLevelDistributionMap({
+      tmfc: '202501011200',
+      riskType: 'HEAT',
+    });
+
+    expect(mockAxiosGet).toHaveBeenCalled();
+    const callArgs = mockAxiosGet.mock.calls[0];
+    expect(callArgs[0]).toBe(
+      'https://apihub.kma.go.kr/api/typ01/cgi-bin/ifs/ifs_ilvl_dmap.php'
+    );
+  });
+
+  // Category 10: Region Information Tests
+  test('should get forecast zone code', async () => {
+    const mockMakeRequest = mock(() => Promise.resolve([mockForecast]));
+    client['makeRequest'] = mockMakeRequest;
+
+    await client.getForecastZoneCode({ numOfRows: 100 });
+
+    expect(mockMakeRequest).toHaveBeenCalledWith(
+      'WthrWrnInfoService/getFcstZoneCd',
+      {
+        pageNo: '1',
+        numOfRows: '100',
+        dataType: 'JSON',
+      },
+      false,
+      true
+    );
+  });
+
+  test('should get warning zone code', async () => {
+    const mockMakeRequest = mock(() => Promise.resolve([mockForecast]));
+    client['makeRequest'] = mockMakeRequest;
+
+    await client.getWarningZoneCode();
+
+    expect(mockMakeRequest).toHaveBeenCalledWith(
+      'WthrWrnInfoService/getWrnZoneCd',
+      {
+        pageNo: '1',
+        numOfRows: '1000',
+        dataType: 'JSON',
+      },
+      false,
+      true
+    );
+  });
+
+  test('should get AWS warning zone code', async () => {
+    const mockMakeRequest = mock(() => Promise.resolve([mockForecast]));
+    client['makeRequest'] = mockMakeRequest;
+
+    await client.getAwsWarningZoneCode();
+
+    expect(mockMakeRequest).toHaveBeenCalledWith('wrn_reg_aws2.php', {
+      disp: '0',
+      help: '1',
+    });
+  });
 });
