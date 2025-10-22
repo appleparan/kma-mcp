@@ -10,6 +10,7 @@
  *
  * Reference: API_ENDPOINT_Forecast.md
  */
+import axios from 'axios';
 import { BaseKMAClient, KMAClientConfig } from './base.js';
 
 export interface ForecastData {
@@ -949,6 +950,918 @@ export class ForecastClient extends BaseKMAClient {
       requestParams,
       false,
       true
+    );
+  }
+
+  // ============================================================
+  // Category 5: 그래픽 예보 분포도 (Forecast Distribution Maps)
+  // ============================================================
+
+  /**
+   * Get graphical short-term forecast distribution map
+   *
+   * Provides graphical distribution maps for short-term village forecasts.
+   * Returns images showing spatial distribution of forecast variables.
+   *
+   * @param data0 - Data type (e.g., 'GEMD' for village forecast)
+   * @param data1 - Variable type (e.g., 'PTY', 'TMP', 'SKY')
+   * @param tmFc - Forecast issue time in 'YYYYMMDDHHmm' format or Date object
+   * @param tmEf - Forecast valid time in 'YYYYMMDDHHmm' format or Date object
+   * @param params - Optional parameters
+   * @returns Graphical forecast distribution map data/image
+   *
+   * @example
+   * ```typescript
+   * const data = await client.getShortTermDistributionMap(
+   *   'GEMD',
+   *   'PTY',
+   *   '202212221400',
+   *   '202212260000'
+   * );
+   * ```
+   */
+  async getShortTermDistributionMap(
+    data0: string,
+    data1: string,
+    tmFc: string | Date,
+    tmEf: string | Date,
+    params?: {
+      dtm?: string;
+      map?: string;
+      mask?: string;
+      color?: string;
+      size?: number;
+      effect?: string;
+      overlay?: string;
+      zoomRate?: number;
+      zoomLevel?: number;
+      zoomX?: string;
+      zoomY?: string;
+      autoMan?: string;
+      mode?: string;
+      interval?: number;
+      rand?: number;
+    }
+  ): Promise<Record<string, unknown>> {
+    const requestParams: Record<string, string> = {
+      data0: data0,
+      data1: data1,
+      tm_fc: typeof tmFc === 'string' ? tmFc : this.formatDateTime(tmFc),
+      tm_ef: typeof tmEf === 'string' ? tmEf : this.formatDateTime(tmEf),
+      dtm: params?.dtm ?? 'H0',
+      map: params?.map ?? 'G1',
+      mask: params?.mask ?? 'M',
+      color: params?.color ?? 'E',
+      size: String(params?.size ?? 600),
+      effect: params?.effect ?? 'NTL',
+      overlay: params?.overlay ?? 'S',
+      zoom_rate: String(params?.zoomRate ?? 2),
+      zoom_level: String(params?.zoomLevel ?? 0),
+      zoom_x: params?.zoomX ?? '0000000',
+      zoom_y: params?.zoomY ?? '0000000',
+      auto_man: params?.autoMan ?? 'm',
+      mode: params?.mode ?? 'I',
+      interval: String(params?.interval ?? 1),
+      rand: String(params?.rand ?? 1412),
+      authKey: this.authKey,
+    };
+
+    // This uses typ03 API base URL
+    const baseUrl = 'https://apihub.kma.go.kr/api/typ03/cgi/dfs';
+    const url = `${baseUrl}/nph-dfs_shrt_ana_5d_test`;
+    const response = await axios.get(url, { params: requestParams });
+    return response.data;
+  }
+
+  /**
+   * Get graphical very-short-term forecast distribution map
+   *
+   * Same as getShortTermDistributionMap but for very-short-term forecasts.
+   *
+   * @param data0 - Data type
+   * @param data1 - Variable type
+   * @param tmFc - Forecast issue time
+   * @param tmEf - Forecast valid time
+   * @param params - Optional parameters
+   * @returns Graphical forecast distribution map data/image
+   */
+  async getVeryShortTermDistributionMap(
+    data0: string,
+    data1: string,
+    tmFc: string | Date,
+    tmEf: string | Date,
+    params?: {
+      dtm?: string;
+      map?: string;
+      mask?: string;
+      color?: string;
+      size?: number;
+      effect?: string;
+      overlay?: string;
+      zoomRate?: number;
+      zoomLevel?: number;
+      zoomX?: string;
+      zoomY?: string;
+      autoMan?: string;
+      mode?: string;
+      interval?: number;
+      rand?: number;
+    }
+  ): Promise<Record<string, unknown>> {
+    const requestParams: Record<string, string> = {
+      data0: data0,
+      data1: data1,
+      tm_fc: typeof tmFc === 'string' ? tmFc : this.formatDateTime(tmFc),
+      tm_ef: typeof tmEf === 'string' ? tmEf : this.formatDateTime(tmEf),
+      dtm: params?.dtm ?? 'H0',
+      map: params?.map ?? 'G1',
+      mask: params?.mask ?? 'M',
+      color: params?.color ?? 'E',
+      size: String(params?.size ?? 600),
+      effect: params?.effect ?? 'NTL',
+      overlay: params?.overlay ?? 'S',
+      zoom_rate: String(params?.zoomRate ?? 2),
+      zoom_level: String(params?.zoomLevel ?? 0),
+      zoom_x: params?.zoomX ?? '0000000',
+      zoom_y: params?.zoomY ?? '0000000',
+      auto_man: params?.autoMan ?? 'm',
+      mode: params?.mode ?? 'I',
+      interval: String(params?.interval ?? 1),
+      rand: String(params?.rand ?? 1412),
+      authKey: this.authKey,
+    };
+
+    // This uses typ03 API base URL (same endpoint as short-term)
+    const baseUrl = 'https://apihub.kma.go.kr/api/typ03/cgi/dfs';
+    const url = `${baseUrl}/nph-dfs_shrt_ana_5d_test`;
+    const response = await axios.get(url, { params: requestParams });
+    return response.data;
+  }
+
+  // ============================================================
+  // Category 6: 동네예보 격자데이터 위경도 (Grid Coordinate Data)
+  // ============================================================
+
+  /**
+   * Get grid latitude/longitude data
+   *
+   * @param params - Optional parameters
+   * @returns Grid coordinate data
+   *
+   * @example
+   * ```typescript
+   * const data = await client.getGridLatlonData();
+   * ```
+   */
+  async getGridLatlonData(
+    params?: {
+      mode?: string;
+      help?: string;
+    }
+  ): Promise<Record<string, unknown>> {
+    const requestParams: Record<string, string> = {
+      mode: params?.mode ?? 'DT',
+      help: params?.help ?? '1',
+      authKey: this.authKey,
+    };
+
+    const baseUrl = 'https://apihub.kma.go.kr/api/typ01/cgi-bin/dfs';
+    const url = `${baseUrl}/nph-dfs_latlon_api`;
+    const response = await axios.get(url, { params: requestParams });
+    return response.data;
+  }
+
+  /**
+   * Download grid latitude/longitude NetCDF file
+   *
+   * @param params - Optional parameters
+   * @returns NetCDF file data
+   *
+   * @example
+   * ```typescript
+   * const data = await client.downloadGridLatlonNetcdf();
+   * ```
+   */
+  async downloadGridLatlonNetcdf(
+    params?: {
+      mode?: string;
+      help?: string;
+    }
+  ): Promise<Record<string, unknown>> {
+    const requestParams: Record<string, string> = {
+      mode: params?.mode ?? 'NC',
+      help: params?.help ?? '1',
+      authKey: this.authKey,
+    };
+
+    const baseUrl = 'https://apihub.kma.go.kr/api/typ01/cgi-bin/dfs';
+    const url = `${baseUrl}/nph-dfs_latlon_api`;
+    const response = await axios.get(url, { params: requestParams });
+    return response.data;
+  }
+
+  // ============================================================
+  // Category 7: 중기예보 (Medium-term Forecast)
+  // ============================================================
+
+  /**
+   * Get medium-term forecast regions
+   *
+   * @param params - Optional parameters
+   * @returns Medium-term forecast region list
+   */
+  async getMediumTermRegion(
+    params?: {
+      disp?: number;
+      help?: string;
+    }
+  ): Promise<ForecastData[]> {
+    const requestParams: Record<string, unknown> = {
+      disp: String(params?.disp ?? 0),
+      help: params?.help ?? '1',
+    };
+
+    return this.makeRequest<ForecastData>(
+      'fct_medm_reg.php',
+      requestParams
+    );
+  }
+
+  /**
+   * Get medium-term forecast overview
+   *
+   * @param params - Optional parameters
+   * @returns Medium-term forecast overview data
+   */
+  async getMediumTermOverview(
+    params?: {
+      stn?: string;
+      tmfc?: string | Date;
+      help?: string;
+      authKey?: string;
+    }
+  ): Promise<ForecastData[]> {
+    const requestParams: Record<string, unknown> = {
+      help: params?.help ?? '1',
+    };
+
+    if (params?.stn !== undefined) {
+      requestParams.stn = params.stn;
+    }
+    if (params?.tmfc !== undefined) {
+      requestParams.tmfc = typeof params.tmfc === 'string'
+        ? params.tmfc
+        : this.formatDateTime(params.tmfc);
+    }
+
+    return this.makeRequest<ForecastData>(
+      'fct_afs_ws.php',
+      requestParams
+    );
+  }
+
+  /**
+   * Get medium-term land forecast
+   *
+   * @param params - Optional parameters
+   * @returns Medium-term land forecast data
+   */
+  async getMediumTermLand(
+    params?: {
+      stn?: string;
+      tmfc?: string | Date;
+      help?: string;
+    }
+  ): Promise<ForecastData[]> {
+    const requestParams: Record<string, unknown> = {
+      help: params?.help ?? '1',
+    };
+
+    if (params?.stn !== undefined) {
+      requestParams.stn = params.stn;
+    }
+    if (params?.tmfc !== undefined) {
+      requestParams.tmfc = typeof params.tmfc === 'string'
+        ? params.tmfc
+        : this.formatDateTime(params.tmfc);
+    }
+
+    return this.makeRequest<ForecastData>(
+      'fct_afs_wl.php',
+      requestParams
+    );
+  }
+
+  /**
+   * Get medium-term temperature forecast
+   *
+   * @param params - Optional parameters
+   * @returns Medium-term temperature forecast data
+   */
+  async getMediumTermTemperature(
+    params?: {
+      stn?: string;
+      tmfc?: string | Date;
+      help?: string;
+    }
+  ): Promise<ForecastData[]> {
+    const requestParams: Record<string, unknown> = {
+      help: params?.help ?? '1',
+    };
+
+    if (params?.stn !== undefined) {
+      requestParams.stn = params.stn;
+    }
+    if (params?.tmfc !== undefined) {
+      requestParams.tmfc = typeof params.tmfc === 'string'
+        ? params.tmfc
+        : this.formatDateTime(params.tmfc);
+    }
+
+    return this.makeRequest<ForecastData>(
+      'fct_afs_wc.php',
+      requestParams
+    );
+  }
+
+  /**
+   * Get medium-term sea forecast
+   *
+   * @param params - Optional parameters
+   * @returns Medium-term sea forecast data
+   */
+  async getMediumTermSea(
+    params?: {
+      stn?: string;
+      tmfc?: string | Date;
+      help?: string;
+    }
+  ): Promise<ForecastData[]> {
+    const requestParams: Record<string, unknown> = {
+      help: params?.help ?? '1',
+    };
+
+    if (params?.stn !== undefined) {
+      requestParams.stn = params.stn;
+    }
+    if (params?.tmfc !== undefined) {
+      requestParams.tmfc = typeof params.tmfc === 'string'
+        ? params.tmfc
+        : this.formatDateTime(params.tmfc);
+    }
+
+    return this.makeRequest<ForecastData>(
+      'fct_afs_wo.php',
+      requestParams
+    );
+  }
+
+  /**
+   * Get medium-term sea forecast (OpenAPI)
+   *
+   * @param regId - Region ID
+   * @param tmFc - Forecast time
+   * @param params - Optional parameters
+   * @returns Medium-term sea forecast data
+   */
+  async getMediumTermSeaForecast(
+    regId: string,
+    tmFc: string,
+    params?: {
+      pageNo?: number;
+      numOfRows?: number;
+      dataType?: string;
+    }
+  ): Promise<ForecastData[]> {
+    const requestParams: Record<string, unknown> = {
+      pageNo: String(params?.pageNo ?? 1),
+      numOfRows: String(params?.numOfRows ?? 1000),
+      dataType: params?.dataType ?? 'JSON',
+      regId: regId,
+      tmFc: tmFc,
+    };
+
+    return this.makeRequest<ForecastData>(
+      'MidFcstInfoService/getMidSeaFcst',
+      requestParams,
+      false,
+      true
+    );
+  }
+
+  /**
+   * Get medium-term temperature forecast (OpenAPI)
+   *
+   * @param regId - Region ID
+   * @param tmFc - Forecast time
+   * @param params - Optional parameters
+   * @returns Medium-term temperature forecast data
+   */
+  async getMediumTermTemperatureForecast(
+    regId: string,
+    tmFc: string,
+    params?: {
+      pageNo?: number;
+      numOfRows?: number;
+      dataType?: string;
+    }
+  ): Promise<ForecastData[]> {
+    const requestParams: Record<string, unknown> = {
+      pageNo: String(params?.pageNo ?? 1),
+      numOfRows: String(params?.numOfRows ?? 1000),
+      dataType: params?.dataType ?? 'JSON',
+      regId: regId,
+      tmFc: tmFc,
+    };
+
+    return this.makeRequest<ForecastData>(
+      'MidFcstInfoService/getMidTa',
+      requestParams,
+      false,
+      true
+    );
+  }
+
+  /**
+   * Get medium-term land forecast (OpenAPI)
+   *
+   * @param regId - Region ID
+   * @param tmFc - Forecast time
+   * @param params - Optional parameters
+   * @returns Medium-term land forecast data
+   */
+  async getMediumTermLandForecast(
+    regId: string,
+    tmFc: string,
+    params?: {
+      pageNo?: number;
+      numOfRows?: number;
+      dataType?: string;
+    }
+  ): Promise<ForecastData[]> {
+    const requestParams: Record<string, unknown> = {
+      pageNo: String(params?.pageNo ?? 1),
+      numOfRows: String(params?.numOfRows ?? 1000),
+      dataType: params?.dataType ?? 'JSON',
+      regId: regId,
+      tmFc: tmFc,
+    };
+
+    return this.makeRequest<ForecastData>(
+      'MidFcstInfoService/getMidLandFcst',
+      requestParams,
+      false,
+      true
+    );
+  }
+
+  /**
+   * Get medium-term outlook (OpenAPI)
+   *
+   * @param stnId - Station ID
+   * @param tmFc - Forecast time
+   * @param params - Optional parameters
+   * @returns Medium-term outlook data
+   */
+  async getMediumTermOutlook(
+    stnId: string,
+    tmFc: string,
+    params?: {
+      pageNo?: number;
+      numOfRows?: number;
+      dataType?: string;
+    }
+  ): Promise<ForecastData[]> {
+    const requestParams: Record<string, unknown> = {
+      pageNo: String(params?.pageNo ?? 1),
+      numOfRows: String(params?.numOfRows ?? 1000),
+      dataType: params?.dataType ?? 'JSON',
+      stnId: stnId,
+      tmFc: tmFc,
+    };
+
+    return this.makeRequest<ForecastData>(
+      'MidFcstInfoService/getMidFcst',
+      requestParams,
+      false,
+      true
+    );
+  }
+
+  // ============================================================
+  // Category 8: 기상특보 (Weather Warnings)
+  // ============================================================
+
+  /**
+   * Get warning regions
+   *
+   * @param params - Optional parameters
+   * @returns Warning region list
+   */
+  async getWarningRegion(
+    params?: {
+      disp?: number;
+      help?: string;
+    }
+  ): Promise<ForecastData[]> {
+    const requestParams: Record<string, unknown> = {
+      disp: String(params?.disp ?? 0),
+      help: params?.help ?? '1',
+    };
+
+    return this.makeRequest<ForecastData>(
+      'wrn_reg.php',
+      requestParams
+    );
+  }
+
+  /**
+   * Get warning data
+   *
+   * @param params - Optional parameters
+   * @returns Warning data
+   */
+  async getWarningData(
+    params?: {
+      stn?: string;
+      tm?: string | Date;
+      help?: string;
+    }
+  ): Promise<ForecastData[]> {
+    const requestParams: Record<string, unknown> = {
+      help: params?.help ?? '1',
+    };
+
+    if (params?.stn !== undefined) {
+      requestParams.stn = params.stn;
+    }
+    if (params?.tm !== undefined) {
+      requestParams.tm = typeof params.tm === 'string'
+        ? params.tm
+        : this.formatDateTime(params.tm);
+    }
+
+    return this.makeRequest<ForecastData>(
+      'wrn_met_data.php',
+      requestParams
+    );
+  }
+
+  /**
+   * Get weather information report
+   *
+   * @param params - Optional parameters
+   * @returns Weather information data
+   */
+  async getWeatherInformation(
+    params?: {
+      stn?: string;
+      tmfc?: string | Date;
+      help?: string;
+    }
+  ): Promise<ForecastData[]> {
+    const requestParams: Record<string, unknown> = {
+      help: params?.help ?? '1',
+    };
+
+    if (params?.stn !== undefined) {
+      requestParams.stn = params.stn;
+    }
+    if (params?.tmfc !== undefined) {
+      requestParams.tmfc = typeof params.tmfc === 'string'
+        ? params.tmfc
+        : this.formatDateTime(params.tmfc);
+    }
+
+    return this.makeRequest<ForecastData>(
+      'wrn_inf_rpt.php',
+      requestParams
+    );
+  }
+
+  /**
+   * Get weather commentary
+   *
+   * @param params - Optional parameters
+   * @returns Weather commentary data
+   */
+  async getWeatherCommentary(
+    params?: {
+      stn?: string;
+      tmfc?: string | Date;
+      help?: string;
+    }
+  ): Promise<ForecastData[]> {
+    const requestParams: Record<string, unknown> = {
+      help: params?.help ?? '1',
+    };
+
+    if (params?.stn !== undefined) {
+      requestParams.stn = params.stn;
+    }
+    if (params?.tmfc !== undefined) {
+      requestParams.tmfc = typeof params.tmfc === 'string'
+        ? params.tmfc
+        : this.formatDateTime(params.tmfc);
+    }
+
+    return this.makeRequest<ForecastData>(
+      'wthr_cmt_rpt.php',
+      requestParams
+    );
+  }
+
+  /**
+   * Get current warning status
+   *
+   * @param params - Optional parameters
+   * @returns Current warning status data
+   */
+  async getCurrentWarningStatus(
+    params?: {
+      tmfc?: string | Date;
+      disp?: number;
+      help?: string;
+    }
+  ): Promise<ForecastData[]> {
+    const requestParams: Record<string, unknown> = {
+      disp: String(params?.disp ?? 0),
+      help: params?.help ?? '1',
+    };
+
+    if (params?.tmfc !== undefined) {
+      requestParams.tmfc = typeof params.tmfc === 'string'
+        ? params.tmfc
+        : this.formatDateTime(params.tmfc);
+    }
+
+    return this.makeRequest<ForecastData>(
+      'wrn_now_data.php',
+      requestParams
+    );
+  }
+
+  /**
+   * Get current warning status (new version)
+   *
+   * @param params - Optional parameters
+   * @returns Current warning status data (new format)
+   */
+  async getCurrentWarningStatusNew(
+    params?: {
+      tmfc?: string | Date;
+      disp?: number;
+      help?: string;
+    }
+  ): Promise<ForecastData[]> {
+    const requestParams: Record<string, unknown> = {
+      disp: String(params?.disp ?? 0),
+      help: params?.help ?? '1',
+    };
+
+    if (params?.tmfc !== undefined) {
+      requestParams.tmfc = typeof params.tmfc === 'string'
+        ? params.tmfc
+        : this.formatDateTime(params.tmfc);
+    }
+
+    return this.makeRequest<ForecastData>(
+      'wrn_now_data_new.php',
+      requestParams
+    );
+  }
+
+  /**
+   * Get warning image
+   *
+   * @param params - Optional parameters
+   * @returns Warning image data
+   */
+  async getWarningImage(
+    params?: {
+      tm?: string | Date;
+      size?: number;
+      wrn?: string;
+      map?: string;
+      legend?: string;
+      color?: string;
+      lang?: string;
+      disp?: number;
+      help?: string;
+    }
+  ): Promise<Record<string, unknown>> {
+    const requestParams: Record<string, string> = {
+      size: String(params?.size ?? 600),
+      wrn: params?.wrn ?? '1',
+      map: params?.map ?? '1',
+      legend: params?.legend ?? '1',
+      color: params?.color ?? '1',
+      lang: params?.lang ?? 'ko',
+      disp: String(params?.disp ?? 0),
+      help: params?.help ?? '1',
+      authKey: this.authKey,
+    };
+
+    if (params?.tm !== undefined) {
+      requestParams.tm = typeof params.tm === 'string'
+        ? params.tm
+        : this.formatDateTime(params.tm);
+    }
+
+    const baseUrl = 'https://apihub.kma.go.kr/api/typ01/cgi-bin/wrn';
+    const url = `${baseUrl}/nph-wrn7`;
+    const response = await axios.get(url, { params: requestParams });
+    return response.data;
+  }
+
+  // ============================================================
+  // Category 9: 영향예보 (Impact Forecast)
+  // ============================================================
+
+  /**
+   * Get impact forecast status
+   *
+   * @param params - Optional parameters
+   * @returns Impact forecast status data
+   */
+  async getImpactForecastStatus(
+    params?: {
+      disp?: number;
+      help?: string;
+    }
+  ): Promise<ForecastData[]> {
+    const requestParams: Record<string, unknown> = {
+      disp: String(params?.disp ?? 0),
+      help: params?.help ?? '1',
+    };
+
+    return this.makeRequest<ForecastData>(
+      'ifs_fct_pstt.php',
+      requestParams
+    );
+  }
+
+  /**
+   * Get impact risk level zone count
+   *
+   * @param params - Optional parameters
+   * @returns Impact risk level zone count data
+   */
+  async getImpactRiskLevelZoneCount(
+    params?: {
+      tmfc?: string | Date;
+      tmef?: string | Date;
+      riskType?: string;
+      help?: string;
+    }
+  ): Promise<ForecastData[]> {
+    const requestParams: Record<string, unknown> = {
+      help: params?.help ?? '1',
+    };
+
+    if (params?.tmfc !== undefined) {
+      requestParams.tmfc = typeof params.tmfc === 'string'
+        ? params.tmfc
+        : this.formatDateTime(params.tmfc);
+    }
+    if (params?.tmef !== undefined) {
+      requestParams.tmef = typeof params.tmef === 'string'
+        ? params.tmef
+        : this.formatDateTime(params.tmef);
+    }
+    if (params?.riskType !== undefined) {
+      requestParams.risk_type = params.riskType;
+    }
+
+    return this.makeRequest<ForecastData>(
+      'ifs_ilvl_zone_cnt.php',
+      requestParams
+    );
+  }
+
+  /**
+   * Get impact risk level distribution map
+   *
+   * @param params - Optional parameters
+   * @returns Impact risk level distribution map data
+   */
+  async getImpactRiskLevelDistributionMap(
+    params?: {
+      tmfc?: string | Date;
+      tmef?: string | Date;
+      riskType?: string;
+      map?: string;
+      legend?: string;
+      size?: number;
+      help?: string;
+    }
+  ): Promise<Record<string, unknown>> {
+    const requestParams: Record<string, string> = {
+      map: params?.map ?? '1',
+      legend: params?.legend ?? '1',
+      size: String(params?.size ?? 600),
+      help: params?.help ?? '1',
+      authKey: this.authKey,
+    };
+
+    if (params?.tmfc !== undefined) {
+      requestParams.tmfc = typeof params.tmfc === 'string'
+        ? params.tmfc
+        : this.formatDateTime(params.tmfc);
+    }
+    if (params?.tmef !== undefined) {
+      requestParams.tmef = typeof params.tmef === 'string'
+        ? params.tmef
+        : this.formatDateTime(params.tmef);
+    }
+    if (params?.riskType !== undefined) {
+      requestParams.risk_type = params.riskType;
+    }
+
+    const baseUrl = 'https://apihub.kma.go.kr/api/typ01/cgi-bin/ifs';
+    const url = `${baseUrl}/ifs_ilvl_dmap.php`;
+    const response = await axios.get(url, { params: requestParams });
+    return response.data;
+  }
+
+  // ============================================================
+  // Category 10: 예,특보 구역정보 (Region Information)
+  // ============================================================
+
+  /**
+   * Get forecast zone code (OpenAPI)
+   *
+   * @param params - Optional parameters
+   * @returns Forecast zone code data
+   */
+  async getForecastZoneCode(
+    params?: {
+      pageNo?: number;
+      numOfRows?: number;
+      dataType?: string;
+    }
+  ): Promise<ForecastData[]> {
+    const requestParams: Record<string, unknown> = {
+      pageNo: String(params?.pageNo ?? 1),
+      numOfRows: String(params?.numOfRows ?? 1000),
+      dataType: params?.dataType ?? 'JSON',
+    };
+
+    return this.makeRequest<ForecastData>(
+      'WthrWrnInfoService/getFcstZoneCd',
+      requestParams,
+      false,
+      true
+    );
+  }
+
+  /**
+   * Get warning zone code (OpenAPI)
+   *
+   * @param params - Optional parameters
+   * @returns Warning zone code data
+   */
+  async getWarningZoneCode(
+    params?: {
+      pageNo?: number;
+      numOfRows?: number;
+      dataType?: string;
+    }
+  ): Promise<ForecastData[]> {
+    const requestParams: Record<string, unknown> = {
+      pageNo: String(params?.pageNo ?? 1),
+      numOfRows: String(params?.numOfRows ?? 1000),
+      dataType: params?.dataType ?? 'JSON',
+    };
+
+    return this.makeRequest<ForecastData>(
+      'WthrWrnInfoService/getWrnZoneCd',
+      requestParams,
+      false,
+      true
+    );
+  }
+
+  /**
+   * Get AWS warning zone code
+   *
+   * @param params - Optional parameters
+   * @returns AWS warning zone code data
+   */
+  async getAwsWarningZoneCode(
+    params?: {
+      disp?: number;
+      help?: string;
+    }
+  ): Promise<ForecastData[]> {
+    const requestParams: Record<string, unknown> = {
+      disp: String(params?.disp ?? 0),
+      help: params?.help ?? '1',
+    };
+
+    return this.makeRequest<ForecastData>(
+      'wrn_reg_aws2.php',
+      requestParams
     );
   }
 }
