@@ -257,8 +257,8 @@ class TestAsyncSnowClient:
 
     @pytest.mark.asyncio
     @patch('httpx.AsyncClient.get')
-    async def test_get_hourly_data(self, mock_get):
-        """Test getting hourly snow data."""
+    async def test_get_snow_depth(self, mock_get):
+        """Test getting snow depth data."""
         mock_response = MagicMock()
         mock_response.json.return_value = {'data': 'snow_test'}
         mock_response.raise_for_status = MagicMock()
@@ -267,7 +267,7 @@ class TestAsyncSnowClient:
         mock_get.side_effect = async_mock
 
         async with AsyncSnowClient('test_key') as client:
-            result = await client.get_hourly_data(tm='202501011200', stn=108)
+            result = await client.get_snow_depth(tm='202501011200', sd_type='tot')
 
         assert result == {'data': 'snow_test'}
 
