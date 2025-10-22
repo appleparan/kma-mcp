@@ -83,7 +83,7 @@ async def validate_api_key(api_key: str) -> bool:
             # Get data from 10 minutes ago to ensure data availability
             test_time = datetime.now(UTC) - timedelta(minutes=10)
             # Test with a single station (104 = Bukgangneung)
-            result = await client.get_minutely_data(tm=test_time, stn=104)
+            result = await client.get_minutely_data(tm2=test_time, stn=104)
 
             # Check if we got valid data back
             if result and not isinstance(result, str):

@@ -251,10 +251,10 @@ from kma_mcp.surface.aws_client import AWSClient
 client = AWSClient('your_api_key')
 
 # Get minutely data for real-time monitoring
-data = client.get_minutely_data(tm='202501011200', stn=108)
+data = client.get_minutely_data(tm2='202501011200', stn=108)
 
 # Get minutely data for a period (rapid monitoring)
-data = client.get_minutely_period(tm1='202501011200', tm2='202501011300', stn=108)
+data = client.get_minutely_data(tm1='202501011200', tm2='202501011300', stn=108)
 
 # Get hourly AWS data
 data = client.get_hourly_period(tm1='202501010000', tm2='202501020000', stn=108)
