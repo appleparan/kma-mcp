@@ -498,9 +498,7 @@ class TestForecastClientRequests:
         mock_response.raise_for_status = Mock()
         mock_get.return_value = mock_response
 
-        result = forecast_client.get_medium_term_overview(
-            tmfc1='2013121106', tmfc2='2013121118'
-        )
+        result = forecast_client.get_medium_term_overview(tmfc1='2013121106', tmfc2='2013121118')
 
         assert result == mock_response_data
         assert 'fct_afs_ws.php' in mock_get.call_args.args[0]
@@ -538,9 +536,7 @@ class TestForecastClientRequests:
         mock_response.raise_for_status = Mock()
         mock_get.return_value = mock_response
 
-        result = forecast_client.get_medium_term_temperature(
-            tmfc1='2013121106', tmfc2='2013121118'
-        )
+        result = forecast_client.get_medium_term_temperature(tmfc1='2013121106', tmfc2='2013121118')
 
         assert result == mock_response_data
         assert 'fct_afs_wc.php' in mock_get.call_args.args[0]
@@ -558,9 +554,7 @@ class TestForecastClientRequests:
         mock_response.raise_for_status = Mock()
         mock_get.return_value = mock_response
 
-        result = forecast_client.get_medium_term_sea(
-            tmfc1='2013121106', tmfc2='2013121118'
-        )
+        result = forecast_client.get_medium_term_sea(tmfc1='2013121106', tmfc2='2013121118')
 
         assert result == mock_response_data
         assert 'fct_afs_wo.php' in mock_get.call_args.args[0]
@@ -639,9 +633,7 @@ class TestForecastClientRequests:
         mock_response.raise_for_status = Mock()
         mock_get.return_value = mock_response
 
-        result = forecast_client.get_medium_term_outlook(
-            stn_id='108', tm_fc='201310170600'
-        )
+        result = forecast_client.get_medium_term_outlook(stn_id='108', tm_fc='201310170600')
 
         assert result == mock_response_data
         assert 'MidFcstInfoService/getMidFcst' in mock_get.call_args.args[0]
@@ -660,9 +652,7 @@ class TestForecastClientRequests:
         mock_response.raise_for_status = Mock()
         mock_get.return_value = mock_response
 
-        result = forecast_client.get_warning_region(
-            tmfc1='201501010000', tmfc2='201502010000'
-        )
+        result = forecast_client.get_warning_region(tmfc1='201501010000', tmfc2='201502010000')
 
         assert result == mock_response_data
         assert 'wrn_reg.php' in mock_get.call_args.args[0]
@@ -701,9 +691,7 @@ class TestForecastClientRequests:
         mock_response.raise_for_status = Mock()
         mock_get.return_value = mock_response
 
-        result = forecast_client.get_weather_information(
-            tmfc1='201505010000', tmfc2='201506010000'
-        )
+        result = forecast_client.get_weather_information(tmfc1='201505010000', tmfc2='201506010000')
 
         assert result == mock_response_data
         assert 'wrn_inf_rpt.php' in mock_get.call_args.args[0]
@@ -721,9 +709,7 @@ class TestForecastClientRequests:
         mock_response.raise_for_status = Mock()
         mock_get.return_value = mock_response
 
-        result = forecast_client.get_weather_commentary(
-            tmfc1='202004130000', tmfc2='202004140000'
-        )
+        result = forecast_client.get_weather_commentary(tmfc1='202004130000', tmfc2='202004140000')
 
         assert result == mock_response_data
         assert 'wthr_cmt_rpt.php' in mock_get.call_args.args[0]

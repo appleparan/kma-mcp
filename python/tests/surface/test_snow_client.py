@@ -3,7 +3,6 @@
 from datetime import UTC, datetime
 from unittest.mock import Mock, patch
 
-import httpx
 import pytest
 
 from kma_mcp.surface.snow_client import SnowClient
@@ -128,4 +127,3 @@ class TestSnowClientRequests:
         assert result == mock_response_data
         assert 'kma_snow_day.php' in mock_get.call_args.args[0]
         assert mock_get.call_args.kwargs['params']['sd'] == 'tot'
-

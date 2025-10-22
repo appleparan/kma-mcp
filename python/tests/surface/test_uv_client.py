@@ -102,4 +102,3 @@ class TestUVClientRequests:
 
         with pytest.raises(httpx.HTTPError):
             uv_client.get_observation_data(tm='202203211500', stn=108)
-

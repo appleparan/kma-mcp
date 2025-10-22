@@ -419,8 +419,13 @@ class TestAsyncForecastClient:
 
         async with AsyncForecastClient('test_key') as client:
             result = await client.get_village_forecast(
-                page_no=1, num_of_rows=10, data_type='JSON',
-                base_date='20210628', base_time='0500', nx=60, ny=127
+                page_no=1,
+                num_of_rows=10,
+                data_type='JSON',
+                base_date='20210628',
+                base_time='0500',
+                nx=60,
+                ny=127,
             )
 
         assert result == {'data': 'village_test'}
